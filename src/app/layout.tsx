@@ -3,6 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { WagmiProvider } from "@/components/providers/wagmi-provider";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
+import { LazyMotionProvider } from "@/components/motion/LazyMotionProvider";
+import { ThemeBackdrop } from "@/components/backgrounds/ThemeBackdrop";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,13 +35,18 @@ export default function RootLayout({
       >
         <WagmiProvider>
           <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <LazyMotionProvider>
+              <ThemeBackdrop />
+              <Navbar />
               {children}
-            </ThemeProvider>
+              <Footer />
+            </LazyMotionProvider>
+          </ThemeProvider>
         </WagmiProvider>
       </body>
     </html>

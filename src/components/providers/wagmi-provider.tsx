@@ -21,15 +21,10 @@ const queryClient = new QueryClient()
  * the wallet connection modal matches the application's current theme.
  */
 function ThemedRainbowKitProvider({ children }: { children: React.ReactNode }) {
-  const { theme, resolvedTheme } = useTheme();
+  const { resolvedTheme } = useTheme();
   
   // Use resolvedTheme to get the actual theme (handles 'system' theme)
   const isDark = resolvedTheme === 'dark';
-  // Aggressive logging for theme resolution and mapping
-  try {
-    // eslint-disable-next-line no-console
-    console.debug('[ThemedRainbowKitProvider] Current theme', { theme, resolvedTheme, isDark });
-  } catch {}
   
   return (
     <RainbowKitProvider

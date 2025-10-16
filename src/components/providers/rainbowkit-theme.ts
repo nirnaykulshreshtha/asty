@@ -30,36 +30,6 @@ import { darkTheme, lightTheme, Theme } from "@rainbow-me/rainbowkit";
 export function createRainbowKitTheme(isDark: boolean): Theme {
   const base = isDark ? darkTheme() : lightTheme();
 
-  // Aggressive logging for observability and future debugging.
-  try {
-    if (typeof window !== "undefined") {
-      const root = document.documentElement;
-      const getVar = (name: string) =>
-        getComputedStyle(root).getPropertyValue(name).trim();
-      // Log a small, representative sample of variables we rely on.
-      // Avoid logging too many to keep console readable.
-      // These logs help verify that CSS variables resolve at runtime.
-      // Note: Values may include colors in oklch() space.
-      // eslint-disable-next-line no-console
-      console.debug("[createRainbowKitTheme] CSS vars", {
-        primary: getVar("--primary"),
-        primaryForeground: getVar("--primary-foreground"),
-        background: getVar("--background"),
-        foreground: getVar("--foreground"),
-        card: getVar("--card"),
-        cardForeground: getVar("--card-foreground"),
-        border: getVar("--border"),
-        popover: getVar("--popover"),
-        popoverForeground: getVar("--popover-foreground"),
-        radius: getVar("--radius"),
-        fontSans: getVar("--font-sans"),
-      });
-    }
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error("[createRainbowKitTheme] Failed reading CSS vars", error);
-  }
-
   // Return theme with our CSS variable mappings.
   const theme: Theme = {
     ...base,
@@ -133,8 +103,6 @@ export function createRainbowKitTheme(isDark: boolean): Theme {
     },
   };
 
-  // eslint-disable-next-line no-console
-  console.debug("[createRainbowKitTheme] Generated theme", { isDark, theme });
   return theme;
 }
 

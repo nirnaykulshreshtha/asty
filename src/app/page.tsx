@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
+import { Profile } from "@/components/profile";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <Button variant={"ghost"}>Click me</Button>
       <Button variant={"link"}>Click me</Button>
       <ModeToggle />
+      <Profile />
     </div>
   );
 }

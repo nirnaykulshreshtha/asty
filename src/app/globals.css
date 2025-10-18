@@ -36,9 +36,10 @@
   --sidebar-accent-foreground: oklch(1.0000 0 0);
   --sidebar-border: oklch(0.8866 0.0404 89.6994);
   --sidebar-ring: oklch(0.5553 0.1455 48.9975);
-  --font-sans: Oxanium, sans-serif;
+  --font-sans: var(--font-space-grotesk, "Space Grotesk", sans-serif);
   --font-serif: Merriweather, serif;
-  --font-mono: Fira Code, monospace;
+  --font-mono: var(--font-plex-mono, "IBM Plex Mono", monospace);
+  --font-heading: var(--font-astroz, "Astroz", sans-serif);
   --radius: 0.3rem;
   --shadow-x: 0px;
   --shadow-y: 2px;
@@ -91,9 +92,10 @@
   --sidebar-accent-foreground: oklch(0.2839 0.0734 254.5378);
   --sidebar-border: oklch(0.3741 0.0087 67.5582);
   --sidebar-ring: oklch(0.7049 0.1867 47.6044);
-  --font-sans: Oxanium, sans-serif;
+  --font-sans: var(--font-space-grotesk, "Space Grotesk", sans-serif);
   --font-serif: Merriweather, serif;
-  --font-mono: Fira Code, monospace;
+  --font-mono: var(--font-plex-mono, "IBM Plex Mono", monospace);
+  --font-heading: var(--font-astroz, "Astroz", sans-serif);
   --radius: 0.3rem;
   --shadow-x: 0px;
   --shadow-y: 2px;
@@ -170,5 +172,67 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .animate-hero {
+    animation: hero-pop 1s ease-out forwards;
+  }
+
+  .mascot-bob {
+    animation: mascot-bob 7s ease-in-out infinite;
+  }
+
+  .reveal-section {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal-section[data-visible="true"] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero,
+  .mascot-bob {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .reveal-section {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+@keyframes hero-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(32px) scale(0.98);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(0) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes mascot-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(2deg);
   }
 }

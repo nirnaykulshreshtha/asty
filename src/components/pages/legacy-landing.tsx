@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import type { MouseEvent as ReactMouseEvent } from "react"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ArrowRight, Menu, ShieldCheck, Sparkles, TrendingUp, X } from "lucide-react"
 
 import { ModeToggle } from "@/components/mode-toggle"
@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/accordion"
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
-import { astroz } from "@/styles/fonts"
 
 const NAV_ITEMS = [
   { label: "How It Works", href: "#how" },
@@ -65,9 +64,9 @@ const HOW_STEPS = [
 ]
 
 const TOKENOMICS_ROWS = [
-  { type: "Public Sale", amount: "10 lac", rate: "$0.10", percent: 40 },
-  { type: "Private Sale", amount: "10 lac", rate: "$0.20", percent: 40 },
-  { type: "Final Sale", amount: "5 lac", rate: "$0.25", percent: 20 },
+  { type: "Public Sale", amount: "10 lac", rate: "$0.10" },
+  { type: "Private Sale", amount: "10 lac", rate: "$0.20" },
+  { type: "Final Sale", amount: "5 lac", rate: "$0.25" },
 ]
 
 const TOKENOMICS_CARDS = [
@@ -158,68 +157,13 @@ const COMMUNITY_CARDS = [
   },
 ]
 
-const CORE_GOALS = [
-  {
-    title: "Grow Aster Ecosystem",
-    description: "Build awareness and education around Aster DEX and the Aster token.",
-  },
-  {
-    title: "Deliver Passive Income",
-    description: "Offer lifetime passive income for ASTY holders via the tax-to-vault model.",
-  },
-  {
-    title: "Strengthen Community",
-    description: "Create a vibrant, transparent community that supports both Asty and Aster.",
-  },
-]
-
-const TOKENOMICS_SUMMARY = [
-  {
-    title: "Total Supply",
-    value: "25 lac ASTY",
-    description: "Structured across three sale phases with locked liquidity backing.",
-    icon: Sparkles,
-  },
-  {
-    title: "Vault Tax",
-    value: "6% per trade",
-    description: "Auto-converts into Aster and compounds inside the shared Vault.",
-    icon: TrendingUp,
-  },
-  {
-    title: "Annual Drop",
-    value: "Every 12 months",
-    description: "Aster payouts proportional to holdings at snapshot time.",
-    icon: ShieldCheck,
-  },
-]
-
-const STAR_POINTS = [
-  { id: "alpha", x: 18, y: 22 },
-  { id: "beta", x: 42, y: 12 },
-  { id: "gamma", x: 66, y: 30 },
-  { id: "delta", x: 78, y: 58 },
-  { id: "epsilon", x: 52, y: 70 },
-  { id: "zeta", x: 28, y: 60 },
-]
-
-const STAR_CONNECTIONS: [string, string][] = [
-  ["alpha", "beta"],
-  ["beta", "gamma"],
-  ["gamma", "delta"],
-  ["delta", "epsilon"],
-  ["epsilon", "zeta"],
-  ["zeta", "alpha"],
-  ["beta", "epsilon"],
-]
-
 type ToastState = {
   message: string
   visible: boolean
 }
 
-export default function Home() {
-  logger.info("page:home:render", { theme: "constellation" })
+export function LegacyLanding() {
+  logger.info("page:home:legacy", { order: 1 })
 
   const [mobileOpen, setMobileOpen] = useState(false)
   const [toast, setToast] = useState<ToastState>({ message: "", visible: false })
@@ -308,28 +252,6 @@ export default function Home() {
     }
   }
 
-  const starMap = useMemo(() => {
-    const pointMap = Object.fromEntries(STAR_POINTS.map((point) => [point.id, point]))
-    return STAR_CONNECTIONS.map(([from, to]) => {
-      const start = pointMap[from]
-      const end = pointMap[to]
-      if (!start || !end) return null
-      return {
-        id: `${from}-${to}`,
-        x1: start.x,
-        y1: start.y,
-        x2: end.x,
-        y2: end.y,
-      }
-    }).filter(Boolean) as Array<{
-      id: string
-      x1: number
-      y1: number
-      x2: number
-      y2: number
-    }>
-  }, [])
-
   return (
     <>
       <a
@@ -361,10 +283,8 @@ export default function Home() {
             className="group relative flex items-center gap-3"
             aria-label="Back to Asty hero"
           >
-            <span className="relative isolate rounded-md border border-border/60 bg-gradient-to-br from-primary/20 via-transparent to-accent/20 px-3 py-2 text-primary transition-transform duration-200 group-hover:-translate-y-0.5">
-              <span className={cn("text-lg font-black tracking-[0.6em]", astroz.className)}>
-                ASTY
-              </span>
+            <span className="relative isolate rounded-md border border-border/60 bg-gradient-to-br from-primary/15 via-transparent to-accent/20 px-3 py-2 font-black tracking-[0.6em] text-primary transition-transform duration-200 group-hover:-translate-y-0.5">
+              ASTY
             </span>
             <span className="hidden text-xs uppercase text-muted-foreground tracking-[0.45em] md:block">
               Earn Forever
@@ -433,18 +353,18 @@ export default function Home() {
         >
           <div className="flex flex-col justify-center gap-10">
             <div className="space-y-6">
+              <p className="inline-flex max-w-max items-center gap-2 rounded-full border border-border/60 bg-card/40 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                Asty Protocol
+              </p>
               <h1
                 data-animate-hero
-                className={cn(
-                  "text-4xl leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl",
-                  astroz.className
-                )}
+                className="text-4xl font-black leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl"
               >
-                Earn Forever with Every Transaction
+                Asty — Earn Forever with Every Transaction
               </h1>
               <p className="max-w-xl text-lg text-muted-foreground sm:text-xl">
-                Community-driven DeFi on BNB Chain. Every ASTY trade funds the Aster Vault and pays Aster
-                rewards yearly to loyal holders.
+                Community-driven DeFi on BNB Chain. Every ASTY trade funds the Aster Vault and pays
+                Aster rewards yearly to loyal holders.
               </p>
             </div>
 
@@ -469,9 +389,7 @@ export default function Home() {
             </div>
 
             <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              <span className="rounded-full border border-border/60 px-3 py-1">
-                Built for Aster DEX
-              </span>
+              <span className="rounded-full border border-border/60 px-3 py-1">Built for Aster DEX</span>
               <span className="hidden h-0.5 w-8 bg-border/60 sm:block" aria-hidden="true" />
               <span className="rounded-full border border-border/60 px-3 py-1">BNB Chain</span>
             </div>
@@ -483,8 +401,8 @@ export default function Home() {
             data-visible="false"
           >
             <div className="relative w-full max-w-md rounded-[2.5rem] border border-primary/30 bg-gradient-to-br from-primary/15 via-background to-accent/20 p-8 shadow-2xl">
-              <div className="space-y-5 z-10 relative">
-                <div className="flex items-center justify-between rounded-xl border border-border/60 bg-card/40 px-4 py-3 z-10">
+              <div className="space-y-5">
+                <div className="flex items-center justify-between rounded-xl border border-border/60 bg-card/40 px-4 py-3">
                   <span className="text-sm font-semibold text-muted-foreground">Vault Balance</span>
                   <span className="text-lg font-semibold text-primary">$2,450,000</span>
                 </div>
@@ -567,9 +485,7 @@ export default function Home() {
             data-animate-on-scroll
             data-visible="false"
           >
-            <h2 className={cn("text-3xl text-foreground sm:text-4xl", astroz.className)}>
-              Buy ASTY in minutes
-            </h2>
+            <h2 className="text-3xl font-bold text-foreground sm:text-4xl">Buy ASTY in minutes</h2>
             <p className="mt-4 text-base text-muted-foreground">
               Connect your wallet, swap BNB for ASTY, and let the Vault amplify your Aster exposure
               automatically—no staking or complex flows.
@@ -617,8 +533,7 @@ export default function Home() {
             <div>
               <h3 className="text-xl font-semibold text-primary">Referral bounty</h3>
               <p className="mt-3 text-sm text-muted-foreground">
-                Share your invitation link and collect <strong>10% USDT</strong> + <strong>10% ASTY</strong> in bonus
-                tokens on every successful referral.
+                Share your invitation link and collect <strong>10% USDT</strong> + <strong>10% ASTY</strong> in bonus tokens on every successful referral.
               </p>
             </div>
             <Button
@@ -643,9 +558,7 @@ export default function Home() {
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
               Mechanics
             </p>
-            <h2 className={cn("text-4xl text-foreground sm:text-5xl", astroz.className)}>
-              How it works
-            </h2>
+            <h2 className="text-4xl font-bold text-foreground sm:text-5xl">How it works</h2>
             <p className="max-w-3xl text-base text-muted-foreground">
               Asty powers the Aster Vault with every transaction. Holders gain compounding exposure
               without having to lift a finger.
@@ -672,60 +585,23 @@ export default function Home() {
         <section
           id="tokenomics"
           data-section-label="Tokenomics"
-          className="relative space-y-12 overflow-hidden border-b border-border/40 py-20"
+          className="space-y-12 border-b border-border/40 py-20"
         >
-          <div className="pointer-events-none absolute inset-0 -z-10 opacity-70">
-            <div className="absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,_rgba(146,68,255,0.35),_transparent_60%)] blur-3xl" />
-            <div className="absolute -bottom-40 right-24 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,_rgba(73,110,255,0.25),_transparent_60%)] blur-3xl" />
-            <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.04)_0%,transparent_45%,rgba(255,255,255,0.04)_90%)]" />
-          </div>
-
           <div className="reveal-section space-y-4" data-animate-on-scroll data-visible="false">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
               The Numbers
             </p>
-            <h2 className={cn("text-4xl text-foreground sm:text-5xl", astroz.className)}>
-              Token distribution
-            </h2>
+            <h2 className="text-4xl font-bold text-foreground sm:text-5xl">Tokenomics</h2>
             <p className="max-w-3xl text-base text-muted-foreground">
-              Transparent allocations designed to fuel sustainable liquidity and the tax-to-vault engine.
+              Transparent allocations designed to fuel sustainable liquidity and the tax-to-vault
+              engine.
             </p>
           </div>
 
-          <div
-            className="reveal-section relative overflow-hidden rounded-3xl border border-border/60 bg-card/70 p-6 shadow-2xl sm:p-10"
-            data-animate-on-scroll
-            data-visible="false"
-          >
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(146,68,255,0.18),_transparent_60%)]" />
-            <div className="relative grid gap-6 md:grid-cols-3">
-              {TOKENOMICS_SUMMARY.map((item) => (
-                <div key={item.title} className="flex flex-col gap-3 rounded-2xl border border-border/60 bg-background/70 p-5 backdrop-blur">
-                  <div className="flex items-center gap-3">
-                    <span className="flex size-10 items-center justify-center rounded-full border border-primary/40 bg-primary/10 text-primary">
-                      <item.icon className="size-5" aria-hidden="true" />
-                    </span>
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
-                        {item.title}
-                      </p>
-                      <p className="text-lg font-semibold text-foreground">{item.value}</p>
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted-foreground">{item.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div
-            className="reveal-section overflow-hidden rounded-3xl border border-border/60 bg-card/60 shadow-2xl"
-            data-animate-on-scroll
-            data-visible="false"
-          >
+          <div className="reveal-section overflow-hidden rounded-3xl border border-border/60 bg-card/60 shadow-2xl" data-animate-on-scroll data-visible="false">
             <table className="w-full border-collapse text-left">
               <caption className="sr-only">Asty token sale allocation table</caption>
-              <thead className="bg-background/60 text-sm uppercase tracking-[0.25em] text-muted-foreground">
+              <thead className="bg-background/60 text-sm uppercase tracking-[0.2em] text-muted-foreground">
                 <tr>
                   <th scope="col" className="px-6 py-4">Type</th>
                   <th scope="col" className="px-6 py-4">Amount</th>
@@ -738,27 +614,14 @@ export default function Home() {
                     key={row.type}
                     className={cn(
                       "border-t border-border/40 transition hover:bg-background/80",
-                      index % 2 === 0 ? "bg-background/30" : "bg-background/20"
+                      index % 2 === 0 ? "bg-background/40" : "bg-background/20"
                     )}
                   >
-                    <th scope="row" className="px-6 py-6 align-middle">
-                      <div className="relative w-full overflow-hidden rounded-[2rem] border border-primary/40 bg-gradient-to-r from-[rgba(255,135,54,0.65)] via-[rgba(255,135,54,0.35)] to-transparent px-6 py-4 shadow-inner">
-                        <span className="block text-base font-semibold text-foreground">{row.type}</span>
-                        <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary/80">
-                          {row.percent}% allocation
-                        </span>
-                      </div>
+                    <th scope="row" className="px-6 py-5 font-semibold text-foreground">
+                      {row.type}
                     </th>
-                    <td className="px-6 py-6 align-middle text-muted-foreground">
-                      <div className="rounded-[2rem] border border-border/50 bg-background/70 px-6 py-3 text-sm font-medium">
-                        {row.amount}
-                      </div>
-                    </td>
-                    <td className="px-6 py-6 align-middle text-muted-foreground">
-                      <div className="rounded-[2rem] border border-border/50 bg-background/70 px-6 py-3 text-sm font-medium">
-                        {row.rate}
-                      </div>
-                    </td>
+                    <td className="px-6 py-5 text-muted-foreground">{row.amount}</td>
+                    <td className="px-6 py-5 text-muted-foreground">{row.rate}</td>
                   </tr>
                 ))}
               </tbody>
@@ -803,9 +666,7 @@ export default function Home() {
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
               The Edge
             </p>
-            <h2 className={cn("text-4xl text-foreground sm:text-5xl", astroz.className)}>
-              Why Asty
-            </h2>
+            <h2 className="text-4xl font-bold text-foreground sm:text-5xl">Why Asty</h2>
             <p className="max-w-3xl text-base text-muted-foreground">
               Built for resilience and community ownership, Asty aligns incentives between traders,
               vault keepers, and long-term believers.
@@ -825,20 +686,6 @@ export default function Home() {
               </article>
             ))}
           </div>
-          <aside
-            className="reveal-section grid gap-4 rounded-3xl border border-border/50 bg-card/60 p-6 shadow-lg md:grid-cols-3"
-            data-animate-on-scroll
-            data-visible="false"
-          >
-            {CORE_GOALS.map((goal) => (
-              <div key={goal.title} className="space-y-2">
-                <p className="text-sm font-semibold text-primary uppercase tracking-[0.2em]">
-                  {goal.title}
-                </p>
-                <p className="text-sm text-muted-foreground">{goal.description}</p>
-              </div>
-            ))}
-          </aside>
         </section>
 
         <section
@@ -850,9 +697,7 @@ export default function Home() {
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
               Forward Motion
             </p>
-            <h2 className={cn("text-4xl text-foreground sm:text-5xl", astroz.className)}>
-              Roadmap
-            </h2>
+            <h2 className="text-4xl font-bold text-foreground sm:text-5xl">Roadmap</h2>
             <p className="max-w-3xl text-base text-muted-foreground">
               Shipping in transparent phases to expand the Vault flywheel and cross-chain reach.
             </p>
@@ -882,9 +727,9 @@ export default function Home() {
         >
           <div className="reveal-section space-y-4" data-animate-on-scroll data-visible="false">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              FAQ
+              Answers
             </p>
-            <h2 className={cn("text-4xl text-foreground sm:text-5xl", astroz.className)}>
+            <h2 className="text-4xl font-bold text-foreground sm:text-5xl">
               Frequently asked questions
             </h2>
             <p className="max-w-3xl text-base text-muted-foreground">
@@ -921,11 +766,10 @@ export default function Home() {
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
               Stay Connected
             </p>
-            <h2 className={cn("text-4xl text-foreground sm:text-5xl", astroz.className)}>
-              Join the community
-            </h2>
+            <h2 className="text-4xl font-bold text-foreground sm:text-5xl">Join the community</h2>
             <p className="max-w-3xl text-base text-muted-foreground">
-              Coordinate with builders, ambassadors, and liquidity partners to shape the next era of the Aster Vault.
+              Coordinate with builders, ambassadors, and liquidity partners to shape the next era of
+              the Aster Vault.
             </p>
           </div>
 
@@ -938,7 +782,7 @@ export default function Home() {
                 data-visible="false"
               >
                 <div>
-                  <h3 className={cn("text-2xl text-foreground", astroz.className)}>{card.title}</h3>
+                  <h3 className="text-2xl font-semibold text-foreground">{card.title}</h3>
                   <p className="mt-3 text-sm text-muted-foreground">{card.description}</p>
                 </div>
                 <Button
@@ -953,7 +797,11 @@ export default function Home() {
                       <ArrowRight className="size-4" aria-hidden="true" />
                     </Link>
                   ) : (
-                    <Link href={card.href} target="_blank" rel="noopener noreferrer">
+                    <Link
+                      href={card.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <span>{card.external ? "Open" : "Explore"}</span>
                       <ArrowRight className="size-4" aria-hidden="true" />
                     </Link>
@@ -970,10 +818,9 @@ export default function Home() {
       <footer className="border-t border-border/40 bg-background/90 py-12">
         <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 md:flex-row md:items-start md:justify-between">
           <div className="space-y-3">
-            <p className={cn("text-2xl tracking-[0.6em] text-primary", astroz.className)}>ASTY</p>
+            <p className="text-2xl font-black tracking-[0.6em] text-primary">ASTY</p>
             <p className="max-w-sm text-sm text-muted-foreground">
-              Celestial Vault contract address:{" "}
-              <span className="font-mono text-foreground">0xASTY000000000000000000000000</span>
+              Aster Vault contract address: <span className="font-mono text-foreground">0xASTY000000000000000000000000</span>
             </p>
             <p className="text-xs text-muted-foreground">
               © {new Date().getFullYear()} Asty. All rights reserved.

@@ -66,8 +66,8 @@ const HOW_STEPS = [
 
 const TOKENOMICS_ROWS = [
   { type: "Public Sale", amount: "10 lac", rate: "$0.10", percent: 40 },
-  { type: "Private Sale", amount: "10 lac", rate: "$0.20", percent: 40 },
-  { type: "Final Sale", amount: "5 lac", rate: "$0.25", percent: 20 },
+  { type: "Private Sale", amount: "10 lac", rate: "$0.20", percent: 80 },
+  { type: "Final Sale", amount: "5 lac", rate: "$0.25", percent: 100 },
 ]
 
 const TOKENOMICS_CARDS = [
@@ -104,11 +104,64 @@ const WHY_FEATURES = [
 ]
 
 const ROADMAP_PHASES = [
-  { phase: "Phase 1", detail: "Token launch + DEX listing" },
-  { phase: "Phase 2", detail: "Vault automation + dashboard" },
-  { phase: "Phase 3", detail: "Cross-DEX integration with Aster" },
-  { phase: "Phase 4", detail: "Global community expansion" },
-]
+  {
+    phase: "Phase 1",
+    detail: "Token launch + DEX listing",
+    status: "complete",
+    quarter: "Q2 2024",
+    progress: 100,
+  },
+  {
+    phase: "Phase 2",
+    detail: "Vault automation + dashboard",
+    status: "active",
+    quarter: "Q1 2025",
+    progress: 65,
+  },
+  {
+    phase: "Phase 3",
+    detail: "Cross-DEX integration with Aster",
+    status: "upcoming",
+    quarter: "Q3 2025",
+    progress: 25,
+  },
+  {
+    phase: "Phase 4",
+    detail: "Global community expansion",
+    status: "upcoming",
+    quarter: "Q4 2025",
+    progress: 10,
+  },
+] as const
+
+const ROADMAP_STATUS_META: Record<
+  (typeof ROADMAP_PHASES)[number]["status"],
+  {
+    label: string
+    badgeClass: string
+    glowClass: string
+    progressClass: string
+  }
+> = {
+  complete: {
+    label: "Complete",
+    badgeClass: "border-emerald-400/40 bg-emerald-400/10 text-emerald-200",
+    glowClass: "from-emerald-400/25",
+    progressClass: "bg-emerald-400",
+  },
+  active: {
+    label: "In Flight",
+    badgeClass: "border-primary/40 bg-primary/15 text-primary",
+    glowClass: "from-primary/30",
+    progressClass: "bg-primary",
+  },
+  upcoming: {
+    label: "Queued",
+    badgeClass: "border-border/60 bg-border/15 text-muted-foreground",
+    glowClass: "from-border/25",
+    progressClass: "bg-border/80",
+  },
+}
 
 const FAQ_ITEMS = [
   {
@@ -861,22 +914,88 @@ export default function Home() {
               Shipping in transparent phases to expand the Vault flywheel and cross-chain reach.
             </p>
           </div>
-          <ol className="relative space-y-10 border-l-2 border-border/50 pl-8">
-            {ROADMAP_PHASES.map((item, index) => (
-              <li
-                key={item.phase}
-                className="reveal-section relative rounded-3xl border border-border/40 bg-card/60 p-6 shadow-lg transition hover:border-primary/40"
-                data-animate-on-scroll
-                data-visible="false"
-              >
-                <span className="absolute -left-[39px] top-6 flex size-8 items-center justify-center rounded-full border border-primary/40 bg-primary/15 text-sm font-semibold text-primary">
-                  {index + 1}
-                </span>
-                <h3 className="text-xl font-semibold text-foreground">{item.phase}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{item.detail}</p>
-              </li>
-            ))}
-          </ol>
+
+          <div
+            className="reveal-section relative overflow-hidden rounded-[3rem] border border-border/60 bg-card/60 p-8 shadow-2xl md:p-12"
+            data-animate-on-scroll
+            data-visible="false"
+          >
+            <div className="pointer-events-none absolute inset-0 opacity-80">
+              <div className="absolute -left-24 top-10 h-64 w-64 rounded-full bg-[radial-gradient(circle_at_center,_rgba(146,68,255,0.25),_transparent_60%)] blur-3xl" />
+              <div className="absolute -right-16 bottom-0 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,_rgba(73,110,255,0.25),_transparent_60%)] blur-3xl" />
+              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.05)_0%,transparent_45%,rgba(255,255,255,0.05)_90%)]" />
+            </div>
+
+            <div className="relative mx-auto max-w-5xl">
+              <div className="pointer-events-none absolute inset-y-0 left-4 hidden w-px bg-gradient-to-b from-primary/40 via-border/40 to-transparent md:block" />
+              <div className="pointer-events-none absolute inset-y-0 right-4 hidden w-px bg-gradient-to-b from-transparent via-border/40 to-primary/40 md:block" />
+
+              <ol className="relative grid gap-8 md:grid-cols-2">
+                {ROADMAP_PHASES.map((item, index) => {
+                  const meta = ROADMAP_STATUS_META[item.status]
+
+                  return (
+                    <li
+                      key={item.phase}
+                      className="group relative rounded-3xl border border-border/40 bg-background/70 p-6 shadow-lg transition hover:border-primary/50 hover:shadow-xl"
+                    >
+                      <div
+                        className={cn(
+                          "pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-100",
+                          meta.glowClass,
+                          "to-transparent"
+                        )}
+                        aria-hidden="true"
+                      />
+
+                      <div className="relative flex items-start justify-between gap-4">
+                        <span className={cn("text-sm font-semibold uppercase tracking-[0.3em]", astroz.className)}>
+                          {item.phase}
+                        </span>
+                        <span
+                          className={cn(
+                            "rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em]",
+                            meta.badgeClass
+                          )}
+                        >
+                          {meta.label}
+                        </span>
+                      </div>
+
+                      <p className="relative mt-3 text-sm text-muted-foreground">{item.detail}</p>
+
+                      <div className="relative mt-6 space-y-3">
+                        <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                          <span>{item.quarter}</span>
+                          <span>{item.progress}%</span>
+                        </div>
+                        <div className="h-2 rounded-full border border-border/60 bg-background/60 p-0.5">
+                          <div
+                            className={cn("h-full rounded-full transition-all duration-700", meta.progressClass)}
+                            style={{ width: `${item.progress}%` }}
+                            aria-hidden="true"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="relative mt-6 flex items-center gap-3 text-xs text-muted-foreground">
+                        <span className="inline-flex size-8 items-center justify-center rounded-full border border-border/50 bg-background/80 font-semibold text-primary">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <p className="flex-1">
+                          {item.status === "complete"
+                            ? "Milestone shipped and audited."
+                            : item.status === "active"
+                              ? "Engineering in progress with weekly updates."
+                              : "Awaiting governance vote and ecosystem readiness."}
+                        </p>
+                      </div>
+                    </li>
+                  )
+                })}
+              </ol>
+            </div>
+          </div>
         </section>
 
         <section

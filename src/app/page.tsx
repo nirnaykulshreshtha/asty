@@ -672,7 +672,7 @@ export default function Home() {
         <section
           id="tokenomics"
           data-section-label="Tokenomics"
-          className="relative space-y-12 overflow-hidden border-b border-border/40 py-20"
+          className="relative space-y-12 overflow-hidden border-b border-border/40 py-20 px-4 rounded-3xl mt-20"
         >
           <div className="pointer-events-none absolute inset-0 -z-10 opacity-70">
             <div className="absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,_rgba(146,68,255,0.35),_transparent_60%)] blur-3xl" />
@@ -725,8 +725,9 @@ export default function Home() {
           >
             <table className="w-full border-collapse text-left">
               <caption className="sr-only">Asty token sale allocation table</caption>
-              <thead className="bg-background/60 text-sm uppercase tracking-[0.25em] text-muted-foreground">
+              <thead className="bg-background/70 text-sm uppercase tracking-[0.2em] text-muted-foreground">
                 <tr>
+                  <th scope="col" className="px-6 py-4"></th>
                   <th scope="col" className="px-6 py-4">Type</th>
                   <th scope="col" className="px-6 py-4">Amount</th>
                   <th scope="col" className="px-6 py-4">Rate</th>
@@ -735,27 +736,30 @@ export default function Home() {
               <tbody className="text-base">
                 {TOKENOMICS_ROWS.map((row, index) => (
                   <tr
-                    key={row.type}
-                    className={cn(
-                      "border-t border-border/40 transition hover:bg-background/80",
-                      index % 2 === 0 ? "bg-background/30" : "bg-background/20"
-                    )}
-                  >
-                    <th scope="row" className="px-6 py-6 align-middle">
-                      <div className="relative w-full overflow-hidden rounded-[2rem] border border-primary/40 bg-gradient-to-r from-[rgba(255,135,54,0.65)] via-[rgba(255,135,54,0.35)] to-transparent px-6 py-4 shadow-inner">
-                        <span className="block text-base font-semibold text-foreground">{row.type}</span>
-                        <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary/80">
-                          {row.percent}% allocation
-                        </span>
-                      </div>
+                  key={row.type}
+                  className={cn(
+                    "group relative overflow-hidden border-t border-border/40 transition hover:bg-background/80",
+                    index % 2 === 0 ? "bg-background/30" : "bg-background/20"
+                  )}
+                >
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-y-0 left-0 hidden rounded-e-full bg-primary/15 transition-all duration-500 group-hover:bg-primary/25 md:block"
+                      style={{ width: `${row.percent}%` }}
+                    />
+                    <th scope="row" className="px-6 py-5 font-semibold text-foreground">
+                      {row.type}
+                      <span className="mt-1 block text-xs font-medium uppercase tracking-[0.3em] text-primary/70">
+                        {row.percent}% allocation
+                      </span>
                     </th>
-                    <td className="px-6 py-6 align-middle text-muted-foreground">
-                      <div className="rounded-[2rem] border border-border/50 bg-background/70 px-6 py-3 text-sm font-medium">
+                    <td className="px-6 py-5 align-top text-muted-foreground">
+                      <div className="rounded-2xl border border-border/40 bg-background/75 px-4 py-3 text-sm">
                         {row.amount}
                       </div>
                     </td>
-                    <td className="px-6 py-6 align-middle text-muted-foreground">
-                      <div className="rounded-[2rem] border border-border/50 bg-background/70 px-6 py-3 text-sm font-medium">
+                    <td className="px-6 py-5 align-top text-muted-foreground">
+                      <div className="rounded-2xl border border-border/40 bg-background/75 px-4 py-3 text-sm">
                         {row.rate}
                       </div>
                     </td>

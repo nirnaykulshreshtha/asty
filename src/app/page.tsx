@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import type { MouseEvent as ReactMouseEvent } from "react"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ArrowRight, Menu, ShieldCheck, Sparkles, TrendingUp, X } from "lucide-react"
 
 import { ModeToggle } from "@/components/mode-toggle"
@@ -247,25 +247,6 @@ const TOKENOMICS_SUMMARY = [
   },
 ]
 
-const STAR_POINTS = [
-  { id: "alpha", x: 18, y: 22 },
-  { id: "beta", x: 42, y: 12 },
-  { id: "gamma", x: 66, y: 30 },
-  { id: "delta", x: 78, y: 58 },
-  { id: "epsilon", x: 52, y: 70 },
-  { id: "zeta", x: 28, y: 60 },
-]
-
-const STAR_CONNECTIONS: [string, string][] = [
-  ["alpha", "beta"],
-  ["beta", "gamma"],
-  ["gamma", "delta"],
-  ["delta", "epsilon"],
-  ["epsilon", "zeta"],
-  ["zeta", "alpha"],
-  ["beta", "epsilon"],
-]
-
 type ToastState = {
   message: string
   visible: boolean
@@ -360,28 +341,6 @@ export default function Home() {
       closeMobileNav()
     }
   }
-
-  const starMap = useMemo(() => {
-    const pointMap = Object.fromEntries(STAR_POINTS.map((point) => [point.id, point]))
-    return STAR_CONNECTIONS.map(([from, to]) => {
-      const start = pointMap[from]
-      const end = pointMap[to]
-      if (!start || !end) return null
-      return {
-        id: `${from}-${to}`,
-        x1: start.x,
-        y1: start.y,
-        x2: end.x,
-        y2: end.y,
-      }
-    }).filter(Boolean) as Array<{
-      id: string
-      x1: number
-      y1: number
-      x2: number
-      y2: number
-    }>
-  }, [])
 
   return (
     <>

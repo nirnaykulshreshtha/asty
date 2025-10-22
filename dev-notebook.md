@@ -95,3 +95,26 @@
 - `src/components/motion/MotionDiv.tsx` (new): client wrapper.
 - `src/components/home/TokenSale.tsx`: switched from `Motion.div` to `MotionDiv`.
 
+### Meme Homepage Overhaul (2025-10-22)
+
+**Goal**: Transform the corporate DeFi homepage into a meme-forward experience starring the Asty mascot while preserving accessibility and CTA clarity.
+
+**Key Changes**:
+- Rebuilt hero section with rotating burst badges, gradient sticker capsule, and inline PNG mascot using `next/image`.
+- Added `MASCOT_MEMES`, `HERO_VARIANTS`, and `CTA_MEMES` configs to drive humorous copy, styling, and metadata.
+- Introduced an "Asty reaction vault" gallery under a new `#memes` section; repurposed previous "Why" layout.
+- Updated copy across hero, buy, and how sections to match meme tone while keeping instructions readable.
+- Implemented additional logging for hero burst rotation (`page:home:hero-burst:*`) and meme gallery init (`page:home:memes:init`).
+- Ensured reduced-motion preference halts burst rotation and sticker hover scaling.
+
+**Files Modified**:
+- `src/app/page.tsx`: hero redesign, meme gallery, CTA updates, new configs/logging, quote escaping.
+
+**Testing & Verification**:
+- Ran `npm run lint -- src/app/page.tsx` (pass).
+- Manual checks: hero burst cycles when reduced motion is off, navigation to new `#memes` anchor via header.
+
+**Follow-ups**:
+- Add diverse mascot image variations (PNG/SVG) for each meme card.
+- Consider extracting configs to content module for editors.
+

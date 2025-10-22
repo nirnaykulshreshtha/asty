@@ -1,5 +1,14 @@
 "use client"
 
+/**
+ * Asty Meme Landing Page
+ * ----------------------
+ * Transforms the previously corporate home experience into a meme-forward showcase starring the Asty mascot.
+ * Loads rotating catchphrases, hero bursts, and a meme gallery while preserving core CTA flows and accessibility.
+ * Aggressive runtime logging traces render, interactions, and animation state for debugging and future iterations.
+ */
+
+import Image from "next/image"
 import Link from "next/link"
 import type { MouseEvent as ReactMouseEvent } from "react"
 import { useEffect, useRef, useState } from "react"
@@ -16,8 +25,10 @@ import {
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
 import { astroz } from "@/styles/fonts"
+import AstyCharacter from "@/assets/images/asty character.png"
 
 const NAV_ITEMS = [
+  { label: "Memes", href: "#memes" },
   { label: "How It Works", href: "#how" },
   { label: "Tokenomics", href: "#tokenomics" },
   { label: "Roadmap", href: "#roadmap" },
@@ -27,40 +38,135 @@ const NAV_ITEMS = [
 
 const HERO_CTAS = [
   {
-    label: "Buy ASTY",
+    label: "Summon The Vault",
     href: "#buy",
     variant: "default" as const,
     tone: "primary",
   },
   {
-    label: "View Tokenomics",
+    label: "View Meme-onomics",
     href: "#tokenomics",
     variant: "secondary" as const,
     tone: "secondary",
   },
   {
-    label: "Join Community",
+    label: "Join The Chaos",
     href: "#community",
     variant: "outline" as const,
     tone: "outline",
   },
 ]
 
+const HERO_VARIANTS = [
+  {
+    id: "solar-pop",
+    borderClass: "border-[#FFB347]/60",
+    gradientClass: "from-[#FFF6D4]/50 via-background to-[#FFB347]/20",
+    bubbleClass: "bg-[#FFB347] text-[#4C2700]",
+    stickerClass: "-rotate-3 saturate-150 drop-shadow-[0_14px_22px_rgba(255,179,71,0.35)]",
+  },
+  {
+    id: "vapor-dream",
+    borderClass: "border-[#B366FF]/60",
+    gradientClass: "from-[#F4E6FF]/60 via-background to-[#B366FF]/20",
+    bubbleClass: "bg-[#B366FF] text-[#220033]",
+    stickerClass: "rotate-2 saturate-200 drop-shadow-[0_16px_24px_rgba(179,102,255,0.32)]",
+  },
+  {
+    id: "neon-ice",
+    borderClass: "border-[#52D2FF]/60",
+    gradientClass: "from-[#E1F8FF]/60 via-background to-[#52D2FF]/25",
+    bubbleClass: "bg-[#52D2FF] text-[#003344]",
+    stickerClass: "-rotate-1 saturate-150 drop-shadow-[0_16px_28px_rgba(82,210,255,0.35)]",
+  },
+]
+
+const HERO_BURSTS: string[] = [
+  "vault go brrr",
+  "hodl the happy monster",
+  "airdrop drip eternal",
+]
+
+/**
+ * Meme card model describing how each Asty reaction should render.
+ */
+type MascotMeme = {
+  id: string
+  caption: string
+  reaction: string
+  badge: string
+  transform: string
+  background: string
+}
+
+const MASCOT_MEMES: MascotMeme[] = [
+  {
+    id: "moon-walk",
+    caption: "When gas fees finally chill",
+    reaction: "Asty casually moonwalks across the dashboard.",
+    badge: "vibe check",
+    transform: "rotate-2",
+    background: "bg-[radial-gradient(circle_at_center,_rgba(255,175,53,0.3),_transparent_60%)]",
+  },
+  {
+    id: "airdrop-alert",
+    caption: "Snapshot hits and you actually remembered to hodl",
+    reaction: "Double high-five, double rainbow, double yield.",
+    badge: "airdrop flex",
+    transform: "-rotate-3",
+    background: "bg-[radial-gradient(circle_at_center,_rgba(179,102,255,0.32),_transparent_60%)]",
+  },
+  {
+    id: "referral-degen",
+    caption: "Prints referral links like it's 2017",
+    reaction: "Asty screaming \"SEND LINK\" while raining coins.",
+    badge: "degen energy",
+    transform: "rotate-1",
+    background: "bg-[radial-gradient(circle_at_center,_rgba(82,210,255,0.3),_transparent_60%)]",
+  },
+  {
+    id: "calm-before-pump",
+    caption: "Vault balance climbs during your nap",
+    reaction: "Sleepy Asty drooling on victory pancakes.",
+    badge: "lazy gains",
+    transform: "-rotate-2",
+    background: "bg-[radial-gradient(circle_at_center,_rgba(255,100,137,0.28),_transparent_60%)]",
+  },
+]
+
+const CTA_MEMES = [
+  {
+    title: "Buy ASTY in minutes",
+    subtitle: "Summon the vault",
+    emoji: "🚀",
+  },
+  {
+    title: "Stake? Nah, just vibing",
+    subtitle: "Hold and let Asty drip",
+    emoji: "💤",
+  },
+  {
+    title: "Referral chaos activated",
+    subtitle: "10% USDT + ASTY",
+    emoji: "🎁",
+  },
+]
+
 const HOW_STEPS = [
   {
-    title: "6% Tax-to-Vault",
+    title: "6% Vault Skim",
     description:
-      "Every ASTY transaction allocates 6% to buy Aster and store it in the Vault.",
+      "Every trade tips Asty 6% to go shopping for Aster and stack it in the meme vault treasury.",
   },
   {
     title: "Annual Airdrop",
     description:
-      "After 12 months, Vault Aster is distributed to all ASTY holders proportional to holdings.",
+      "Twelve months later, Asty yeets the vault and rains Aster on holders based on bag size.",
   },
   {
     title: "Perpetual Growth",
     description:
-      "More activity grows the Vault and your future Aster rewards.",
+      "More chaos, more swaps, bigger vault. Diamond hands win the meme compounding race.",
   },
 ]
 
@@ -73,35 +179,18 @@ const TOKENOMICS_ROWS = [
 const TOKENOMICS_CARDS = [
   {
     title: "Vault Catalyst",
-    body: "6% of every trade purchases Aster and compounds the Vault balance automatically.",
+    body: "6% auto-buys Aster so Asty can scream 'number go up' while topping the vault charts.",
   },
   {
     title: "Holder Alignment",
-    body: "Airdrops scale with holdings; the longer you stay, the larger your share of Aster rewards.",
+    body: "Meme loyalty pays: the longer you hodl, the spicier your share of the annual Aster dump.",
   },
   {
     title: "BNB Native",
-    body: "Optimized for the BNB Chain with low fees and deep liquidity on Aster DEX.",
+    body: "Low-fee BNB vibes keep swaps smooth so the meme machine can stay in perpetual motion.",
   },
 ]
 
-const WHY_FEATURES = [
-  {
-    title: "Transparent",
-    description: "Every Vault movement is verifiable on-chain with real-time dashboards.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Sustainable",
-    description: "Tax-driven yield keeps rewards flowing without inflationary emissions.",
-    icon: TrendingUp,
-  },
-  {
-    title: "Community First",
-    description: "Rewards favor long-term holders and community proposals guide the roadmap.",
-    icon: Sparkles,
-  },
-]
 
 const ROADMAP_PHASES = [
   {
@@ -252,20 +341,31 @@ type ToastState = {
   visible: boolean
 }
 
+/**
+ * Renders the meme-forward Asty landing page. Handles interactive navigation, rotating hero bursts,
+ * and scroll-triggered reveals while logging aggressively for diagnostics.
+ */
 export default function Home() {
-  logger.info("page:home:render", { theme: "constellation" })
+  logger.info("page:home:render", { theme: "memeverse" })
 
   const [mobileOpen, setMobileOpen] = useState(false)
   const [toast, setToast] = useState<ToastState>({ message: "", visible: false })
+  const [heroBurstIndex, setHeroBurstIndex] = useState(0)
+  const [motionReduced, setMotionReduced] = useState(false)
   const toastTimeoutRef = useRef<number | null>(null)
   const prefersReducedMotion = useRef(false)
+
+  const heroVariant = HERO_VARIANTS[heroBurstIndex % HERO_VARIANTS.length]
+  const heroBurst = HERO_BURSTS[heroBurstIndex] ?? HERO_BURSTS[0]
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
     prefersReducedMotion.current = mediaQuery.matches
+    setMotionReduced(mediaQuery.matches)
 
     const listener = (event: MediaQueryListEvent) => {
       prefersReducedMotion.current = event.matches
+      setMotionReduced(event.matches)
     }
 
     mediaQuery.addEventListener("change", listener)
@@ -276,12 +376,45 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
+    if (motionReduced) {
+      logger.info("page:home:hero-burst:disable", { reason: "reduced_motion" })
+      return
+    }
+
+    const interval = window.setInterval(() => {
+      setHeroBurstIndex((prev) => (prev + 1) % HERO_BURSTS.length)
+    }, 2600)
+
+    logger.info("page:home:hero-burst:init", { totalBursts: HERO_BURSTS.length })
+
+    return () => {
+      window.clearInterval(interval)
+    }
+  }, [motionReduced])
+
+  useEffect(() => {
+    logger.debug?.("page:home:hero-burst:update", {
+      burst: HERO_BURSTS[heroBurstIndex],
+      index: heroBurstIndex,
+    })
+  }, [heroBurstIndex])
+
+  useEffect(() => {
+    logger.info("page:home:memes:init", { totalMemes: MASCOT_MEMES.length })
+  }, [])
+
+  useEffect(() => {
     const heroHeading = document.querySelector("[data-animate-hero]")
     heroHeading?.classList.add("animate-hero")
 
     const revealElements = Array.from(
       document.querySelectorAll<HTMLElement>("[data-animate-on-scroll]")
     )
+
+    if (!("IntersectionObserver" in window)) {
+      revealElements.forEach((element) => element.setAttribute("data-visible", "true"))
+      return
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -445,6 +578,19 @@ export default function Home() {
         >
           <div className="flex flex-col justify-center gap-10">
             <div className="space-y-6">
+            <div className="flex flex-wrap items-center gap-3">
+              <span
+                className={cn(
+                  "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] shadow-md transition",
+                  heroVariant.bubbleClass
+                )}
+              >
+                <span className="rounded-full border border-current/40 bg-background/80 px-2 py-1 text-[0.55rem] tracking-[0.45em]">
+                  Live
+                </span>
+                <span className="tracking-tight normal-case">{heroBurst}</span>
+              </span>
+            </div>
               <h1
                 data-animate-hero
                 className={cn(
@@ -455,8 +601,7 @@ export default function Home() {
                 Earn Forever with Every Transaction
               </h1>
               <p className="max-w-xl text-lg text-muted-foreground sm:text-xl">
-                Community-driven DeFi on BNB Chain. Every ASTY trade funds the Aster Vault and pays Aster
-                rewards yearly to loyal holders.
+              Community-driven DeFi on BNB Chain. Every ASTY trade funds the Aster Vault and pays Aster rewards yearly to loyal holders.
               </p>
             </div>
 
@@ -482,10 +627,10 @@ export default function Home() {
 
             <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
               <span className="rounded-full border border-border/60 px-3 py-1">
-                Built for Aster DEX
+                Meme-first BNB chain
               </span>
               <span className="hidden h-0.5 w-8 bg-border/60 sm:block" aria-hidden="true" />
-              <span className="rounded-full border border-border/60 px-3 py-1">BNB Chain</span>
+              <span className="rounded-full border border-border/60 px-3 py-1">Vault tax = drip</span>
             </div>
           </div>
 
@@ -494,76 +639,55 @@ export default function Home() {
             data-animate-on-scroll
             data-visible="false"
           >
-            <div className="relative w-full max-w-md rounded-[2.5rem] border border-primary/30 bg-gradient-to-br from-primary/15 via-background to-accent/20 p-8 shadow-2xl">
-              <div className="space-y-5 z-10 relative">
-                <div className="flex items-center justify-between rounded-xl border border-border/60 bg-card/40 px-4 py-3 z-10">
-                  <span className="text-sm font-semibold text-muted-foreground">Vault Balance</span>
-                  <span className="text-lg font-semibold text-primary">$2,450,000</span>
+            <div
+              className={cn(
+                "relative w-full max-w-md overflow-hidden rounded-[2.75rem] border bg-gradient-to-br p-8 shadow-2xl transition",
+                heroVariant.borderClass,
+                heroVariant.gradientClass
+              )}
+            >
+              <div className="pointer-events-none absolute inset-0 opacity-20 mix-blend-screen">
+                <div className="absolute -left-20 top-10 h-60 w-60 rounded-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.6),_transparent_65%)] blur-3xl" />
+              </div>
+
+              <div className="relative space-y-5">
+                <div className="flex items-center justify-between rounded-2xl border border-border/50 bg-background/80 px-5 py-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">Vault drip</p>
+                    <p className="mt-2 text-2xl font-bold text-foreground">$2,450,000</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">Boost</p>
+                    <p className="mt-2 text-xl font-bold text-primary">+18.4%</p>
+                  </div>
                 </div>
-                <div className="rounded-xl border border-border/60 bg-card/60 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                    Next Airdrop
-                  </p>
-                  <p className="mt-2 text-3xl font-bold text-foreground">183 Days</p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    Hold ASTY to capture your share of the annual Aster rewards.
-                  </p>
-                </div>
-                <div className="rounded-xl border border-border/60 bg-card/40 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                    Current Yield
-                  </p>
-                  <p className="mt-3 flex items-baseline gap-2 text-2xl font-bold text-primary">
-                    18.4%
-                    <span className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                      est. APY
-                    </span>
-                  </p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    Calculated from trailing 30-day trading volume and vault growth.
+
+                <div className="rounded-2xl border border-border/40 bg-card/40 p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">Referral chaos</p>
+                  <p className="mt-2 text-base text-foreground">
+                    10% USDT + 10% ASTY for every friend you convert into a meme believer.
                   </p>
                 </div>
               </div>
 
-              <div className="mascot-bob absolute -right-10 -top-10 w-28 rounded-2xl border border-primary/40 bg-gradient-to-br from-primary/30 via-background to-accent/30 p-4 shadow-xl">
-                <svg
-                  viewBox="0 0 120 120"
-                  xmlns="http://www.w3.org/2000/svg"
-                  role="img"
-                  aria-labelledby="astro-mascot-title"
-                  className="drop-shadow-lg"
-                >
-                  <title id="astro-mascot-title">Asty floating mascot smiling</title>
-                  <defs>
-                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="hsl(210 100% 75%)" />
-                      <stop offset="100%" stopColor="hsl(280 100% 65%)" />
-                    </linearGradient>
-                  </defs>
-                  <circle cx="60" cy="60" r="48" fill="url(#grad)" />
-                  <path
-                    d="M45 55a7 7 0 1 1 14 0"
-                    stroke="white"
-                    strokeWidth="4"
-                    strokeLinecap="round"
-                    fill="none"
+              <div className="relative mt-6 flex flex-col items-center gap-4">
+                <div className="relative">
+                  <Image
+                    src={AstyCharacter}
+                    alt="Asty the meme monster waving hello"
+                    priority
+                    className={cn(
+                      "h-auto w-56 select-none transition-transform duration-500 ease-out will-change-transform",
+                      heroVariant.stickerClass,
+                      motionReduced ? "" : "hover:scale-105"
+                    )}
                   />
-                  <path
-                    d="M75 55a7 7 0 1 1 14 0"
-                    stroke="white"
-                    strokeWidth="4"
-                    strokeLinecap="round"
-                    fill="none"
-                  />
-                  <path
-                    d="M45 75c8 8 22 8 30 0"
-                    stroke="white"
-                    strokeWidth="4"
-                    strokeLinecap="round"
-                    fill="none"
-                  />
-                  <circle cx="60" cy="20" r="10" fill="white" opacity="0.45" />
-                </svg>
+                  <span
+                    className="absolute -right-6 top-6 rounded-full border border-primary/50 bg-background/90 px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-primary shadow-md"
+                  >
+                    Hi fren
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -579,42 +703,46 @@ export default function Home() {
             data-animate-on-scroll
             data-visible="false"
           >
-            <h2 className={cn("text-3xl text-foreground sm:text-4xl", astroz.className)}>
+            <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+              <span className="rounded-full border border-border/60 px-3 py-1">How to ape calmly</span>
+              <span className="hidden h-0.5 w-8 bg-border/60 sm:block" aria-hidden="true" />
+              <span className="rounded-full border border-border/60 px-3 py-1">3 step meme plan</span>
+            </div>
+            <h2 className={cn("mt-6 text-3xl text-foreground sm:text-4xl", astroz.className)}>
               Buy ASTY in minutes
             </h2>
             <p className="mt-4 text-base text-muted-foreground">
-              Connect your wallet, swap BNB for ASTY, and let the Vault amplify your Aster exposure
-              automatically—no staking or complex flows.
+              Connect, swap, and vibe. Asty handles the spreadsheets so you can focus on the memes.
             </p>
             <ol className="mt-6 space-y-4 text-sm text-foreground">
               <li className="flex gap-4 rounded-xl border border-border/50 bg-background/80 p-4">
-                <span className="flex size-8 items-center justify-center rounded-full bg-primary/20 font-semibold text-primary">
+                <span className="flex size-9 items-center justify-center rounded-full bg-primary/20 font-semibold text-primary">
                   1
                 </span>
                 <div>
                   <h3 className="text-base font-semibold text-foreground">Connect wallet</h3>
-                  <p className="text-muted-foreground">Supports MetaMask, Rabby, and WalletConnect.</p>
+                  <p className="text-muted-foreground">MetaMask, Rabby, WalletConnect—pick your meme mobile.</p>
                 </div>
               </li>
               <li className="flex gap-4 rounded-xl border border-border/50 bg-background/80 p-4">
-                <span className="flex size-8 items-center justify-center rounded-full bg-primary/20 font-semibold text-primary">
+                <span className="flex size-9 items-center justify-center rounded-full bg-primary/20 font-semibold text-primary">
                   2
                 </span>
                 <div>
                   <h3 className="text-base font-semibold text-foreground">Swap on Aster DEX</h3>
                   <p className="text-muted-foreground">
-                    Choose your slippage and confirm the ASTY purchase in one click.
+                    Dial in your slippage, smash confirm, and watch the vault counter go brrr.
                   </p>
                 </div>
               </li>
               <li className="flex gap-4 rounded-xl border border-border/50 bg-background/80 p-4">
-                <span className="flex size-8 items-center justify-center rounded-full bg-primary/20 font-semibold text-primary">
+                <span className="flex size-9 items-center justify-center rounded-full bg-primary/20 font-semibold text-primary">
                   3
                 </span>
                 <div>
                   <h3 className="text-base font-semibold text-foreground">Hold and earn</h3>
                   <p className="text-muted-foreground">
-                    Vault snapshots log your holdings—claim airdropped Aster yearly.
+                    Snapshots log every bag. Sit tight and claim the annual Aster confetti drop.
                   </p>
                 </div>
               </li>
@@ -626,12 +754,23 @@ export default function Home() {
             data-animate-on-scroll
             data-visible="false"
           >
-            <div>
+            <div className="space-y-4">
               <h3 className="text-xl font-semibold text-primary">Referral bounty</h3>
-              <p className="mt-3 text-sm text-muted-foreground">
-                Share your invitation link and collect <strong>10% USDT</strong> + <strong>10% ASTY</strong> in bonus
-                tokens on every successful referral.
+              <p className="text-sm text-muted-foreground">
+                Share your invite link and collect <strong>10% USDT</strong> + <strong>10% ASTY</strong> from every
+                meme recruit.
               </p>
+              <div className="grid gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                {CTA_MEMES.map((cta) => (
+                  <div key={cta.title} className="flex items-center justify-between rounded-2xl border border-border/40 bg-background/80 px-4 py-3">
+                    <div>
+                      <p className="text-foreground">{cta.emoji} {cta.title}</p>
+                      <p className="text-muted-foreground">{cta.subtitle}</p>
+                    </div>
+                    <ArrowRight className="size-4 opacity-60" aria-hidden="true" />
+                  </div>
+                ))}
+              </div>
             </div>
             <Button
               asChild
@@ -659,8 +798,8 @@ export default function Home() {
               How it works
             </h2>
             <p className="max-w-3xl text-base text-muted-foreground">
-              Asty powers the Aster Vault with every transaction. Holders gain compounding exposure
-              without having to lift a finger.
+              Asty powers the Aster Vault with every transaction. Holders gain compounding exposure without
+              lifting a finger, making the meme machine keep printing.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -684,7 +823,7 @@ export default function Home() {
         <section
           id="tokenomics"
           data-section-label="Tokenomics"
-          className="relative space-y-12 overflow-hidden border-b border-border/40 py-20 px-4 rounded-3xl mt-20"
+          className="relative space-y-12 overflow-hidden border-b border-border/40 px-4 py-20"
         >
           <div className="pointer-events-none absolute inset-0 -z-10 opacity-70">
             <div className="absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,_rgba(146,68,255,0.35),_transparent_60%)] blur-3xl" />
@@ -811,36 +950,61 @@ export default function Home() {
         </section>
 
         <section
-          id="why"
-          data-section-label="Why Asty"
+          id="memes"
+          data-section-label="Meme Vault"
           className="space-y-12 border-b border-border/40 py-20"
         >
           <div className="reveal-section space-y-4" data-animate-on-scroll data-visible="false">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              The Edge
+              Meme Evidence
             </p>
             <h2 className={cn("text-4xl text-foreground sm:text-5xl", astroz.className)}>
-              Why Asty
+              Asty reaction vault
             </h2>
             <p className="max-w-3xl text-base text-muted-foreground">
-              Built for resilience and community ownership, Asty aligns incentives between traders,
-              vault keepers, and long-term believers.
+              Screenshotted straight from the community group chat. Each card captures a moment the meme mascot
+              lost its chill.
             </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {WHY_FEATURES.map((feature) => (
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {MASCOT_MEMES.map((meme) => (
               <article
-                key={feature.title}
-                className="reveal-section flex flex-col gap-4 rounded-3xl border border-border/50 bg-card/60 p-6 shadow-lg transition hover:border-primary/40 hover:-translate-y-1"
+                key={meme.id}
+                className={cn(
+                  "reveal-section relative overflow-hidden rounded-3xl border border-border/50 bg-card/60 p-6 shadow-2xl transition hover:-translate-y-1",
+                  meme.background
+                )}
                 data-animate-on-scroll
                 data-visible="false"
               >
-                <feature.icon className="size-10 text-primary" aria-hidden="true" />
-                <h3 className="text-xl font-semibold text-foreground">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
+                <div className="absolute -left-10 -top-10 size-32 rounded-full bg-background/40 blur-3xl" aria-hidden="true" />
+                <header className="flex items-center justify-between gap-4">
+                  <span className="rounded-full border border-primary/40 bg-background/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                    {meme.badge}
+                  </span>
+                  <span className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                    #{meme.id}
+                  </span>
+                </header>
+                <p className="mt-4 text-lg font-semibold text-foreground">{meme.caption}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{meme.reaction}</p>
+
+                <div className="mt-6 flex items-end justify-center">
+                  <Image
+                    src={AstyCharacter}
+                    alt="Asty the meme monster reaction"
+                    className={cn(
+                      "h-auto w-40 object-contain transition-all duration-500 ease-out",
+                      meme.transform,
+                      motionReduced ? "" : "hover:scale-[1.07]"
+                    )}
+                  />
+                </div>
               </article>
             ))}
           </div>
+
           <aside
             className="reveal-section grid gap-4 rounded-3xl border border-border/50 bg-card/60 p-6 shadow-lg md:grid-cols-3"
             data-animate-on-scroll

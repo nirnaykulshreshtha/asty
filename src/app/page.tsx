@@ -665,7 +665,7 @@ export default function Home() {
                 <div className="rounded-2xl border border-border/40 bg-card/40 p-5">
                   <p className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">Referral chaos</p>
                   <p className="mt-2 text-base text-foreground">
-                    10% USDT + 10% ASTY for every friend you convert into a meme believer.
+                    10% USDT + 10% ASTY for every friend.
                   </p>
                 </div>
               </div>

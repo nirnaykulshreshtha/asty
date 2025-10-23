@@ -69,3 +69,203 @@ Impact:
 - Maintains visual consistency with existing components
 - Provides clear call-to-action for membership signup
 
+## 2025-10-23 – Referral Link Generation & UI Cleanup
+
+Context: Early members need an actionable way to generate and distribute referral links after connecting their wallet, but the UI was cluttered and concerns were mixed.
+
+Changes:
+- Added `src/lib/referrals.ts` with documented helpers for Ethereum address validation and deterministic referral link generation with SSR-safe origin handling.
+- Created `src/components/pages/home/ReferralLinkCard.tsx` as a dedicated component for referral link generation, copy/share functionality, and clean UI presentation.
+- Refactored `RegistrationSection` to focus solely on registration (wallet connection + referral address input) and removed all referral link generation logic.
+- Simplified the success state UI to show only essential information: success message, referral credit (if applicable), and wallet disconnect button.
+- Added `ReferralLinkCard` to `MemesSection` below the registration grid, appearing only when a wallet is connected.
+
+Impact:
+- Clean separation of concerns: registration vs. referral link management.
+- Much cleaner, less cluttered UI in the registration success state.
+- Referral link functionality is now reusable and focused in its own component.
+- Better user experience with clear visual hierarchy and reduced cognitive load.
+
+## 2025-10-23 – Custom Connect Button Component
+
+Context: Need a reusable, custom-styled connect button component that integrates with RainbowKit's ConnectButton.Custom API while maintaining Asty's design system and providing comprehensive debugging capabilities.
+
+Changes:
+- Created `src/components/ui/custom-connect-button.tsx` with full RainbowKit integration:
+  - Custom implementation using `ConnectButton.Custom` render prop pattern
+  - Support for all connection states: disconnected, wrong network, connected
+  - Chain switching and account management functionality
+  - Configurable display options (chain name, balance, button size)
+  - Responsive design with proper accessibility attributes
+  - Comprehensive logging for debugging wallet connection flows
+  - Two variants: full-featured `CustomConnectButton` and simplified `SimpleConnectButton`
+- Integrated with existing design system using `Button` component variants
+- Added aggressive logging throughout connection state changes and user interactions
+- Comprehensive TypeScript documentation and prop interfaces
+
+Features:
+- Custom styling that matches Asty's button design system
+- Support for different button sizes (xs, sm, default, lg)
+- Optional chain name and balance display when connected
+- Proper loading states and accessibility attributes
+- Detailed logging for debugging wallet connection issues
+- Chain icon display with proper fallbacks
+- Error state handling for unsupported networks
+
+Impact:
+- Provides a reusable, well-documented connect button component
+- Maintains design consistency with existing UI components
+- Enables comprehensive debugging of wallet connection flows
+- Supports flexible configuration for different use cases
+- Improves developer experience with detailed logging and documentation
+
+## 2025-10-23 – Enhanced Registration Form with Platform Integration
+
+Context: The RegistrationSection needed to be transformed from a simple wallet connection interface into a comprehensive registration form that handles platform registration with proper form validation, state management, and submission handling.
+
+Changes:
+- Enhanced `src/components/pages/home/RegistrationSection.tsx` with complete form functionality:
+  - Added comprehensive form state management with TypeScript interfaces
+  - Implemented real-time form validation for referral address input
+  - Added form submission handling with loading states and error management
+  - Integrated proper form UI with submit button and error alerts
+  - Added wallet connection requirement validation before submission
+  - Implemented simulated API call for platform registration (ready for real API integration)
+  - Enhanced user feedback with loading spinners and success states
+  - Added comprehensive logging throughout the registration flow
+- Updated component documentation to reflect the new form capabilities
+- Maintained existing design system integration and responsive layout
+
+Features:
+- Complete registration form with proper HTML form semantics
+- Real-time validation of optional referral address field
+- Wallet connection requirement with clear user feedback
+- Form submission with loading states and error handling
+- Success state with referral address confirmation
+- Comprehensive error handling and user feedback
+- Aggressive logging for debugging registration flows
+- TypeScript interfaces for type safety
+- Responsive design with proper accessibility
+
+Impact:
+- Transforms registration from simple wallet connection to full platform registration
+- Provides proper form validation and user experience
+- Enables comprehensive debugging of registration flows
+- Maintains design consistency with existing components
+- Ready for real API integration (currently simulated)
+- Improves user experience with clear feedback and error handling
+
+## 2025-10-23 – RegistrationSection UX Improvements and Enhanced Validation
+
+Context: The RegistrationSection needed better user experience with visual progress indicators, enhanced form validation, and form persistence to prevent data loss during the registration process.
+
+Changes:
+- Enhanced `src/components/pages/home/RegistrationSection.tsx` with major UX improvements:
+  - Added StepIndicator component showing registration progress (Connect Wallet → Referral → Register)
+  - Implemented real-time validation with visual feedback (checkmarks and error icons)
+  - Added automatic Ethereum address formatting (auto-adds 0x prefix)
+  - Implemented form persistence to localStorage to prevent data loss
+  - Enhanced success state with animated checkmark and better visual hierarchy
+  - Added comprehensive benefit display in success state
+  - Improved error messages with more specific validation guidance
+  - Added validation for self-referral prevention
+  - Enhanced visual feedback with colored borders and inline validation icons
+
+Features:
+- Visual step indicator showing current registration stage
+- Real-time validation with success/error icons in input fields
+- Auto-formatting of Ethereum addresses
+- Form data persistence across page reloads
+- Animated success state with pulsing checkmark
+- Enhanced benefits display after successful registration
+- Better error messages with actionable guidance
+- Self-referral validation to prevent users from referring themselves
+- Visual feedback for valid/invalid input states
+
+Impact:
+- Significantly improved user experience with clear progress indication
+- Reduced user errors with real-time validation feedback
+- Prevented data loss with localStorage persistence
+- Better visual hierarchy and information architecture
+- More engaging success state with animations
+- Clearer validation messages help users correct errors faster
+- Professional appearance with polished UI interactions
+
+## 2025-10-23 – Fixed RegistrationSection Error State Management
+
+Context: The RegistrationSection was showing "Please connect your wallet to register" error message even after the wallet was connected, creating a confusing user experience.
+
+Changes:
+- Enhanced `src/components/pages/home/RegistrationSection.tsx` with proper error state management:
+  - Added useEffect to clear general error when wallet connects
+  - Added logic to clear general error when user starts interacting with form
+  - Improved error clearing logic in handleInputChange function
+
+Features:
+- **Automatic Error Clearing**: General error disappears immediately when wallet connects
+- **User Interaction Clearing**: Error clears when user starts typing in any field
+- **Better UX**: No more persistent error messages after wallet connection
+- **Real-time Feedback**: Immediate visual feedback when wallet connection state changes
+
+Impact:
+- Eliminates confusing error messages after wallet connection
+- Provides immediate visual feedback when wallet connects
+- Improves user experience with proper error state management
+- Maintains error validation for disconnected state
+- Professional appearance with proper state transitions
+
+## 2025-10-23 – Simplified RegistrationSection Success State UI
+
+Context: The success state was showing wallet details (Ethereum button and wallet address with balance) which made the UI cluttered and less focused on the registration success.
+
+Changes:
+- Simplified `src/components/pages/home/RegistrationSection.tsx` success state:
+  - Removed CustomConnectButton from success state
+  - Removed wallet details display (Ethereum button and address/balance)
+  - Kept essential elements: success animation, benefits display, and referral credit
+
+Features:
+- **Minimal Success State**: Clean, focused UI without wallet details
+- **Essential Information Only**: Success message, benefits, and referral credit
+- **Better Visual Hierarchy**: More attention on the success and benefits
+- **Cleaner Design**: Removed unnecessary wallet connection details
+
+Impact:
+- Cleaner, more focused success state
+- Better visual hierarchy emphasizing registration success
+- Reduced UI clutter by removing redundant wallet information
+- More professional and minimal appearance
+- Better user experience with essential information only
+
+## 2025-10-23 – Added Confetti Animation for Registration Success
+
+Context: The registration success state needed a more celebratory and engaging experience to make users feel excited about their successful registration.
+
+Changes:
+- Created `src/components/ui/confetti-stars.tsx` with comprehensive confetti functionality:
+  - Star and circle confetti particles with custom colors
+  - Multiple burst animation with timing delays
+  - Auto-trigger capability with configurable delay
+  - useConfetti hook for programmatic triggering
+  - Comprehensive logging for debugging
+- Integrated confetti into `src/components/pages/home/RegistrationSection.tsx`:
+  - Added ConfettiStars component to success state
+  - Triggers automatically 300ms after successful registration
+  - Positioned above the success checkmark for maximum impact
+
+Features:
+- **Celebratory Animation**: Star and circle confetti particles
+- **Multiple Bursts**: Three timed bursts for more celebration
+- **Custom Colors**: Golden/yellow color scheme matching success theme
+- **Auto-trigger**: Automatically plays on successful registration
+- **Configurable**: Adjustable delay and trigger options
+- **Performance Optimized**: Uses canvas-confetti for smooth animation
+- **Comprehensive Logging**: Debug-friendly with detailed logging
+
+Impact:
+- Much more engaging and celebratory registration success experience
+- Creates excitement and positive reinforcement for users
+- Professional animation that enhances the overall user experience
+- Reusable confetti component for other celebrations
+- Better user satisfaction with visual celebration feedback
+

@@ -1,14 +1,16 @@
 /**
  * Header Component
  * ---------------
- * Responsive navigation header with mobile menu functionality.
- * Features the Asty logo, primary navigation, mode toggle, and mobile hamburger menu.
+ * Responsive navigation header with mobile menu functionality and wallet connection.
+ * Features the Asty logo, primary navigation, wallet connect button, mode toggle, and mobile hamburger menu.
  * 
  * Handles:
  * - Desktop and mobile navigation states
  * - Smooth scrolling to page sections
  * - Mobile menu toggle with accessibility features
  * - Logo branding with "Earn Forever" tagline
+ * - Wallet connection via CustomConnectButton (desktop and mobile)
+ * - Responsive design with connect button visibility
  */
 
 "use client"
@@ -18,6 +20,7 @@ import type { MouseEvent as ReactMouseEvent } from "react"
 import { ArrowRight, Menu, X } from "lucide-react"
 
 import { ModeToggle } from "@/components/mode-toggle"
+import { CustomConnectButton } from "@/components/ui/custom-connect-button"
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
 import { astroz } from "@/styles/fonts"
@@ -90,6 +93,9 @@ export function Header({
 
           <div className="flex items-center gap-2">
             <ModeToggle />
+            <div className="hidden sm:block">
+              <CustomConnectButton size="sm" compact={true} />
+            </div>
             <button
               type="button"
               className="flex size-10 items-center justify-center rounded-md border border-border/70 bg-background/80 text-foreground transition-colors hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 lg:hidden"
@@ -111,6 +117,11 @@ export function Header({
           )}
         >
           <nav aria-label="Mobile navigation" className="mx-auto max-w-7xl px-6 pb-6">
+            {/* Mobile Connect Button */}
+            <div className="pt-4 pb-2">
+              <CustomConnectButton size="sm" className="w-full" compact={true} />
+            </div>
+            
             <ul className="flex flex-col gap-3 pt-2">
               {NAV_ITEMS.map((item) => (
                 <li key={item.href}>

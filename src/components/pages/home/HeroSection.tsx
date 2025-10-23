@@ -14,15 +14,11 @@
 
 "use client"
 
-import Link from "next/link"
 import type { MouseEvent as ReactMouseEvent } from "react"
-
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
 import { astroz } from "@/styles/fonts"
 import { HERO_CTAS, HERO_VARIANTS } from "./types"
-import Mascot from "@/components/motion/Mascot"
 import { MembershipProgressSidebar } from "./MembershipProgressSidebar"
 import { CTAButton } from "@/components/ui/CTAButton"
 import { Pill } from "@/components/ui/Pill"

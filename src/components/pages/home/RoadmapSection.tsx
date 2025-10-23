@@ -14,9 +14,7 @@
 
 "use client"
 
-import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
-import { astroz } from "@/styles/fonts"
 import { ROADMAP_PHASES } from "./types"
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { DecorativeBackground } from "@/components/ui/DecorativeBackground"

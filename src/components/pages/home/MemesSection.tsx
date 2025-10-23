@@ -3,14 +3,15 @@
  * -----------------------
  * Main container for the Early Membership program section. Orchestrates
  * multiple smaller components to display foundational info, benefits,
- * and network advantages. Highlights how positions work ahead of the token presale.
+ * and user registration interface. Highlights how positions work ahead of the token presale.
  * 
  * Features:
  * - Composed of smaller, focused components
  * - Early membership foundation overview
  * - Benefits of holding a position
  * - Key advantages of the Asty network
- * - Token presale trigger highlight
+ * - User registration form with email and wallet connection
+ * - Progress tracking and presale trigger highlight
  * - Responsive, animated layout
  */
 
@@ -19,7 +20,7 @@
 import { logger } from "@/lib/logger"
 import { MemesSectionHeader } from "./MemesSectionHeader"
 import { MembershipFoundationCard } from "./MembershipFoundationCard"
-import { MembershipProgressSidebar } from "./MembershipProgressSidebar"
+import { RegistrationSection } from "./RegistrationSection"
 
 interface MemesSectionProps {
   motionReduced: boolean
@@ -27,7 +28,7 @@ interface MemesSectionProps {
 
 /**
  * Renders the Early Membership section by composing smaller, focused components.
- * Orchestrates the display of foundation details, benefits, and network advantages.
+ * Orchestrates the display of foundation details, benefits, and user registration interface.
  * 
  * @param motionReduced - Whether animations should be reduced
  */
@@ -44,7 +45,7 @@ export function MemesSection({ motionReduced }: MemesSectionProps) {
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
         <MembershipFoundationCard motionReduced={motionReduced} />
-        <MembershipProgressSidebar motionReduced={motionReduced} />
+        <RegistrationSection motionReduced={motionReduced} />
       </div>
     </section>
   )

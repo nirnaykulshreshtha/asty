@@ -15,13 +15,15 @@
 
 import Link from "next/link"
 import type { MouseEvent as ReactMouseEvent } from "react"
-import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
 import { astroz } from "@/styles/fonts"
 import { MEMBERSHIP_HIGHLIGHTS } from "./types"
+import { CTAButton } from "@/components/ui/CTAButton"
+import { Pill } from "@/components/ui/Pill"
+import { MEMBERSHIP_PITCH_SHORT, MEMBERSHIP_ONBOARDING_LABEL, NO_TOKEN_SALE_YET } from "./constants"
 
 interface BuySectionProps {
   onAnchorClick: (event: ReactMouseEvent<HTMLAnchorElement>) => void
@@ -47,17 +49,14 @@ export function BuySection({ onAnchorClick }: BuySectionProps) {
         data-visible="false"
       >
         <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          <span className="rounded-full border border-border/60 px-3 py-1">Membership onboarding</span>
+          <Pill tone="muted">{MEMBERSHIP_ONBOARDING_LABEL}</Pill>
           <span className="hidden h-0.5 w-8 bg-border/60 sm:block" aria-hidden="true" />
-          <span className="rounded-full border border-border/60 px-3 py-1">No token sale yet</span>
+          <Pill tone="muted">{NO_TOKEN_SALE_YET}</Pill>
         </div>
         <h2 className={cn("mt-6 text-3xl text-foreground sm:text-4xl", astroz.className)}>
           Book your Early Membership
         </h2>
-        <p className="mt-4 text-base text-muted-foreground">
-          Reserve a lifetime $100 position today. Tokens arrive later—once 10,000 memberships are booked, presale
-          rounds unlock with early access for every member.
-        </p>
+        <p className="mt-4 text-base text-muted-foreground">{MEMBERSHIP_PITCH_SHORT}</p>
         <ol className="mt-6 space-y-4 text-sm text-foreground">
           <li className="flex gap-4 rounded-xl border border-border/50 bg-background/80 p-4">
             <span className="flex size-9 items-center justify-center rounded-full bg-primary/20 font-semibold text-primary">
@@ -111,21 +110,19 @@ export function BuySection({ onAnchorClick }: BuySectionProps) {
                   <p className="text-foreground">{item.emoji} {item.title}</p>
                   <p className="text-muted-foreground">{item.subtitle}</p>
                 </div>
-                <ArrowRight className="size-4 opacity-60" aria-hidden="true" />
+                <span className="size-4 opacity-60" aria-hidden="true">→</span>
               </div>
             ))}
           </div>
         </div>
-        <Button
-          asChild
+        <CTAButton
+          href="#community"
+          label="Generate your referral link"
+          onClick={onAnchorClick}
+          variant="default"
           size="lg"
           className="justify-between bg-primary text-primary-foreground shadow-xl transition hover:-translate-y-0.5 hover:bg-primary/90"
-        >
-          <Link href="#community" onClick={onAnchorClick}>
-            Generate your referral link
-            <ArrowRight className="size-4" />
-          </Link>
-        </Button>
+        />
       </aside>
     </section>
   )

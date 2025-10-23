@@ -14,6 +14,7 @@
 "use client"
 
 import { logger } from "@/lib/logger"
+import { Pill } from "@/components/ui/Pill"
 import { MEMBERSHIP_FOUNDATION } from "./types"
 
 interface MembershipFoundationCardProps {
@@ -37,12 +38,8 @@ export function MembershipFoundationCard({ motionReduced }: MembershipFoundation
       <div className="absolute -left-16 -top-12 size-40 rounded-full bg-primary/10 blur-3xl" aria-hidden="true" />
       
       <header className="flex flex-wrap items-center justify-between gap-4">
-        <span className="rounded-full border border-primary/40 bg-background/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-          Asty Network Creation
-        </span>
-        <span className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          Foundation
-        </span>
+        <Pill className="border-primary/40 text-primary">Asty Network Creation</Pill>
+        <Pill tone="muted">Foundation</Pill>
       </header>
       
       <h3 className="mt-6 text-2xl font-semibold text-foreground">

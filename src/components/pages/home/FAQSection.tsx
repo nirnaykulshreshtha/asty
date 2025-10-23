@@ -19,10 +19,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
-import { astroz } from "@/styles/fonts"
 import { FAQ_ITEMS } from "./types"
+import { SectionHeader } from "@/components/ui/SectionHeader"
 
 /**
  * Renders the FAQ section with accordion-style questions and answers.
@@ -36,17 +35,11 @@ export function FAQSection() {
       data-section-label="FAQ"
       className="space-y-12 border-b border-border/40 py-20"
     >
-      <div className="reveal-section space-y-4" data-animate-on-scroll data-visible="false">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          FAQ
-        </p>
-        <h2 className={cn("text-4xl text-foreground sm:text-5xl", astroz.className)}>
-          Frequently asked questions
-        </h2>
-        <p className="max-w-3xl text-base text-muted-foreground">
-          Everything you need to know about Early Membership, the referral engine, dividends, and presale timing.
-        </p>
-      </div>
+      <SectionHeader
+        label="FAQ"
+        title="Frequently asked questions"
+        description="Everything you need to know about Early Membership, the referral engine, dividends, and presale timing."
+      />
 
       <Accordion type="single" collapsible className="space-y-3">
         {FAQ_ITEMS.map((item, index) => (

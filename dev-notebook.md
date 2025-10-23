@@ -1,3 +1,33 @@
+## 2025-10-23 – Homepage duplication refactor
+
+Context: The home page had multiple duplicated patterns (headers, cards, decorative backgrounds, animations).
+
+Changes:
+- Introduced `src/components/ui/SectionHeader.tsx` to standardize section headers (eyebrow, title, description) with reveal attributes and logging.
+- Introduced `src/components/ui/ContentCard.tsx` to standardize card shells with optional `leading` slot and hover transitions.
+- Refactored sections to use these abstractions:
+  - `HowItWorksSection` now uses `SectionHeader` and `ContentCard` (leading number badge).
+  - `TokenomicsSection` uses `SectionHeader` and `ContentCard` for feature cards.
+  - `RoadmapSection`, `FAQSection`, `CommunitySection` now use `SectionHeader` for consistent headers.
+
+Notes:
+- We retained existing IntersectionObserver-based reveal behavior by keeping `data-animate-on-scroll`/`data-visible` markers inside the shared components.
+- Aggressive logging added to all new components per project standards.
+- Next opportunities: extract decorative background patterns into a small `DecorativeBackground` component if repetition grows; consider a `CTAButton` wrapper for common CTA styles.
+
+### Continuation – Shared UI primitives and copy centralization
+
+Changes:
+- Added `src/components/ui/DecorativeBackground.tsx` with variants `tokenomics | roadmap | sidebar`; replaced inline gradient stacks in `TokenomicsSection`, `RoadmapSection`, and `MembershipProgressSidebar`.
+- Added `src/components/ui/CTAButton.tsx` to unify Button+Link+ArrowRight CTAs; applied in `HeroSection`, `BuySection`, `CommunitySection`.
+- Added `src/components/ui/Pill.tsx` to standardize small badges; applied in `HeroSection` and `BuySection` eyebrow/badges.
+- Centralized shared copy in `src/components/pages/home/constants.ts` (e.g., `TEN_K_TRIGGER_TEXT`, `MEMBERSHIP_PITCH_SHORT`, `MEMBERSHIP_ONBOARDING_LABEL`) and replaced inline text in `TokenomicsSection` and `BuySection`.
+
+Impact:
+- Reduced duplicated JSX and Tailwind class strings across repeated patterns, improving maintainability.
+- Preserved visuals and behavior; all components instrumented with logging.
+
+
 # Asty Development Notebook
 
 ## Architecture & Design Decisions

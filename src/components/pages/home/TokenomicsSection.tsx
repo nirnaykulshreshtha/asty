@@ -16,12 +16,15 @@
 
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
-import { astroz } from "@/styles/fonts"
 import { 
   TOKENOMICS_ROWS, 
   TOKENOMICS_CARDS, 
   TOKENOMICS_SUMMARY 
 } from "./types"
+import { SectionHeader } from "@/components/ui/SectionHeader"
+import { ContentCard } from "@/components/ui/ContentCard"
+import { DecorativeBackground } from "@/components/ui/DecorativeBackground"
+import { TEN_K_TRIGGER_TEXT } from "./constants"
 
 /**
  * Renders the tokenomics section with distribution data and key metrics.
@@ -35,24 +38,13 @@ export function TokenomicsSection() {
       data-section-label="Tokenomics"
       className="relative space-y-12 overflow-hidden border-b border-border/40 px-4 py-20"
     >
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-70">
-        <div className="absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,_rgba(146,68,255,0.35),_transparent_60%)] blur-3xl" />
-        <div className="absolute -bottom-40 right-24 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,_rgba(73,110,255,0.25),_transparent_60%)] blur-3xl" />
-        <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.04)_0%,transparent_45%,rgba(255,255,255,0.04)_90%)]" />
-      </div>
+      <DecorativeBackground variant="tokenomics" className="-z-10 opacity-70" />
 
-      <div className="reveal-section space-y-4" data-animate-on-scroll data-visible="false">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          The Numbers
-        </p>
-        <h2 className={cn("text-4xl text-foreground sm:text-5xl", astroz.className)}>
-          Token distribution
-        </h2>
-        <p className="max-w-3xl text-base text-muted-foreground">
-          Membership-first launch ensures tokens arrive with a ready community. Track the presale layout and the
-          milestone that unlocks it.
-        </p>
-      </div>
+      <SectionHeader
+        label="The Numbers"
+        title="Token distribution"
+        description="Membership-first launch ensures tokens arrive with a ready community. Track the presale layout and the milestone that unlocks it."
+      />
 
       <div
         className="reveal-section relative overflow-hidden rounded-3xl border border-border/60 bg-card/70 p-6 shadow-2xl sm:p-10"
@@ -133,15 +125,7 @@ export function TokenomicsSection() {
 
       <div className="grid gap-6 md:grid-cols-3">
         {TOKENOMICS_CARDS.map((card) => (
-          <article
-            key={card.title}
-            className="reveal-section flex flex-col gap-3 rounded-3xl border border-border/50 bg-card/50 p-6 shadow-lg transition hover:border-primary/40 hover:-translate-y-1"
-            data-animate-on-scroll
-            data-visible="false"
-          >
-            <h3 className="text-lg font-semibold text-foreground">{card.title}</h3>
-            <p className="text-sm text-muted-foreground">{card.body}</p>
-          </article>
+          <ContentCard key={card.title} title={card.title} description={card.body} />
         ))}
       </div>
 
@@ -153,9 +137,7 @@ export function TokenomicsSection() {
         <p className="font-semibold">
           Early memberships only: <span className="text-primary">$100</span> secures a lifetime position ahead of presale.
         </p>
-        <p className="mt-2 text-muted-foreground">
-          Token sale activates at <strong>10,000 bookings</strong>, with guaranteed priority for every existing member.
-        </p>
+        <p className="mt-2 text-muted-foreground">{TEN_K_TRIGGER_TEXT}</p>
       </div>
     </section>
   )

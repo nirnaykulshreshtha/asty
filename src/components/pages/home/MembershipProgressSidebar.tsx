@@ -23,6 +23,7 @@ import {
   MEMBERSHIP_PROGRESS,
   MEMBERSHIP_FACTS,
 } from "./types"
+import { DecorativeBackground } from "@/components/ui/DecorativeBackground"
 
 interface MembershipProgressSidebarProps {
   motionReduced: boolean
@@ -43,11 +44,7 @@ export function MembershipProgressSidebar({ motionReduced }: MembershipProgressS
       data-visible="false"
     >
       {/* Decorative background elements */}
-      <div className="pointer-events-none absolute inset-0 opacity-70">
-        <div className="absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,_rgba(146,68,255,0.25),_transparent_65%)] blur-3xl" />
-        <div className="absolute -bottom-16 right-6 h-56 w-56 rounded-full bg-[radial-gradient(circle_at_center,_rgba(73,110,255,0.2),_transparent_65%)] blur-3xl" />
-        <div className="absolute inset-0 bg-[linear-gradient(140deg,rgba(255,255,255,0.05)_0%,transparent_45%,rgba(255,255,255,0.08)_100%)]" />
-      </div>
+      <DecorativeBackground variant="sidebar" className="opacity-70" />
 
       <div className="relative flex h-full flex-col">
         {/* Progress statistics */}

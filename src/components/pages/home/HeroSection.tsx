@@ -16,7 +16,6 @@
 
 import Link from "next/link"
 import type { MouseEvent as ReactMouseEvent } from "react"
-import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -25,6 +24,9 @@ import { astroz } from "@/styles/fonts"
 import { HERO_CTAS, HERO_VARIANTS } from "./types"
 import Mascot from "@/components/motion/Mascot"
 import { MembershipProgressSidebar } from "./MembershipProgressSidebar"
+import { CTAButton } from "@/components/ui/CTAButton"
+import { Pill } from "@/components/ui/Pill"
+import { ASTER_ALIGNED, PERMANENT_INCOME } from "./constants"
 
 interface HeroSectionProps {
   heroBurstIndex: number
@@ -90,30 +92,25 @@ export function HeroSection({
 
         <div className="flex flex-wrap items-center gap-3">
           {HERO_CTAS.map((cta) => (
-            <Button
+            <CTAButton
               key={cta.label}
-              asChild
+              href={cta.href}
+              label={cta.label}
+              onClick={onAnchorClick}
               variant={cta.variant}
               size="lg"
               className={cn(
                 "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
                 cta.tone === "outline" ? "backdrop-blur" : ""
               )}
-            >
-              <Link href={cta.href} onClick={onAnchorClick}>
-                {cta.label}
-                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
+            />
           ))}
         </div>
 
         <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          <span className="rounded-full border border-border/60 px-3 py-1">
-            Aster ecosystem aligned
-          </span>
+          <Pill tone="muted">{ASTER_ALIGNED}</Pill>
           <span className="hidden h-0.5 w-8 bg-border/60 sm:block" aria-hidden="true" />
-          <span className="rounded-full border border-border/60 px-3 py-1">Permanent membership income</span>
+          <Pill tone="muted">{PERMANENT_INCOME}</Pill>
         </div>
       </div>
 

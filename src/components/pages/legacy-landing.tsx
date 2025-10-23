@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/accordion"
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
+import { Pill } from "@/components/ui/Pill"
 
 const NAV_ITEMS = [
   { label: "How It Works", href: "#how" },
@@ -389,9 +390,9 @@ export function LegacyLanding() {
             </div>
 
             <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              <span className="rounded-full border border-border/60 px-3 py-1">Built for Aster DEX</span>
+              <Pill tone="muted">Built for Aster DEX</Pill>
               <span className="hidden h-0.5 w-8 bg-border/60 sm:block" aria-hidden="true" />
-              <span className="rounded-full border border-border/60 px-3 py-1">BNB Chain</span>
+              <Pill tone="muted">BNB Chain</Pill>
             </div>
           </div>
 

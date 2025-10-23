@@ -1,8 +1,8 @@
 /**
  * How It Works Section Component
  * ------------------------------
- * Explains the core mechanics of the ASTY token system with three key steps.
- * Shows how the 6% tax works, annual airdrops, and perpetual growth model.
+ * Explains the core mechanics of the Early Membership system with three key steps.
+ * Demonstrates how positions are booked, networks expand, and dividends flow.
  * 
  * Features:
  * - Three-step explanation of the tokenomics
@@ -38,8 +38,8 @@ export function HowItWorksSection() {
           How it works
         </h2>
         <p className="max-w-3xl text-base text-muted-foreground">
-          Asty powers the Aster Vault with every transaction. Holders gain compounding exposure without
-          lifting a finger, making the meme machine keep printing.
+          Early Membership builds the community engine first. Secure a position, expand your 12-level network, and
+          unlock layered income as dividends and token access go live.
         </p>
       </div>
       <div className="grid gap-6 md:grid-cols-3">

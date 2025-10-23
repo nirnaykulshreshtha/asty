@@ -1,14 +1,13 @@
 /**
- * Buy Section Component
+ * Membership CTA Section Component
  * --------------------
- * Section explaining how to purchase ASTY tokens with step-by-step instructions
- * and referral program information. Features a detailed buying process and
- * referral bounty details.
+ * Guides users through booking an Early Membership and highlights the key
+ * actions they can take before the token presale opens.
  * 
  * Features:
- * - Step-by-step buying instructions
- * - Referral program details with rewards
- * - CTA memes for engagement
+ * - Step-by-step membership booking flow
+ * - Membership highlights and presale trigger reminders
+ * - Referral link call-to-action
  * - Responsive grid layout
  */
 
@@ -22,14 +21,14 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
 import { astroz } from "@/styles/fonts"
-import { CTA_MEMES } from "./types"
+import { MEMBERSHIP_HIGHLIGHTS } from "./types"
 
 interface BuySectionProps {
   onAnchorClick: (event: ReactMouseEvent<HTMLAnchorElement>) => void
 }
 
 /**
- * Renders the buy section with purchasing instructions and referral information.
+ * Renders the membership call-to-action with booking steps and referral information.
  * 
  * @param onAnchorClick - Handler for smooth scrolling to sections
  */
@@ -39,7 +38,7 @@ export function BuySection({ onAnchorClick }: BuySectionProps) {
   return (
     <section
       id="buy"
-      data-section-label="Buy ASTY"
+      data-section-label="Book Membership"
       className="grid gap-8 border-b border-border/40 py-20 lg:grid-cols-[1.1fr_0.9fr]"
     >
       <div
@@ -48,15 +47,16 @@ export function BuySection({ onAnchorClick }: BuySectionProps) {
         data-visible="false"
       >
         <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          <span className="rounded-full border border-border/60 px-3 py-1">How to ape calmly</span>
+          <span className="rounded-full border border-border/60 px-3 py-1">Membership onboarding</span>
           <span className="hidden h-0.5 w-8 bg-border/60 sm:block" aria-hidden="true" />
-          <span className="rounded-full border border-border/60 px-3 py-1">3 step meme plan</span>
+          <span className="rounded-full border border-border/60 px-3 py-1">No token sale yet</span>
         </div>
         <h2 className={cn("mt-6 text-3xl text-foreground sm:text-4xl", astroz.className)}>
-          Buy ASTY in minutes
+          Book your Early Membership
         </h2>
         <p className="mt-4 text-base text-muted-foreground">
-          Connect, swap, and vibe. Asty handles the spreadsheets so you can focus on the memes.
+          Reserve a lifetime $100 position today. Tokens arrive later—once 10,000 memberships are booked, presale
+          rounds unlock with early access for every member.
         </p>
         <ol className="mt-6 space-y-4 text-sm text-foreground">
           <li className="flex gap-4 rounded-xl border border-border/50 bg-background/80 p-4">
@@ -64,8 +64,8 @@ export function BuySection({ onAnchorClick }: BuySectionProps) {
               1
             </span>
             <div>
-              <h3 className="text-base font-semibold text-foreground">Connect wallet</h3>
-              <p className="text-muted-foreground">MetaMask, Rabby, WalletConnect—pick your meme mobile.</p>
+              <h3 className="text-base font-semibold text-foreground">Reserve your spot</h3>
+              <p className="text-muted-foreground">Submit the $100 entry fee to lock in a permanent Asty position.</p>
             </div>
           </li>
           <li className="flex gap-4 rounded-xl border border-border/50 bg-background/80 p-4">
@@ -73,9 +73,9 @@ export function BuySection({ onAnchorClick }: BuySectionProps) {
               2
             </span>
             <div>
-              <h3 className="text-base font-semibold text-foreground">Swap on Aster DEX</h3>
+              <h3 className="text-base font-semibold text-foreground">Activate foundation access</h3>
               <p className="text-muted-foreground">
-                Dial in your slippage, smash confirm, and watch the vault counter go brrr.
+                Membership unlocks referral tools, rank tracking, and dividend eligibility instantly.
               </p>
             </div>
           </li>
@@ -84,9 +84,9 @@ export function BuySection({ onAnchorClick }: BuySectionProps) {
               3
             </span>
             <div>
-              <h3 className="text-base font-semibold text-foreground">Hold and earn</h3>
+              <h3 className="text-base font-semibold text-foreground">Share your referral link</h3>
               <p className="text-muted-foreground">
-                Snapshots log every bag. Sit tight and claim the annual Aster confetti drop.
+                Build your 12-level network to amplify referral income and future dividend share.
               </p>
             </div>
           </li>
@@ -99,17 +99,17 @@ export function BuySection({ onAnchorClick }: BuySectionProps) {
         data-visible="false"
       >
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-primary">Referral bounty</h3>
+          <h3 className="text-xl font-semibold text-primary">Why move now</h3>
           <p className="text-sm text-muted-foreground">
-            Share your invite link and collect <strong>10% USDT</strong> + <strong>10% ASTY</strong> from every
-            meme recruit.
+            Early memberships are the only way in today. Secure the foundation, then ride every presale round and
+            dividend cycle that follows.
           </p>
           <div className="grid gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-            {CTA_MEMES.map((cta) => (
-              <div key={cta.title} className="flex items-center justify-between rounded-2xl border border-border/40 bg-background/80 px-4 py-3">
+            {MEMBERSHIP_HIGHLIGHTS.map((item) => (
+              <div key={item.title} className="flex items-center justify-between rounded-2xl border border-border/40 bg-background/80 px-4 py-3">
                 <div>
-                  <p className="text-foreground">{cta.emoji} {cta.title}</p>
-                  <p className="text-muted-foreground">{cta.subtitle}</p>
+                  <p className="text-foreground">{item.emoji} {item.title}</p>
+                  <p className="text-muted-foreground">{item.subtitle}</p>
                 </div>
                 <ArrowRight className="size-4 opacity-60" aria-hidden="true" />
               </div>

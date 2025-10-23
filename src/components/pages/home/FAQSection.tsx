@@ -2,7 +2,7 @@
  * FAQ Section Component
  * ---------------------
  * Displays frequently asked questions in an accordion format.
- * Covers key topics about the tax-to-vault design, rewards, and security.
+ * Covers membership, referral mechanics, dividends, and presale timing.
  * 
  * Features:
  * - Accordion-style FAQ items
@@ -44,7 +44,7 @@ export function FAQSection() {
           Frequently asked questions
         </h2>
         <p className="max-w-3xl text-base text-muted-foreground">
-          Everything you need to know about the tax-to-vault design, rewards, and security.
+          Everything you need to know about Early Membership, the referral engine, dividends, and presale timing.
         </p>
       </div>
 

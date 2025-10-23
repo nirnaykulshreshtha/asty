@@ -32,20 +32,22 @@ export interface HeroVariant {
   stickerClass: string
 }
 
-// Meme types
-export interface MascotMeme {
-  id: string
-  caption: string
-  reaction: string
-  badge: string
-  transform: string
-  background: string
-}
-
-export interface CtaMeme {
+// Membership highlight types
+export interface MembershipHighlight {
   title: string
   subtitle: string
   emoji: string
+}
+
+export interface MembershipProgress {
+  label: string
+  value: string
+  accent?: boolean
+}
+
+export interface MembershipFact {
+  title: string
+  description: string
 }
 
 // How it works types
@@ -117,7 +119,7 @@ export interface ToastState {
 
 // Navigation items
 export const NAV_ITEMS: NavItem[] = [
-  { label: "Memes", href: "#memes" },
+  { label: "Membership", href: "#membership" },
   { label: "How It Works", href: "#how" },
   { label: "Tokenomics", href: "#tokenomics" },
   { label: "Roadmap", href: "#roadmap" },
@@ -128,22 +130,16 @@ export const NAV_ITEMS: NavItem[] = [
 // Hero CTAs
 export const HERO_CTAS: HeroCta[] = [
   {
-    label: "Summon The Vault",
-    href: "#buy",
+    label: "Book Early Membership",
+    href: "#membership",
     variant: "default",
     tone: "primary",
   },
   {
-    label: "View Meme-onomics",
-    href: "#tokenomics",
+    label: "Generate Referral Link",
+    href: "#community",
     variant: "secondary",
     tone: "secondary",
-  },
-  {
-    label: "Join The Chaos",
-    href: "#community",
-    variant: "outline",
-    tone: "outline",
   },
 ]
 
@@ -174,124 +170,173 @@ export const HERO_VARIANTS: HeroVariant[] = [
 
 // Hero burst messages
 export const HERO_BURSTS: string[] = [
-  "vault go brrr",
-  "hodl the happy monster",
-  "airdrop drip eternal",
+  "Community wealth in motion",
+  "Twelve levels, one engine",
+  "Dividends drop for life",
 ]
 
 // Mascot meme data
-export const MASCOT_MEMES: MascotMeme[] = [
+// Membership data
+export const MEMBERSHIP_PROGRESS: MembershipProgress[] = [
   {
-    id: "moon-walk",
-    caption: "When gas fees finally chill",
-    reaction: "Asty casually moonwalks across the dashboard.",
-    badge: "vibe check",
-    transform: "rotate-2",
-    background: "bg-[radial-gradient(circle_at_center,_rgba(255,175,53,0.3),_transparent_60%)]",
+    label: "Memberships booked",
+    value: "6,320",
   },
   {
-    id: "airdrop-alert",
-    caption: "Snapshot hits and you actually remembered to hodl",
-    reaction: "Double high-five, double rainbow, double yield.",
-    badge: "airdrop flex",
-    transform: "-rotate-3",
-    background: "bg-[radial-gradient(circle_at_center,_rgba(179,102,255,0.32),_transparent_60%)]",
-  },
-  {
-    id: "referral-degen",
-    caption: "Prints referral links like it's 2017",
-    reaction: "Asty screaming \"SEND LINK\" while raining coins.",
-    badge: "degen energy",
-    transform: "rotate-1",
-    background: "bg-[radial-gradient(circle_at_center,_rgba(82,210,255,0.3),_transparent_60%)]",
-  },
-  {
-    id: "calm-before-pump",
-    caption: "Vault balance climbs during your nap",
-    reaction: "Sleepy Asty drooling on victory pancakes.",
-    badge: "lazy gains",
-    transform: "-rotate-2",
-    background: "bg-[radial-gradient(circle_at_center,_rgba(255,100,137,0.28),_transparent_60%)]",
+    label: "Presale trigger",
+    value: "10,000",
+    accent: true,
   },
 ]
 
-// CTA memes for referral section
-export const CTA_MEMES: CtaMeme[] = [
+export const MEMBERSHIP_FACTS: MembershipFact[] = [
   {
-    title: "Buy ASTY in minutes",
-    subtitle: "Summon the vault",
+    title: "Dividend cadence",
+    description: "Biweekly and annual distributions for every qualified rank.",
+  },
+  {
+    title: "Referral engine",
+    description: "12-level network pays whenever your tree grows.",
+  },
+]
+
+export const MEMBERSHIP_FOUNDATION: CoreGoal[] = [
+  {
+    title: "Entry Fee",
+    description: "$100 per position to secure your spot in the Asty Network.",
+  },
+  {
+    title: "Network Depth",
+    description: "Structured 12-level referral network engineered for scale.",
+  },
+  {
+    title: "Redistribution",
+    description: "100% of every entry fee is redistributed across the community.",
+  },
+  {
+    title: "Lifetime Eligibility",
+    description: "Permanent positions keep you qualified for every future payout.",
+  },
+]
+
+export const POSITION_BENEFITS: CoreGoal[] = [
+  {
+    title: "Referral Income",
+    description: "Earn across all 12 levels whenever your network books positions.",
+  },
+  {
+    title: "Dividends",
+    description: "Collect biweekly and annual dividends through the Aster ecosystem.",
+  },
+  {
+    title: "Rank Upside",
+    description: "Climb tiers for a larger share of network-wide distributions.",
+  },
+  {
+    title: "Future Ready",
+    description: "Your position carries straight into the presale and DeFi launch.",
+  },
+]
+
+export const NETWORK_ADVANTAGES: CoreGoal[] = [
+  {
+    title: "Community First",
+    description: "Designed to reward builders and contributors before token launch.",
+  },
+  {
+    title: "Layered Income",
+    description: "Multiple revenue streams stack from referrals and dividends.",
+  },
+  {
+    title: "Volume Driven",
+    description: "Sustainable model that scales with network activity and growth.",
+  },
+  {
+    title: "Aster Linked",
+    description: "Anchored to the Aster ecosystem so value grows with adoption.",
+  },
+  {
+    title: "Permanent Earnings",
+    description: "Lock in a position once and earn for life through every expansion.",
+  },
+]
+
+export const MEMBERSHIP_HIGHLIGHTS: MembershipHighlight[] = [
+  {
+    title: "Secure Your Position",
+    subtitle: "Early memberships are live now for a fixed $100.",
+    emoji: "🛡️",
+  },
+  {
+    title: "10,000 Unlock",
+    subtitle: "Token presale starts the moment 10,000 memberships are booked.",
     emoji: "🚀",
   },
   {
-    title: "Stake? Nah, just vibing",
-    subtitle: "Hold and let Asty drip",
-    emoji: "💤",
-  },
-  {
-    title: "Referral chaos activated",
-    subtitle: "10% USDT + ASTY",
-    emoji: "🎁",
+    title: "Referral Ready",
+    subtitle: "Generate your link today and start building your 12-level tree.",
+    emoji: "🔗",
   },
 ]
 
 // How it works steps
 export const HOW_STEPS: HowStep[] = [
   {
-    title: "6% Vault Skim",
+    title: "Book Your Slot",
     description:
-      "Every trade tips Asty 6% to go shopping for Aster and stack it in the meme vault treasury.",
+      "Lock in an Early Membership for $100 and claim a permanent position inside the Asty Network.",
   },
   {
-    title: "Annual Airdrop",
+    title: "Build Your Network",
     description:
-      "Twelve months later, Asty yeets the vault and rains Aster on holders based on bag size.",
+      "Share referral links to grow 12 levels deep and unlock layered earnings across the tree.",
   },
   {
-    title: "Perpetual Growth",
+    title: "Earn Dividends",
     description:
-      "More chaos, more swaps, bigger vault. Diamond hands win the meme compounding race.",
+      "Earn biweekly and annual dividends plus presale advantages as the ecosystem scales.",
   },
 ]
 
 // Tokenomics data
 export const TOKENOMICS_ROWS: TokenomicsRow[] = [
-  { type: "Public Sale", amount: "10 lac", rate: "$0.10", percent: 40 },
-  { type: "Private Sale", amount: "10 lac", rate: "$0.20", percent: 80 },
-  { type: "Final Sale", amount: "5 lac", rate: "$0.25", percent: 100 },
+  { type: "Round 1 Presale", amount: "10 lac ASTY", rate: "Pricing TBA", percent: 40 },
+  { type: "Round 2 Presale", amount: "10 lac ASTY", rate: "Pricing TBA", percent: 80 },
+  { type: "Round 3 Presale", amount: "5 lac ASTY", rate: "Pricing TBA", percent: 100 },
 ]
 
 export const TOKENOMICS_CARDS: TokenomicsCard[] = [
   {
-    title: "Vault Catalyst",
-    body: "6% auto-buys Aster so Asty can scream 'number go up' while topping the vault charts.",
+    title: "Community Engine",
+    body: "Membership sales build the network first so the presale launches with a ready-made demand base.",
   },
   {
-    title: "Holder Alignment",
-    body: "Meme loyalty pays: the longer you hodl, the spicier your share of the annual Aster dump.",
+    title: "Multi-Layer Rewards",
+    body: "Referral income stacks with dividends, rewarding both growth and long-term participation.",
   },
   {
-    title: "BNB Native",
-    body: "Low-fee BNB vibes keep swaps smooth so the meme machine can stay in perpetual motion.",
+    title: "Aster Integration",
+    body: "Directly linked to the Aster ecosystem so treasury growth reflects ecosystem expansion.",
   },
 ]
 
 export const TOKENOMICS_SUMMARY: TokenomicsSummary[] = [
   {
-    title: "Total Supply",
-    value: "25 lac ASTY",
-    description: "Structured across three sale phases with locked liquidity backing.",
+    title: "Max Supply",
+    value: "2.1 crore ASTY",
+    description: "Capped issuance ensures scarcity as utility expands across the network.",
     icon: Sparkles,
   },
   {
-    title: "Vault Tax",
-    value: "6% per trade",
-    description: "Auto-converts into Aster and compounds inside the shared Vault.",
+    title: "Presale Pool",
+    value: "25 lac ASTY",
+    description: "Allocated across three rounds (10L + 10L + 5L) for early adopters.",
     icon: TrendingUp,
   },
   {
-    title: "Annual Drop",
-    value: "Every 12 months",
-    description: "Aster payouts proportional to holdings at snapshot time.",
+    title: "Launch Trigger",
+    value: "10,000 memberships",
+    description: "Token presale activates once the first 10k positions are secured.",
     icon: ShieldCheck,
   },
 ]
@@ -300,31 +345,24 @@ export const TOKENOMICS_SUMMARY: TokenomicsSummary[] = [
 export const ROADMAP_PHASES: RoadmapPhase[] = [
   {
     phase: "Phase 1",
-    detail: "Token launch + DEX listing",
-    status: "complete",
-    quarter: "Q2 2024",
-    progress: 100,
+    detail: "Network creation with $100 entry and 12-level referral income.",
+    status: "active",
+    quarter: "Current Launch",
+    progress: 70,
   },
   {
     phase: "Phase 2",
-    detail: "Vault automation + dashboard",
-    status: "active",
-    quarter: "Q1 2025",
-    progress: 65,
+    detail: "Token presale — Early members take priority across all rounds.",
+    status: "upcoming",
+    quarter: "Triggers at 10k",
+    progress: 20,
   },
   {
     phase: "Phase 3",
-    detail: "Cross-DEX integration with Aster",
+    detail: "DeFi launch with dividends and referral rewards going live.",
     status: "upcoming",
-    quarter: "Q3 2025",
-    progress: 25,
-  },
-  {
-    phase: "Phase 4",
-    detail: "Global community expansion",
-    status: "upcoming",
-    quarter: "Q4 2025",
-    progress: 10,
+    quarter: "Post-Presale",
+    progress: 5,
   },
 ]
 
@@ -355,34 +393,34 @@ export const ROADMAP_STATUS_META: Record<
 // FAQ data
 export const FAQ_ITEMS: FaqItem[] = [
   {
-    question: "What is the 6% tax?",
+    question: "What am I purchasing right now?",
     answer:
-      "Every ASTY swap allocates 6% to buy Aster on the open market, sending purchased tokens straight to the Aster Vault contract.",
+      "Early Membership grants a $100 lifetime position in the Asty Network. Tokens are not on sale yet—this is purely for network access.",
   },
   {
-    question: "When are rewards paid?",
+    question: "When does the token presale launch?",
     answer:
-      "Vault snapshots occur continuously, and Aster rewards are distributed once every 12 months to eligible wallets.",
+      "The presale opens immediately after 10,000 Early Memberships are booked. Members receive first access to all three rounds.",
   },
   {
-    question: "Do I need to stake?",
+    question: "How do referral rewards work?",
     answer:
-      "No staking or lock-ups are required. Simply hold ASTY in a non-custodial wallet to qualify for rewards.",
+      "Share your unique link to fill the 12-level tree. Each new position generates income across the entire uplink instantly.",
   },
   {
-    question: "How is the Vault secured?",
+    question: "What dividends can I expect?",
     answer:
-      "The Vault runs on audited smart contracts with multi-sig controls and transparent, on-chain reporting.",
+      "Biweekly and annual dividends are distributed based on rank and network performance once the ecosystem is live.",
   },
   {
-    question: "What chains are supported?",
+    question: "Do I need to buy tokens separately?",
     answer:
-      "Asty is native to the BNB Chain with planned cross-chain liquidity once governance approves the deployment.",
+      "Not yet. Membership sales fund the foundation. You will be notified when presale rounds open so you can participate.",
   },
   {
-    question: "Where can I buy ASTY?",
+    question: "Can my position transfer into DeFi products?",
     answer:
-      "Buy ASTY directly on Aster DEX or any partner exchange listed in the Join Community section.",
+      "Yes. Your permanent position follows you into the presale and the upcoming DeFi rollout with no extra steps.",
   },
 ]
 
@@ -399,20 +437,5 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     description: "Dive into the token design, audits, and treasury mechanics.",
     href: "#whitepaper",
     external: false,
-  },
-]
-
-export const CORE_GOALS: CoreGoal[] = [
-  {
-    title: "Grow Aster Ecosystem",
-    description: "Build awareness and education around Aster DEX and the Aster token.",
-  },
-  {
-    title: "Deliver Passive Income",
-    description: "Offer lifetime passive income for ASTY holders via the tax-to-vault model.",
-  },
-  {
-    title: "Strengthen Community",
-    description: "Create a vibrant, transparent community that supports both Asty and Aster.",
   },
 ]

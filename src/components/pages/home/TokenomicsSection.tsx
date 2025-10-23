@@ -6,10 +6,10 @@
  * 
  * Features:
  * - Token distribution table with progress indicators
- * - Summary cards with key metrics
- * - Feature cards explaining token mechanics
+ * - Summary cards outlining supply and presale triggers
+ * - Feature cards explaining the network-first rollout
  * - Animated background effects
- * - Referral and tax information
+ * - Membership callouts and presale reminders
  */
 
 "use client"
@@ -49,7 +49,8 @@ export function TokenomicsSection() {
           Token distribution
         </h2>
         <p className="max-w-3xl text-base text-muted-foreground">
-          Transparent allocations designed to fuel sustainable liquidity and the tax-to-vault engine.
+          Membership-first launch ensures tokens arrive with a ready community. Track the presale layout and the
+          milestone that unlocks it.
         </p>
       </div>
 
@@ -150,11 +151,10 @@ export function TokenomicsSection() {
         data-visible="false"
       >
         <p className="font-semibold">
-          Referral: <span className="text-primary">10% USDT</span> +{" "}
-          <span className="text-primary">10% ASTY tokens</span>.
+          Early memberships only: <span className="text-primary">$100</span> secures a lifetime position ahead of presale.
         </p>
         <p className="mt-2 text-muted-foreground">
-          Tax: 6% per transaction routed to Vault buys Aster.
+          Token sale activates at <strong>10,000 bookings</strong>, with guaranteed priority for every existing member.
         </p>
       </div>
     </section>

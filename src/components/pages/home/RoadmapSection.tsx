@@ -39,7 +39,8 @@ export function RoadmapSection() {
           Roadmap
         </h2>
         <p className="max-w-3xl text-base text-muted-foreground">
-          Shipping in transparent phases to expand the Vault flywheel and cross-chain reach.
+          Three clear phases: finish network creation, launch the presale the moment 10,000 memberships lock in, and
+          deliver the DeFi product with dividends and referral rewards live.
         </p>
       </div>
 
@@ -112,10 +113,10 @@ export function RoadmapSection() {
                     </span>
                     <p className="flex-1">
                       {item.status === "complete"
-                        ? "Milestone shipped and audited."
+                        ? "Phase delivered and community onboarded."
                         : item.status === "active"
-                          ? "Engineering in progress with weekly updates."
-                          : "Awaiting governance vote and ecosystem readiness."}
+                          ? "Membership onboarding and tooling rolling out."
+                          : "Launch steps queued once the 10k trigger is met."}
                     </p>
                   </div>
                 </li>

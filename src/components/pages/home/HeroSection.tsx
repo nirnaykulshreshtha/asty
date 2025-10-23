@@ -6,8 +6,8 @@
  * 
  * Features:
  * - Rotating hero burst messages and visual themes
- * - Primary CTAs for user engagement
- * - Vault statistics display
+ * - Primary CTAs for booking membership and referrals
+ * - Membership progress indicators
  * - Asty character showcase with animations
  * - Responsive design for all screen sizes
  */
@@ -24,6 +24,7 @@ import { logger } from "@/lib/logger"
 import { astroz } from "@/styles/fonts"
 import { HERO_CTAS, HERO_VARIANTS } from "./types"
 import Mascot from "@/components/motion/Mascot"
+import { MembershipProgressSidebar } from "./MembershipProgressSidebar"
 
 interface HeroSectionProps {
   heroBurstIndex: number
@@ -80,10 +81,10 @@ export function HeroSection({
               astroz.className
             )}
           >
-            Earn Forever with Every Transaction
+            Community Powered Wealth Engine
           </h1>
           <p className="max-w-xl text-lg text-muted-foreground sm:text-xl">
-            Community-driven DeFi on BNB Chain. Every ASTY trade funds the Aster Vault and pays Aster rewards yearly to loyal holders.
+            Integrating the power of the Aster ecosystem, a 12-level referral network, and dividend streams. Build once — earn for life.
           </p>
         </div>
 
@@ -109,55 +110,14 @@ export function HeroSection({
 
         <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
           <span className="rounded-full border border-border/60 px-3 py-1">
-            Meme-first BNB chain
+            Aster ecosystem aligned
           </span>
           <span className="hidden h-0.5 w-8 bg-border/60 sm:block" aria-hidden="true" />
-          <span className="rounded-full border border-border/60 px-3 py-1">Vault tax = drip</span>
+          <span className="rounded-full border border-border/60 px-3 py-1">Permanent membership income</span>
         </div>
       </div>
 
-      <div
-        className="reveal-section relative isolate flex justify-center"
-        data-animate-on-scroll
-        data-visible="false"
-      >
-        <div
-          className={cn(
-            "relative w-full max-w-md overflow-hidden rounded-[2.75rem] border bg-gradient-to-br p-8 shadow-2xl transition",
-            heroVariant.borderClass,
-            heroVariant.gradientClass
-          )}
-        >
-          <div className="pointer-events-none absolute inset-0 opacity-20 mix-blend-screen">
-            <div className="absolute -left-20 top-10 h-60 w-60 rounded-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.6),_transparent_65%)] blur-3xl" />
-          </div>
-
-          <div className="relative space-y-5">
-            <div className="flex items-center justify-between rounded-2xl border border-border/50 bg-background/80 px-5 py-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">Vault drip</p>
-                <p className="mt-2 text-2xl font-bold text-foreground">$2,450,000</p>
-              </div>
-              <div className="text-right">
-                <p className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">Boost</p>
-                <p className="mt-2 text-xl font-bold text-primary">+18.4%</p>
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-border/40 bg-card/40 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">Referral chaos</p>
-              <p className="mt-2 text-base text-foreground">
-                10% USDT + 10% ASTY for every friend.
-              </p>
-            </div>
-          </div>
-          <div className="relative flex flex-col items-center justify-center gap-4 h-[200px] w-[200px]">
-            <div className="relative">
-              <Mascot />
-            </div>
-          </div>
-        </div>
-      </div>
+      <MembershipProgressSidebar motionReduced={true} />
     </section>
   )
 }

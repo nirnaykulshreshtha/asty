@@ -19,16 +19,16 @@ const ORGANIZATION_JSON_LD = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://example.com"),
-  title: "Asty — Tax-to-Vault Passive Income on BNB Chain",
+  title: "Asty — Community Powered Wealth Engine",
   description:
-    "Community-driven DeFi on BNB Chain. Every ASTY trade funds the Aster Vault and pays Aster rewards yearly to loyal holders.",
+    "Book an Early Membership to join the Aster-powered network. Permanent positions, 12-level referrals, and dividends that reward lifetime builders.",
   alternates: {
     canonical: "https://example.com",
   },
   openGraph: {
-    title: "Asty — Earn Forever with Every Transaction",
+    title: "Asty — Community Powered Wealth Engine",
     description:
-      "Asty routes a 6% tax into the Aster Vault, compounding Aster tokens for annual holder rewards.",
+      "Secure a $100 Early Membership, grow a 12-level network, and unlock dividends plus presale priority once 10,000 positions go live.",
     url: "https://example.com",
     siteName: "Asty",
     images: [
@@ -44,9 +44,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Asty — Earn Forever with Every Transaction",
+    title: "Asty — Community Powered Wealth Engine",
     description:
-      "Every ASTY trade funds the Aster Vault and returns Aster tokens to loyal holders once per year.",
+      "Early Membership comes first: $100 secures a permanent position, layered referrals, and dividend access ahead of presale.",
     images: ["https://example.com/assets/asty-slide.png"],
   },
 };

@@ -143,9 +143,8 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     currentStep: 'wallet'
   })
 
-  const { address, isConnecting, isReconnecting } = useAccount()
+  const { address } = useAccount()
 
-  const isLoading = isConnecting || isReconnecting
   const isWalletConnected = Boolean(address)
   const isRegistered = registrationState.isSubmitted
 
@@ -197,24 +196,24 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
 
   /**
    * Validates the referral address input with enhanced checks
-   * @param address - The referral address to validate
+   * @param inputAddress - The referral address to validate
    * @returns Error message if invalid, undefined if valid
    */
-  const validateReferralAddress = useCallback((address: string): string | undefined => {
-    if (!address.trim()) return undefined // Optional field
+  const validateReferralAddress = useCallback((inputAddress: string): string | undefined => {
+    if (!inputAddress.trim()) return undefined // Optional field
     
     // Check if it's a valid Ethereum address
-    if (!isEthereumAddress(address)) {
+    if (!isEthereumAddress(inputAddress)) {
       return "Please enter a valid Ethereum address (0x followed by 40 hex characters)"
     }
     
     // Check if it's the same as the connected wallet
-    if (address && address.toLowerCase() === address?.toLowerCase()) {
+    if (address && inputAddress.toLowerCase() === address.toLowerCase()) {
       return "Referral address cannot be the same as your wallet address"
     }
     
     // Check minimum length for basic validation
-    if (address.length < 42) {
+    if (inputAddress.length < 42) {
       return "Ethereum address must be 42 characters long"
     }
     

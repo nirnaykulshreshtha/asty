@@ -269,3 +269,48 @@ Impact:
 - Reusable confetti component for other celebrations
 - Better user satisfaction with visual celebration feedback
 
+## 2025-10-23 – Fixed TypeScript Warnings and Build Issues
+
+Context: The build process was showing several TypeScript warnings for unused variables and imports, which could impact code quality and build performance.
+
+Changes:
+- Fixed `src/components/pages/home/MemesSection.tsx`:
+  - Removed unused `ReferralLinkCard` import
+- Fixed `src/components/pages/home/ReferralLinkCard.tsx`:
+  - Removed unused `className` parameter and interface
+  - Simplified component signature
+- Fixed `src/components/pages/home/RegistrationSection.tsx`:
+  - Removed unused `isConnecting` and `isReconnecting` variables from useAccount destructuring
+
+Features:
+- **Clean Build**: No TypeScript warnings or errors
+- **Optimized Imports**: Removed unused imports to reduce bundle size
+- **Simplified Components**: Cleaner component signatures without unused parameters
+- **Better Code Quality**: Follows TypeScript best practices
+
+Impact:
+- Clean build output without warnings
+- Better code maintainability and readability
+- Reduced bundle size by removing unused imports
+- Improved developer experience with cleaner code
+- Professional codebase following TypeScript best practices
+
+## 2025-10-23 – Fixed Linting Errors and Validation Logic
+
+Context: Several linting warnings were present in the codebase that needed to be addressed for code quality and best practices.
+
+Changes:
+- Fixed `src/components/pages/home/RegistrationSection.tsx`:
+  - Removed unused `isLoading` variable
+  - Fixed self-referral validation logic by renaming parameter from `address` to `inputAddress` to avoid shadowing
+  - Now properly compares referral address with connected wallet address
+  - Fixed unnecessary dependency warning in useCallback
+- Fixed `src/components/ui/custom-connect-button.tsx`:
+  - Added ESLint disable comment for chain icon image tag (using img instead of Next.js Image is intentional for dynamic external URLs)
+
+Impact:
+- Cleaner codebase with no linting warnings
+- Fixed self-referral validation now properly prevents users from referring themselves
+- Better code quality and maintainability
+- Proper variable naming to avoid shadowing issues
+

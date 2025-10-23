@@ -21,7 +21,6 @@ import { logger } from "@/lib/logger"
 import { MemesSectionHeader } from "./MemesSectionHeader"
 import { MembershipFoundationCard } from "./MembershipFoundationCard"
 import { RegistrationSection } from "./RegistrationSection"
-import { ReferralLinkCard } from "./ReferralLinkCard"
 
 interface MemesSectionProps {
   motionReduced: boolean

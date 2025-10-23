@@ -22,19 +22,12 @@ import { Check, Copy, Share2 } from "lucide-react"
 import { logger } from "@/lib/logger"
 import { buildReferralLink } from "@/lib/referrals"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-
-interface ReferralLinkCardProps {
-  className?: string
-}
 
 /**
  * Renders a clean referral link card with copy/share functionality.
  * Only displays when a wallet is connected.
- * 
- * @param className - Additional CSS classes
  */
-export function ReferralLinkCard({ className }: ReferralLinkCardProps) {
+export function ReferralLinkCard() {
   const [hasCopied, setHasCopied] = useState(false)
   const { address } = useAccount()
 

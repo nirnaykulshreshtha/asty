@@ -1,0 +1,111 @@
+/**
+ * Footer Component
+ * ---------------
+ * Site footer with branding, contract address, and social media links.
+ * Features copyright information and social platform navigation.
+ * 
+ * Features:
+ * - Asty branding with contract address
+ * - Social media links (X, Telegram, Discord)
+ * - Copyright information
+ * - Responsive layout
+ */
+
+"use client"
+
+import { cn } from "@/lib/utils"
+import { logger } from "@/lib/logger"
+import { astroz } from "@/styles/fonts"
+
+/**
+ * Renders the site footer with branding and social links.
+ */
+export function Footer() {
+  logger.info("component:footer:render")
+
+  return (
+    <footer className="border-t border-border/40 bg-background/90 py-12">
+      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 md:flex-row md:items-start md:justify-between">
+        <div className="space-y-3">
+          <p className={cn("text-2xl tracking-[0.6em] text-primary", astroz.className)}>ASTY</p>
+          <p className="max-w-sm text-sm text-muted-foreground">
+            Celestial Vault contract address:{" "}
+            <span className="font-mono text-foreground">0xASTY000000000000000000000000</span>
+          </p>
+          <p className="text-xs text-muted-foreground">
+            © {new Date().getFullYear()} Asty. All rights reserved.
+          </p>
+        </div>
+
+        <nav aria-label="Footer links" className="space-y-4">
+          <p className="text-sm font-semibold text-foreground">Follow Asty</p>
+          <ul className="flex flex-wrap gap-4">
+            <li>
+              <a
+                href="https://x.com/asty"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-md border border-border/60 px-3 py-2 text-sm text-muted-foreground transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  className="size-4"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M3 3h4.5l4.05 5.7L15.6 3H21l-7.05 9.5L21 21h-4.5l-4.5-6.3-5 6.3H3l7.65-10z"
+                  />
+                </svg>
+                <span>X</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://t.me/asty"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-md border border-border/60 px-3 py-2 text-sm text-muted-foreground transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  className="size-4"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M21.5 4.5 3.2 11.1c-1.3.5-1.3 1.3-.2 1.6l4.6 1.4 1.8 5.8c.2.5.3.7.7.7.4 0 .5-.2.6-.6l.9-3.1 4.7 3.5c.9.5 1.5.2 1.7-.8l3-14.3c.3-1.2-.4-1.7-1.1-1.4Z"
+                  />
+                </svg>
+                <span>Telegram</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://example.com/discord"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-md border border-border/60 px-3 py-2 text-sm text-muted-foreground transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  className="size-4"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M20.3 4.3A16.3 16.3 0 0 0 16.6 3l-.5 1.1c-1-.3-2-.5-3.1-.5-1.1 0-2.1.2-3.1.5L9.4 3a16 16 0 0 0-3.7 1.3C3 8.1 2.3 11.6 2.5 15c1 1.3 2.4 2.5 4 3.3l.8-1.2c.6.3 1.2.5 1.9.7l.3-.8c.4.1.9.2 1.3.2.4 0 .9 0 1.3-.2l.3.8c.7-.1 1.3-.4 1.9-.7l.8 1.2c1.6-.8 3-2 4-3.3.3-3.6-.5-6.9-2.8-10.7ZM9.7 14c-.8 0-1.4-.7-1.4-1.6 0-.9.6-1.6 1.4-1.6.8 0 1.4.7 1.4 1.6 0 .9-.6 1.6-1.4 1.6Zm4.6 0c-.7 0-1.4-.7-1.4-1.6 0-.9.6-1.6 1.4-1.6.8 0 1.4.7 1.4 1.6 0 .9-.6 1.6-1.4 1.6Z"
+                  />
+                </svg>
+                <span>Discord</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </footer>
+  )
+}

@@ -118,3 +118,171 @@
 - Add diverse mascot image variations (PNG/SVG) for each meme card.
 - Consider extracting configs to content module for editors.
 
+### Homepage Refactoring (2025-01-27)
+
+**Goal**: Break down the monolithic homepage (1300+ lines) into smaller, maintainable components for better code organization and reusability.
+
+**Architecture Changes**:
+- Created modular component structure under `src/components/pages/home/`
+- Extracted all constants and types into centralized `types.ts` file
+- Separated each major section into its own component with clear responsibilities
+- Maintained all existing functionality while improving maintainability
+
+**New Component Structure**:
+```
+src/components/pages/home/
+├── types.ts                    # Centralized types and constants
+├── Header.tsx                  # Navigation and mobile menu
+├── HeroSection.tsx            # Hero with rotating bursts and CTAs
+├── BuySection.tsx             # Purchase instructions and referral info
+├── HowItWorksSection.tsx      # Three-step mechanics explanation
+├── TokenomicsSection.tsx      # Distribution table and key metrics
+├── MemesSection.tsx           # Asty reaction gallery
+├── RoadmapSection.tsx         # Project phases with progress indicators
+├── FAQSection.tsx             # Accordion-style Q&A
+├── CommunitySection.tsx       # Community links and resources
+├── Footer.tsx                 # Site footer with social links
+└── Toast.tsx                  # Accessible notification component
+```
+
+**Key Benefits**:
+- **Maintainability**: Each component has a single responsibility
+- **Reusability**: Components can be easily reused or modified
+- **Testing**: Individual components can be tested in isolation
+- **Performance**: Smaller bundle chunks and better tree-shaking
+- **Developer Experience**: Easier to navigate and understand code structure
+
+**Implementation Details**:
+- Preserved all existing functionality including animations, logging, and accessibility
+- Maintained aggressive logging throughout all components
+- Kept all TypeScript types and interfaces for type safety
+- Preserved responsive design and mobile navigation
+- Maintained scroll-triggered animations and intersection observers
+
+**Files Modified**:
+- `src/app/page.tsx`: Refactored to use modular components (reduced from 1300+ to ~200 lines)
+- `src/components/pages/home/types.ts`: New centralized types and constants file
+- `src/components/pages/home/*.tsx`: 11 new component files
+
+**Testing & Verification**:
+- All components maintain original functionality
+- Responsive design preserved across all screen sizes
+- Accessibility features maintained (ARIA labels, keyboard navigation)
+- Animation and interaction behaviors unchanged
+- TypeScript compilation successful with no errors
+
+**Future Improvements**:
+- Consider extracting shared animation logic into custom hooks
+- Add unit tests for individual components
+- Consider implementing lazy loading for non-critical sections
+- Extract common UI patterns into shared components
+
+### Advanced Animation System (2025-01-27)
+
+**Overview**: Comprehensive animation system built on Framer Motion with advanced features for complex visual effects and interactions.
+
+**Core Animation Components**:
+- `src/components/motion/LazyMotionProvider.tsx`: Performance-optimized motion context with LazyMotion
+- `src/components/motion/MotionDiv.tsx`: Client-side wrapper for server component compatibility
+- `src/components/motion/Reveal.tsx`: Lightweight in-view reveal animations
+- `src/components/motion/Mascot.tsx`: Advanced mascot with complex animation sequences
+
+**Animation Features Implemented**:
+
+**1. Transform Animations**:
+- 3D rotations (rotateX, rotateY, rotateZ) with perspective
+- Scale transformations with easing curves
+- Translation animations (x, y, z-axis movement)
+- Skew transformations for dynamic effects
+- Perspective-based 3D transforms with `transformStyle: "preserve-3d"`
+
+**2. Opacity-Based Animations**:
+- Fade in/out transitions with customizable timing
+- Pulse effects with breathing-like scale and opacity changes
+- Shimmer effects with opacity gradients
+- Breathing animations with subtle scale and opacity variations
+
+**3. Filter Animations**:
+- Blur effects (Gaussian blur with configurable radius)
+- Brightness adjustments with smooth transitions
+- Contrast and saturation modifications
+- Hue rotation for color-shifting effects
+- Custom SVG filters (glow, shimmer, color matrix)
+- Drop shadow effects with dynamic positioning
+
+**4. Mask Animations**:
+- Reveal effects using CSS mask properties
+- Wipe transitions with linear gradients
+- Morphing animations between different mask shapes
+- Dynamic mask positioning for sweep effects
+
+**5. Stroke Drawing Animations**:
+- SVG path drawing with `strokeDasharray` and `strokeDashoffset`
+- Configurable drawing speed and easing
+- Keyframe-based animation for complex path sequences
+- Support for multiple stroke styles and colors
+
+**6. Advanced Animation Variants**:
+- Complex state machines with multiple animation states
+- Choreographed multi-property animations
+- Interactive states (hover, tap, focus, drag)
+- Staggered animations for sequential effects
+- Conditional animations based on user preferences
+
+**Performance Optimizations**:
+- GPU-accelerated transforms using CSS `transform3d`
+- LazyMotion for reduced bundle size
+- Viewport-based animation triggers
+- Reduced motion preference support
+- Efficient re-render patterns with Framer Motion
+
+**Usage Examples**:
+```tsx
+// Basic reveal animation
+<FadeInUp delay={0.2}>
+  <div>Content fades in from bottom</div>
+</FadeInUp>
+
+// Staggered container
+<StaggerContainer delay={0.1}>
+  <StaggerItem>Item 1</StaggerItem>
+  <StaggerItem>Item 2</StaggerItem>
+</StaggerContainer>
+
+// Advanced mascot with all features
+<Mascot
+  enableFilterEffects={true}
+  enableMaskAnimations={true}
+  enableStrokeDrawing={true}
+  variants={customVariants}
+  animate="visible"
+  whileHover="hover"
+  whileTap="tap"
+/>
+```
+
+**Technical Implementation**:
+- Uses Framer Motion's `motion` components for declarative animations
+- CSS-in-JS for dynamic style generation
+- SVG filters and masks for advanced visual effects
+- Intersection Observer for viewport-based triggers
+- Custom hooks for animation state management
+
+**Accessibility Considerations**:
+- Respects `prefers-reduced-motion` system preference
+- Maintains focus management during animations
+- Provides alternative static states for motion-sensitive users
+- Ensures animations don't interfere with screen readers
+
+**Files Modified/Added**:
+- `src/components/motion/LazyMotionProvider.tsx`: Core motion context
+- `src/components/motion/MotionDiv.tsx`: Server component wrapper
+- `src/components/motion/Reveal.tsx`: Basic reveal animations
+- `src/components/motion/Mascot.tsx`: Advanced animation showcase
+
+**Testing & Verification**:
+- All animations work across modern browsers
+- Performance remains smooth on mobile devices
+- Accessibility features function correctly
+- Reduced motion preference is properly respected
+

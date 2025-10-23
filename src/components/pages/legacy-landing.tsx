@@ -276,7 +276,7 @@ export function LegacyLanding() {
         id="site-header"
         className="sticky top-0 z-40 border-b border-border/50 bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
       >
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
           <Link
             href="#hero"
             onClick={handleAnchorClick}
@@ -326,7 +326,7 @@ export function LegacyLanding() {
             mobileOpen ? "block border-t border-border/50 bg-background/95 backdrop-blur" : "hidden"
           )}
         >
-          <nav aria-label="Mobile navigation" className="mx-auto max-w-6xl px-6 pb-6">
+          <nav aria-label="Mobile navigation" className="mx-auto max-w-7xl px-6 pb-6">
             <ul className="flex flex-col gap-3 pt-2">
               {NAV_ITEMS.map((item) => (
                 <li key={item.href}>
@@ -345,7 +345,7 @@ export function LegacyLanding() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-6">
+      <main className="mx-auto max-w-7xl px-6">
         <section
           id="hero"
           data-section-label="Hero"
@@ -816,7 +816,7 @@ export function LegacyLanding() {
       </main>
 
       <footer className="border-t border-border/40 bg-background/90 py-12">
-        <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 md:flex-row md:items-start md:justify-between">
+        <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 md:flex-row md:items-start md:justify-between">
           <div className="space-y-3">
             <p className="text-2xl font-black tracking-[0.6em] text-primary">ASTY</p>
             <p className="max-w-sm text-sm text-muted-foreground">

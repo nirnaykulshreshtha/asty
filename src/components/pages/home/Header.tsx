@@ -70,9 +70,9 @@ export function Header({
                 ASTY
               </span>
             </span>
-            <span className="hidden text-xs uppercase text-muted-foreground tracking-[0.45em] md:block">
+            {/* <span className="hidden text-xs uppercase text-muted-foreground tracking-[0.45em] md:block">
               Earn Forever
-            </span>
+            </span> */}
           </Link>
 
           <nav aria-label="Primary navigation" className="hidden items-center gap-1 lg:flex">

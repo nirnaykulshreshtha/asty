@@ -15,7 +15,6 @@ import { logger } from "@/lib/logger"
 import { HERO_VARIANTS, HERO_BURSTS, ToastState } from "@/components/pages/home/types"
 import { Header } from "@/components/pages/home/Header"
 import { HeroSection } from "@/components/pages/home/HeroSection"
-import { BuySection } from "@/components/pages/home/BuySection"
 import { HowItWorksSection } from "@/components/pages/home/HowItWorksSection"
 import { TokenomicsSection } from "@/components/pages/home/TokenomicsSection"
 import { MemesSection } from "@/components/pages/home/MemesSection"
@@ -24,6 +23,8 @@ import { FAQSection } from "@/components/pages/home/FAQSection"
 import { CommunitySection } from "@/components/pages/home/CommunitySection"
 import { Footer } from "@/components/pages/home/Footer"
 import { Toast } from "@/components/pages/home/Toast"
+import { MembershipBenefitsGrid } from "@/components/pages/home/MembershipBenefitsGrid"
+import { SectionHeader } from "@/components/ui/SectionHeader"
 
 
 /**
@@ -176,13 +177,20 @@ export default function Home() {
           onAnchorClick={handleAnchorClick}
         />
 
-        <BuySection onAnchorClick={handleAnchorClick} />
+        <MemesSection motionReduced={motionReduced} />
 
         <HowItWorksSection />
 
-        <TokenomicsSection />
+        <section id="membership" aria-label="Membership benefits" className="my-16 space-y-8">
+          <SectionHeader
+            label="Membership"
+            title="Benefits and Network Advantages"
+            description="Secure a position to unlock layered income, dividends, and long-term upside."
+          />
+          <MembershipBenefitsGrid motionReduced={motionReduced} />
+        </section>
 
-        <MemesSection motionReduced={motionReduced} />
+        <TokenomicsSection />
 
         <RoadmapSection />
 

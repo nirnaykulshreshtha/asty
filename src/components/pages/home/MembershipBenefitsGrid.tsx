@@ -16,6 +16,7 @@
 
 import { logger } from "@/lib/logger"
 import { POSITION_BENEFITS, NETWORK_ADVANTAGES } from "./types"
+import { BulletedListCard } from "@/components/ui/BulletedListCard"
 
 interface MembershipBenefitsGridProps {
   motionReduced: boolean
@@ -31,45 +32,21 @@ export function MembershipBenefitsGrid({ motionReduced }: MembershipBenefitsGrid
 
   return (
     <div className="grid gap-6 md:grid-cols-2">
-      {/* Position Benefits Card */}
-      <article
-        className="reveal-section rounded-3xl border border-border/50 bg-card/60 p-6 shadow-lg"
-        data-animate-on-scroll
-        data-visible="false"
-      >
-        <h3 className="text-xl font-semibold text-foreground">Benefits of holding a position</h3>
-        <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-          {POSITION_BENEFITS.map((item) => (
-            <li key={item.title} className="flex gap-3 rounded-2xl border border-border/40 bg-background/80 p-4">
-              <span className="mt-1 size-2 rounded-full bg-primary" aria-hidden="true" />
-              <div>
-                <p className="text-base font-semibold text-foreground">{item.title}</p>
-                <p>{item.description}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </article>
+      <BulletedListCard
+        heading="Benefits of holding a position"
+        items={POSITION_BENEFITS}
+        getKey={(item) => item.title}
+        getTitle={(item) => item.title}
+        getDescription={(item) => item.description}
+      />
 
-      {/* Network Advantages Card */}
-      <article
-        className="reveal-section rounded-3xl border border-border/50 bg-card/60 p-6 shadow-lg"
-        data-animate-on-scroll
-        data-visible="false"
-      >
-        <h3 className="text-xl font-semibold text-foreground">Key advantages of Asty Network</h3>
-        <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-          {NETWORK_ADVANTAGES.map((item) => (
-            <li key={item.title} className="flex gap-3 rounded-2xl border border-border/40 bg-background/80 p-4">
-              <span className="mt-1 size-2 rounded-full bg-primary" aria-hidden="true" />
-              <div>
-                <p className="text-base font-semibold text-foreground">{item.title}</p>
-                <p>{item.description}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </article>
+      <BulletedListCard
+        heading="Key advantages of Asty Network"
+        items={NETWORK_ADVANTAGES}
+        getKey={(item) => item.title}
+        getTitle={(item) => item.title}
+        getDescription={(item) => item.description}
+      />
     </div>
   )
 }

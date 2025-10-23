@@ -96,7 +96,7 @@ export function TokenomicsSection() {
                   index % 2 === 0 ? "bg-background/30" : "bg-background/20"
                 )}
               >
-                <span
+                <td
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-y-0 left-0 hidden rounded-e-full bg-primary/15 transition-all duration-500 group-hover:bg-primary/25 md:block"
                   style={{ width: `${row.percent}%` }}

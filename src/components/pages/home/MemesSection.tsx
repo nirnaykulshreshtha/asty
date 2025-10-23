@@ -20,7 +20,6 @@ import { logger } from "@/lib/logger"
 import { MemesSectionHeader } from "./MemesSectionHeader"
 import { MembershipFoundationCard } from "./MembershipFoundationCard"
 import { MembershipProgressSidebar } from "./MembershipProgressSidebar"
-import { MembershipBenefitsGrid } from "./MembershipBenefitsGrid"
 
 interface MemesSectionProps {
   motionReduced: boolean
@@ -47,8 +46,6 @@ export function MemesSection({ motionReduced }: MemesSectionProps) {
         <MembershipFoundationCard motionReduced={motionReduced} />
         <MembershipProgressSidebar motionReduced={motionReduced} />
       </div>
-
-      <MembershipBenefitsGrid motionReduced={motionReduced} />
     </section>
   )
 }

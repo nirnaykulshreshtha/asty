@@ -66,7 +66,7 @@ export function HeroSection({
                 astroz.className
               )}
             >
-              Be an early holder, Earn from the future of DeFi
+              Your LifeTime Passive Income Engine
             </h1>
             <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
               Asty combines education, referrals, and facilitator tooling to channel every community action into a shared Vault. Hold a position, build the network, and earn transparent income for life.

@@ -314,3 +314,47 @@ Impact:
 - Better code quality and maintainability
 - Proper variable naming to avoid shadowing issues
 
+## 2025-10-26 – Homepage Redesign Based on Client Slide Narrative
+
+Context: Client provided 12 slides outlining the complete Asty narrative, focusing on community-driven DeFi, vault mechanics, and transparent income distribution. The existing homepage needed to be redesigned to match this messaging while maintaining the Asty visual language.
+
+Changes:
+- **Content Audit & Planning**: Created comprehensive slide-to-section mapping in `homepage.plan.md` to track implementation progress.
+- **Hero Section Redesign** (`src/components/pages/home/HeroSection.tsx`):
+  - Updated main title to "Introducing Asty: the community DeFi layer for DEX adoption"
+  - Added three core pillars (Education, Referral, Facilitation) with icons and descriptions
+  - Refreshed CTAs to "Join Asty Network" and "View Vault Model"
+  - Enhanced pill messaging to include "Token presale unlocks at 10k"
+- **Data Structure Overhaul** (`src/components/pages/home/types.ts`):
+  - Added comprehensive icon imports from lucide-react (fixed `Safe` icon issue by using `Vault`)
+  - Created new interfaces: `HeroPillar`, `VaultFlowStage`, `VaultRevenueStream`, `ParticipationPillar`, `PositionAdvantage`, `IncomeBenefit`, `TransparencyPillar`, `MomentumStat`
+  - Updated navigation items to include Vault, Why Asty, Benefits, Trust sections
+  - Refreshed tokenomics data to reflect 21M supply, hyper-deflationary model, vault distributions
+  - Added vault flow stages, revenue streams, participation pillars, community income benefits, transparency pillars, momentum stats
+  - Updated community cards to focus on network joining, vault dashboard, audit reports, community hub
+- **Constants Update** (`src/components/pages/home/constants.ts`):
+  - Refreshed messaging to emphasize vault-driven rewards and community activity
+  - Added transparency and movement section intro text
+  - Updated trigger text to focus on vault compounding
+
+Features:
+- **Slide-Driven Content**: All 12 client slides mapped to specific homepage sections
+- **Vault-Centric Messaging**: Emphasis on community activity feeding into shared vault
+- **Transparency Focus**: On-chain vault, audited contracts, open reward logic, DAO governance
+- **Community Income Model**: Lifetime passive income, early entry advantage, hyper-deflationary tokenomics
+- **Educational Pillars**: Education, referral, and facilitation as core value propositions
+- **Comprehensive Data Structure**: Type-safe interfaces for all new content types
+
+Impact:
+- Homepage now accurately reflects client's vision of Asty as community-driven DeFi layer
+- Clear narrative flow from community activity → vault → rewards → holders
+- Enhanced transparency messaging builds trust and credibility
+- Vault-centric approach differentiates from typical token projects
+- Comprehensive data structure supports future section implementations
+- Maintains existing Asty visual language while updating content to match client slides
+
+Next Steps:
+- Implement new sections (VaultFlowSection, TransparencySection, MovementSection)
+- Refactor existing sections to use updated data structures
+- Add remaining slide content to complete the narrative
+

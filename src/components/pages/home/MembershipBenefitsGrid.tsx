@@ -15,8 +15,7 @@
 "use client"
 
 import { logger } from "@/lib/logger"
-import { POSITION_BENEFITS, NETWORK_ADVANTAGES } from "./types"
-import { BulletedListCard } from "@/components/ui/BulletedListCard"
+import { COMMUNITY_INCOME_BENEFITS } from "./types"
 
 interface MembershipBenefitsGridProps {
   motionReduced: boolean
@@ -31,22 +30,27 @@ export function MembershipBenefitsGrid({ motionReduced }: MembershipBenefitsGrid
   logger.info("component:memes:benefits:render", { motionReduced })
 
   return (
-    <div className="grid gap-6 md:grid-cols-2">
-      <BulletedListCard
-        heading="Benefits of holding a position"
-        items={POSITION_BENEFITS}
-        getKey={(item) => item.title}
-        getTitle={(item) => item.title}
-        getDescription={(item) => item.description}
-      />
-
-      <BulletedListCard
-        heading="Key advantages of Asty Network"
-        items={NETWORK_ADVANTAGES}
-        getKey={(item) => item.title}
-        getTitle={(item) => item.title}
-        getDescription={(item) => item.description}
-      />
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      {COMMUNITY_INCOME_BENEFITS.map((benefit) => (
+        <div
+          key={benefit.title}
+          className="reveal-section rounded-2xl border border-border/60 bg-card/60 p-6 shadow-lg"
+          data-animate-on-scroll
+          data-visible="false"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex size-10 items-center justify-center rounded-full border border-primary/40 bg-primary/15 text-primary">
+              <benefit.icon className="size-5" aria-hidden="true" />
+            </div>
+            <h3 className="text-lg font-semibold text-foreground">
+              {benefit.title}
+            </h3>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {benefit.description}
+          </p>
+        </div>
+      ))}
     </div>
   )
 }

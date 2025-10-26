@@ -32,14 +32,13 @@ export function MemesSectionHeader({ motionReduced }: MemesSectionHeaderProps) {
   return (
     <div className="reveal-section space-y-4" data-animate-on-scroll data-visible="false">
       <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-        Early Opportunity
+        The Missing Layer
       </p>
       <h2 className={cn("text-4xl text-foreground sm:text-5xl", astroz.className)}>
-        Book Early Membership
+        Asty Turns DeFi Participation into Real Rewards
       </h2>
       <p className="max-w-3xl text-base text-muted-foreground">
-        We&apos;re currently onboarding members only—no token purchase required. Secure a $100 lifetime position,
-        build your 12-level network, and be first in line when the token presale unlocks at 10,000 memberships.
+        Today, DEX adoption faces one big barrier: onboarding and rewarding the community fairly. Asty solves this by combining education, referrals, and facilitator tools – and channels that value into a shared Vault for its holders.
       </p>
     </div>
   )

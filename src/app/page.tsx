@@ -23,8 +23,12 @@ import { FAQSection } from "@/components/pages/home/FAQSection"
 import { CommunitySection } from "@/components/pages/home/CommunitySection"
 import { Footer } from "@/components/pages/home/Footer"
 import { Toast } from "@/components/pages/home/Toast"
+import { VaultFlowSection } from "@/components/pages/home/VaultFlowSection"
+import { TransparencySection } from "@/components/pages/home/TransparencySection"
+import { MovementSection } from "@/components/pages/home/MovementSection"
 import { MembershipBenefitsGrid } from "@/components/pages/home/MembershipBenefitsGrid"
 import { SectionHeader } from "@/components/ui/SectionHeader"
+import { useScrollReveal, useParallax } from "@/hooks/useScrollMotion"
 
 
 /**
@@ -42,7 +46,9 @@ export default function Home() {
   const prefersReducedMotion = useRef(false)
 
   const heroVariant = HERO_VARIANTS[heroBurstIndex % HERO_VARIANTS.length]
-  const heroBurst = HERO_BURSTS[heroBurstIndex] ?? HERO_BURSTS[0]
+
+  useScrollReveal({ threshold: 0.25 })
+  useParallax({ speed: 0.25, maxShift: 140 })
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -173,26 +179,31 @@ export default function Home() {
         <HeroSection
           heroBurstIndex={heroBurstIndex}
           heroVariant={heroVariant}
-          heroBurst={heroBurst}
           onAnchorClick={handleAnchorClick}
         />
 
-        <MemesSection motionReduced={motionReduced} />
+        <VaultFlowSection onAnchorClick={handleAnchorClick} />
 
-        <HowItWorksSection />
-
-        <section id="membership" aria-label="Membership benefits" className="my-16 space-y-8">
+        <section id="income" aria-label="Community income benefits" className="my-16 space-y-8">
           <SectionHeader
-            label="Membership"
-            title="Benefits and Network Advantages"
-            description="Secure a position to unlock layered income, dividends, and long-term upside."
+            label="Community Income"
+            title="Holding Asty means owning a share of community-driven income"
+            description="Asty rewards real participation, not speculation. Holders benefit directly from the growth of the network and Vault — creating lifetime passive income."
           />
           <MembershipBenefitsGrid motionReduced={motionReduced} />
         </section>
 
         <TokenomicsSection />
 
+        <MemesSection motionReduced={motionReduced} />
+
+        <HowItWorksSection />
+
+        <MovementSection onAnchorClick={handleAnchorClick} />
+
         <RoadmapSection />
+
+        <TransparencySection onAnchorClick={handleAnchorClick} />
 
         <FAQSection />
 

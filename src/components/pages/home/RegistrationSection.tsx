@@ -73,6 +73,32 @@ interface StepIndicatorProps {
  * @param steps - Array of step definitions with labels and icons
  */
 function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <div className="flex items-center justify-center space-x-4 mb-6">
+        {steps.map((step, index) => (
+          <div key={step.id} className="flex items-center">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full border-2 bg-background/50 border-muted-foreground/30 text-muted-foreground">
+              {step.icon}
+            </div>
+            <span className="ml-2 text-xs font-medium text-muted-foreground">
+              {step.label}
+            </span>
+            {index < steps.length - 1 && (
+              <div className="w-8 h-0.5 mx-2 bg-muted-foreground/30" />
+            )}
+          </div>
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className="flex items-center justify-center space-x-4 mb-6">
       {steps.map((step, index) => (
@@ -121,6 +147,7 @@ function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
 export function RegistrationSection({ motionReduced }: RegistrationSectionProps) {
   logger.info("component:memes:registration:render", { motionReduced })
 
+  const [mounted, setMounted] = useState(false)
   const [formData, setFormData] = useState<FormData>(() => {
     // Load form data from localStorage on component mount
     if (typeof window !== 'undefined') {
@@ -145,7 +172,11 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
 
   const { address } = useAccount()
 
-  const isWalletConnected = Boolean(address)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const isWalletConnected = mounted && Boolean(address)
   const isRegistered = registrationState.isSubmitted
 
   // Step management

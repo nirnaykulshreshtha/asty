@@ -1,6 +1,6 @@
 /**
  * Homepage Types and Constants
- * ---------------------------
+ * ----------------------------
  * Centralized type definitions and constant data for the Asty homepage components.
  * Contains all navigation items, hero variants, meme data, and other static content.
  * 
@@ -8,7 +8,28 @@
  * consistency across all refactored components.
  */
 
-import { Sparkles, TrendingUp, ShieldCheck } from "lucide-react"
+import {
+  AlertOctagon,
+  ArrowBigUpDash,
+  Coins,
+  FileText,
+  GraduationCap,
+  HandCoins,
+  Layers3,
+  LifeBuoy,
+  Lock,
+  PieChart,
+  Rocket,
+  Share2,
+  ShieldCheck,
+  Sparkles,
+  TrendingUp,
+  Trophy,
+  Users,
+  Vault,
+  Wallet,
+  Wrench
+} from "lucide-react"
 
 // Navigation types
 export interface NavItem {
@@ -30,6 +51,20 @@ export interface HeroVariant {
   gradientClass: string
   bubbleClass: string
   stickerClass: string
+}
+
+export interface HeroPillar {
+  title: string
+  description: string
+  icon: typeof GraduationCap
+}
+
+export interface AnimatedMetric {
+  id: string
+  label: string
+  value: number
+  suffix?: string
+  duration?: number
 }
 
 // Membership highlight types
@@ -76,6 +111,19 @@ export interface TokenomicsSummary {
   icon: typeof Sparkles
 }
 
+export interface VaultFlowStage {
+  id: string
+  title: string
+  description: string
+  icon: typeof Users
+}
+
+export interface VaultRevenueStream {
+  title: string
+  description: string
+  icon: typeof HandCoins
+}
+
 // Roadmap types
 export interface RoadmapPhase {
   phase: string
@@ -111,6 +159,38 @@ export interface CoreGoal {
   description: string
 }
 
+export interface ParticipationPillar {
+  title: string
+  description: string
+  icon: typeof GraduationCap
+}
+
+export interface PositionAdvantage {
+  title: string
+  description: string
+  icon: typeof Trophy
+}
+
+export interface IncomeBenefit {
+  title: string
+  description: string
+  icon: typeof Coins
+}
+
+export interface TransparencyPillar {
+  title: string
+  description: string
+  icon: typeof PieChart
+  ctaLabel?: string
+  ctaHref?: string
+}
+
+export interface MomentumStat {
+  title: string
+  detail: string
+  icon: typeof Rocket
+}
+
 // Toast state
 export interface ToastState {
   message: string
@@ -119,10 +199,14 @@ export interface ToastState {
 
 // Navigation items
 export const NAV_ITEMS: NavItem[] = [
+  { label: "Vault", href: "#vault" },
+  { label: "Why Asty", href: "#participation" },
   { label: "Membership", href: "#membership" },
   { label: "How It Works", href: "#how" },
+  { label: "Benefits", href: "#income" },
   { label: "Tokenomics", href: "#tokenomics" },
   { label: "Roadmap", href: "#roadmap" },
+  { label: "Trust", href: "#trust" },
   { label: "FAQ", href: "#faq" },
   { label: "Community", href: "#community" },
 ]
@@ -130,14 +214,14 @@ export const NAV_ITEMS: NavItem[] = [
 // Hero CTAs
 export const HERO_CTAS: HeroCta[] = [
   {
-    label: "Book Early Membership",
+    label: "Join Asty Network",
     href: "#membership",
     variant: "default",
     tone: "primary",
   },
   {
-    label: "Generate Referral Link",
-    href: "#community",
+    label: "View Vault Model",
+    href: "#vault",
     variant: "secondary",
     tone: "secondary",
   },
@@ -173,6 +257,47 @@ export const HERO_BURSTS: string[] = [
   "Community wealth in motion",
   "Twelve levels, one engine",
   "Dividends drop for life",
+]
+
+export const HERO_PILLARS: HeroPillar[] = [
+  {
+    title: "Education",
+    description: "Empowering DEX users through actionable, community-first content.",
+    icon: GraduationCap,
+  },
+  {
+    title: "Referral",
+    description: "Driving network growth and shared rewards via a 12-level program.",
+    icon: Share2,
+  },
+  {
+    title: "Facilitation",
+    description: "Building tools that support trader needs across the Aster ecosystem.",
+    icon: Wrench,
+  },
+]
+
+export const HERO_METRICS: AnimatedMetric[] = [
+  {
+    id: "members",
+    label: "Members Onboarded",
+    value: 6320,
+    duration: 2.4,
+  },
+  {
+    id: "vault",
+    label: "Vault Growth Streams",
+    value: 12,
+    suffix: "+",
+    duration: 1.8,
+  },
+  {
+    id: "rewards",
+    label: "Rewards Distributed",
+    value: 48,
+    suffix: "%",
+    duration: 2,
+  },
 ]
 
 // Mascot meme data
@@ -282,62 +407,222 @@ export const MEMBERSHIP_HIGHLIGHTS: MembershipHighlight[] = [
 // How it works steps
 export const HOW_STEPS: HowStep[] = [
   {
-    title: "Book Your Slot",
+    title: "Secure Your Position",
     description:
-      "Lock in an Early Membership for $100 and claim a permanent position inside the Asty Network.",
+      "Lock in a $100 Early Membership and cement your place inside the structured ecosystem.",
   },
   {
-    title: "Build Your Network",
+    title: "Build With Referrals",
     description:
-      "Share referral links to grow 12 levels deep and unlock layered earnings across the tree.",
+      "Grow a 12-level tree that channels referral earnings straight into the Vault.",
   },
   {
     title: "Earn Dividends",
     description:
-      "Earn biweekly and annual dividends plus presale advantages as the ecosystem scales.",
+      "Collect biweekly and annual Vault distributions as the DeFi layer comes online.",
+  },
+]
+
+export const POSITION_ADVANTAGES: PositionAdvantage[] = [
+  {
+    title: "Top share of rewards",
+    description: "Early positions receive the highest share of referral and Vault income.",
+    icon: Trophy,
+  },
+  {
+    title: "Permanent placement",
+    description: "Once you lock a slot, it cannot be displaced—your spot pays forever.",
+    icon: Lock,
+  },
+  {
+    title: "Compounding flow",
+    description: "Biweekly and yearly Vault payouts stack with every new network action.",
+    icon: Vault,
+  },
+  {
+    title: "Built for builders",
+    description: "Ideal for network leaders, early supporters, and long-term DeFi participants.",
+    icon: Users,
   },
 ]
 
 // Tokenomics data
 export const TOKENOMICS_ROWS: TokenomicsRow[] = [
-  { type: "Round 1 Presale", amount: "10 lac ASTY", rate: "Pricing TBA", percent: 40 },
-  { type: "Round 2 Presale", amount: "10 lac ASTY", rate: "Pricing TBA", percent: 80 },
-  { type: "Round 3 Presale", amount: "5 lac ASTY", rate: "Pricing TBA", percent: 100 },
+  { type: "Community Vault", amount: "9,000,000 ASTY", rate: "Vault-driven rewards", percent: 43 },
+  { type: "Public Circulation", amount: "5,000,000 ASTY", rate: "Unlocked post-launch", percent: 67 },
+  { type: "Strategic Growth", amount: "4,000,000 ASTY", rate: "Governed allocations", percent: 86 },
+  { type: "Presale Rounds", amount: "3,000,000 ASTY", rate: "Bi-stage early access", percent: 100 },
 ]
 
 export const TOKENOMICS_CARDS: TokenomicsCard[] = [
   {
-    title: "Community Engine",
-    body: "Membership sales build the network first so the presale launches with a ready-made demand base.",
+    title: "Hyper-deflationary",
+    body: "Built-in burn mechanics tighten supply as usage grows, boosting Vault share per holder.",
   },
   {
-    title: "Multi-Layer Rewards",
-    body: "Referral income stacks with dividends, rewarding both growth and long-term participation.",
+    title: "Vault-powered yield",
+    body: "Every network action strengthens the Vault, distributing real income across holders.",
   },
   {
-    title: "Aster Integration",
-    body: "Directly linked to the Aster ecosystem so treasury growth reflects ecosystem expansion.",
+    title: "Sustainable ecosystem",
+    body: "Community activity, not speculation, drives long-term value inside the Asty layer.",
   },
 ]
 
 export const TOKENOMICS_SUMMARY: TokenomicsSummary[] = [
   {
-    title: "Max Supply",
-    value: "2.1 crore ASTY",
-    description: "Capped issuance ensures scarcity as utility expands across the network.",
+    title: "Total Supply",
+    value: "21,000,000 ASTY",
+    description: "Fixed issuance paired with hyper-deflationary mechanics preserves scarcity.",
     icon: Sparkles,
   },
   {
-    title: "Presale Pool",
-    value: "25 lac ASTY",
-    description: "Allocated across three rounds (10L + 10L + 5L) for early adopters.",
-    icon: TrendingUp,
+    title: "Vault Distribution",
+    value: "Biweekly & yearly",
+    description: "Income flows to holders based on position and token ownership.",
+    icon: Vault,
   },
   {
-    title: "Launch Trigger",
+    title: "Network First",
     value: "10,000 memberships",
-    description: "Token presale activates once the first 10k positions are secured.",
+    description: "Presale unlocks once the community layer reaches critical mass.",
+    icon: TrendingUp,
+  },
+]
+
+export const VAULT_FLOW_STAGES: VaultFlowStage[] = [
+  {
+    id: "community",
+    title: "Community Activity",
+    description: "Every referral, lesson, and tool run feeds value into the shared Vault.",
+    icon: Users,
+  },
+  {
+    id: "vault",
+    title: "Vault",
+    description: "The on-chain engine that captures ecosystem revenue and prepares distributions.",
+    icon: Vault,
+  },
+  {
+    id: "rewards",
+    title: "Rewards",
+    description: "Biweekly and yearly payouts route to qualified members and holders.",
+    icon: HandCoins,
+  },
+  {
+    id: "holders",
+    title: "Holders",
+    description: "ASTY holders benefit directly—no intermediaries, just transparent flow.",
+    icon: Wallet,
+  },
+]
+
+export const VAULT_REVENUE_STREAMS: VaultRevenueStream[] = [
+  {
+    title: "Referral earnings",
+    description: "Connected DEX layer funnels referral share into the Vault treasury.",
+    icon: Share2,
+  },
+  {
+    title: "Education layer fees",
+    description: "Participation in Asty School programs contributes sustainable revenue.",
+    icon: GraduationCap,
+  },
+  {
+    title: "Trader tools",
+    description: "Utility products launch new income streams that reinforce Vault rewards.",
+    icon: Wrench,
+  },
+]
+
+export const PARTICIPATION_PILLARS: ParticipationPillar[] = [
+  {
+    title: "Educate",
+    description: "Onboard the next wave of DEX users with guided curriculum and support.",
+    icon: GraduationCap,
+  },
+  {
+    title: "Reward",
+    description: "Share fair income distributions across every contributor in the network.",
+    icon: HandCoins,
+  },
+  {
+    title: "Facilitate",
+    description: "Deploy tools that strengthen traders and expand the ecosystem flywheel.",
+    icon: Layers3,
+  },
+]
+
+export const COMMUNITY_INCOME_BENEFITS: IncomeBenefit[] = [
+  {
+    title: "Lifetime passive income",
+    description: "Vault distributions reward positions forever once the network activates.",
+    icon: Coins,
+  },
+  {
+    title: "Early entry advantage",
+    description: "Top placements receive long-term benefits across referrals and dividends.",
+    icon: Rocket,
+  },
+  {
+    title: "DeFi + community power",
+    description: "Sustainable, transparent model anchored to real ecosystem activity.",
+    icon: Users,
+  },
+  {
+    title: "Value appreciation",
+    description: "Hyper-deflationary tokenomics create lasting scarcity for holders.",
+    icon: ArrowBigUpDash,
+  },
+]
+
+export const TRANSPARENCY_PILLARS: TransparencyPillar[] = [
+  {
+    title: "On-chain vault",
+    description: "Trackable distributions and balances in real time for every member.",
+    icon: Vault,
+    ctaLabel: "View Vault Dashboard",
+    ctaHref: "#vault",
+  },
+  {
+    title: "Audited contracts",
+    description: "Security-first smart contracts reviewed and published for the community.",
     icon: ShieldCheck,
+    ctaLabel: "Audit Reports",
+    ctaHref: "#community",
+  },
+  {
+    title: "Open reward logic",
+    description: "No hidden switches—reward formulas are open, verifiable, and logged.",
+    icon: FileText,
+  },
+  {
+    title: "DAO governance",
+    description: "Community-first decision making steers treasury and roadmap milestones.",
+    icon: LifeBuoy,
+  },
+]
+
+export const MOMENTUM_STATS: MomentumStat[] = [
+  {
+    title: "21 Million fixed supply",
+    detail: "Scarcity is hard-coded. Every token ties back to the Vault economy.",
+    icon: PieChart,
+  },
+  {
+    title: "Hyper-deflationary model",
+    detail: "Burn mechanics reduce float as community-driven activity accelerates.",
+    icon: AlertOctagon,
+  },
+  {
+    title: "Vault-based income",
+    detail: "Network actions generate real, transparent cash flow for participants.",
+    icon: HandCoins,
+  },
+  {
+    title: "Early entry advantage",
+    detail: "Secure a founding position before the referral tree locks in full.",
+    icon: Rocket,
   },
 ]
 
@@ -427,15 +712,27 @@ export const FAQ_ITEMS: FaqItem[] = [
 // Community data
 export const COMMUNITY_CARDS: CommunityCard[] = [
   {
-    title: "Join Telegram",
-    description: "Chat with vault keepers and get launch alerts in real time.",
-    href: "https://t.me/asty",
+    title: "Join Asty Network",
+    description: "Secure your membership slot and grow alongside early builders.",
+    href: "#membership",
+    external: false,
+  },
+  {
+    title: "View Vault Dashboard",
+    description: "Track live Vault stats, flows, and historic distributions.",
+    href: "#vault",
+    external: false,
+  },
+  {
+    title: "Audit Reports",
+    description: "Review third-party contract audits and transparency packages.",
+    href: "https://example.com/audit-reports",
     external: true,
   },
   {
-    title: "Read Whitepaper",
-    description: "Dive into the token design, audits, and treasury mechanics.",
-    href: "#whitepaper",
-    external: false,
+    title: "Community Hub",
+    description: "Tap into Telegram and social channels to coordinate launches.",
+    href: "https://t.me/asty",
+    external: true,
   },
 ]

@@ -14,7 +14,7 @@
 
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect } from "react"
 import { useAccount } from "wagmi"
 import { toast } from "sonner"
 import { Check, Copy, Share2 } from "lucide-react"
@@ -29,12 +29,17 @@ import { Button } from "@/components/ui/button"
  */
 export function ReferralLinkCard() {
   const [hasCopied, setHasCopied] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const { address } = useAccount()
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const referralLink = useMemo(() => {
-    if (!address) return ""
+    if (!mounted || !address) return ""
     return buildReferralLink(address)
-  }, [address])
+  }, [mounted, address])
 
   const handleCopyReferral = () => {
     if (!referralLink) {
@@ -111,8 +116,8 @@ export function ReferralLinkCard() {
     })
   }
 
-  // Don't render if no wallet connected
-  if (!address || !referralLink) {
+  // Don't render if not mounted or no wallet connected
+  if (!mounted || !address || !referralLink) {
     return null
   }
 

@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
 
 export interface DecorativeBackgroundProps {
-  variant: "tokenomics" | "roadmap" | "sidebar"
+  variant: "tokenomics" | "roadmap" | "sidebar" | "hero" | "movement"
   className?: string
 }
 
@@ -45,6 +45,20 @@ export function DecorativeBackground({ variant, className }: DecorativeBackgroun
           <div className="absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,_rgba(146,68,255,0.25),_transparent_65%)] blur-3xl" />
           <div className="absolute -bottom-16 right-6 h-56 w-56 rounded-full bg-[radial-gradient(circle_at_center,_rgba(73,110,255,0.2),_transparent_65%)] blur-3xl" />
           <div className="absolute inset-0 bg-[linear-gradient(140deg,rgba(255,255,255,0.05)_0%,transparent_45%,rgba(255,255,255,0.08)_100%)]" />
+        </>
+      )}
+      {variant === "hero" && (
+        <>
+          <div className="absolute -left-32 top-1/4 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,_rgba(255,179,71,0.25),_transparent_60%)] blur-3xl" />
+          <div className="absolute -right-16 bottom-0 h-80 w-80 rounded-full bg-[radial-gradient(circle_at_center,_rgba(179,102,255,0.2),_transparent_65%)] blur-3xl" />
+          <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.04)_0%,transparent_50%,rgba(255,255,255,0.04)_90%)]" />
+        </>
+      )}
+      {variant === "movement" && (
+        <>
+          <div className="absolute left-1/2 top-0 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,_rgba(255,90,196,0.25),_transparent_70%)] blur-[120px]" />
+          <div className="absolute -bottom-24 right-10 h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle_at_center,_rgba(82,210,255,0.28),_transparent_65%)] blur-[120px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.06)_0%,transparent_40%,rgba(255,255,255,0.04)_90%)]" />
         </>
       )}
     </div>

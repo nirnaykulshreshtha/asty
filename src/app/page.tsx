@@ -31,6 +31,7 @@ import { SectionHeader } from "@/components/ui/SectionHeader"
 import { CTAButton } from "@/components/ui/CTAButton"
 import { useScrollReveal, useParallax } from "@/hooks/useScrollMotion"
 import { IntroducingSection } from "@/components/pages/home/IntroducingSection"
+import { FloatingMemberButton } from "@/components/pages/home/FloatingMemberButton"
 
 
 /**
@@ -169,6 +170,8 @@ export default function Home() {
   return (
     <>
       <Toast toast={toast} />
+      
+      <FloatingMemberButton onAnchorClick={handleAnchorClick} />
       
       <Header 
         onAnchorClick={handleAnchorClick}

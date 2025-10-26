@@ -394,3 +394,41 @@ Impact:
 - Improved user experience with organized information architecture
 - Professional appearance with appropriate information placement
 
+## 2025-10-26 – Floating Membership Registration Button
+
+Context: Users need quick, always-accessible access to membership registration as they browse the site. A fixed floating button on the right side provides constant visibility without being intrusive.
+
+Changes:
+- **New Component** (`src/components/pages/home/FloatingMemberButton.tsx`):
+  - Fixed positioning on right-middle of viewport
+  - Vertical centering with top-1/2 and -translate-y-1/2
+  - Smooth scroll to #membership section via onAnchorClick
+  - Auto-hides near top/bottom of page for better UX
+  - Responsive: hidden on mobile (md:flex for desktop only)
+  - Gradient background with primary color scheme
+  - Hover animations with scale and shadow effects
+  - Accessible with proper ARIA labels and focus states
+  - Aggressive logging for debugging interactions
+  - Auto-hides when hero, membership, or footer sections intersect viewport to reduce CTA clutter
+- **Integration** (`src/app/page.tsx`):
+  - Imported and rendered FloatingMemberButton above Header
+  - Connected to existing handleAnchorClick handler
+  - Visible on all pages for consistent UX
+
+Features:
+- **Fixed Positioning**: Always visible as users scroll (stays in viewport)
+- **Smart Visibility**: Auto-hides near top/bottom and within hero/membership/footer sections to reduce CTA clutter
+- **Smooth Animations**: Fade in/out transitions and hover effects
+- **Responsive Design**: Mobile-friendly (hidden on small screens)
+- **Visual Design**: Gradient background with shadow and border
+- **Easy Access**: One-click navigation to membership registration
+- **Accessible**: Proper ARIA labels and keyboard navigation
+- **Comprehensive Logging**: Debug-friendly with interaction tracking
+
+Impact:
+- Provides constant, easy access to membership registration
+- Improves conversion funnel with always-visible CTA
+- Non-intrusive design that doesn't block content
+- Enhances user experience with clear call-to-action
+- Professional appearance with smooth animations
+- Better mobile experience (hidden on small screens where it might obstruct)

@@ -48,7 +48,7 @@ export function VaultFlowSection({ onAnchorClick }: VaultFlowSectionProps) {
         <SectionHeader
           label="The Engine"
           title="Community is the engine. The Vault is the reward."
-          description="Every touchpoint inside Asty — learning, referrals, trader tooling — deposits value into the shared Vault. The Vault then redistributes yield back to holders based on real contribution and position."
+          description="Every action inside the Asty ecosystem — from education to referrals to trading tools — grows the Vault. The Vault then rewards holders and network participants fairly and transparently."
         />
 
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
@@ -182,7 +182,7 @@ export function VaultFlowSection({ onAnchorClick }: VaultFlowSectionProps) {
         <div className="grid gap-4 md:grid-cols-2">
           <ContentCard className="bg-background/80 text-center shadow-lg">
             <p className="text-sm italic text-foreground">
-              &ldquo;Every referral, every trade, every tool - builds income for the community.&rdquo;
+              &ldquo;Every referral, every trade, every tool – builds income for the community.&rdquo;
             </p>
           </ContentCard>
           <ContentCard className="bg-background/80 text-center shadow-lg">
@@ -195,7 +195,7 @@ export function VaultFlowSection({ onAnchorClick }: VaultFlowSectionProps) {
         <div className="flex flex-wrap justify-center gap-4">
           <CTAButton
             href="#vault"
-            label="Explore Vault Model"
+            label="View Vault Model"
             onClick={onAnchorClick}
             variant="default"
             size="lg"
@@ -203,7 +203,7 @@ export function VaultFlowSection({ onAnchorClick }: VaultFlowSectionProps) {
           />
           <CTAButton
             href="#membership"
-            label="Join the Network"
+            label="Join Network"
             onClick={onAnchorClick}
             variant="outline"
             size="lg"

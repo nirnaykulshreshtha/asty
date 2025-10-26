@@ -34,7 +34,7 @@ export function MembershipBenefitsGrid({ motionReduced }: MembershipBenefitsGrid
       {COMMUNITY_INCOME_BENEFITS.map((benefit) => (
         <div
           key={benefit.title}
-          className="reveal-section rounded-2xl border border-border/60 bg-card/60 p-6 shadow-lg"
+          className="reveal-section rounded-2xl border border-border/60 bg-card/60 p-6 shadow-lg transition duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-2xl"
           data-animate-on-scroll
           data-visible="false"
         >

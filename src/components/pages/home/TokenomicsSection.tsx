@@ -1,29 +1,22 @@
 /**
  * Tokenomics Section Component
  * ----------------------------
- * Comprehensive tokenomics display including distribution table, summary cards,
- * and key metrics. Features animated backgrounds and interactive elements.
- * 
- * Features:
- * - Token distribution table with progress indicators
- * - Summary cards outlining supply and presale triggers
- * - Feature cards explaining the network-first rollout
- * - Animated background effects
- * - Membership callouts and presale reminders
+ * Presents the "A token designed for real community income" narrative with
+ * highlight cards, vault distribution explainer, and a hero donut visual for
+ * total supply. Mirrors the latest deck copy and tightens the CTA flow.
  */
 
 "use client"
 
-import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
-import { 
-  TOKENOMICS_ROWS, 
-  TOKENOMICS_CARDS, 
-  TOKENOMICS_SUMMARY 
+import {
+  TOKENOMICS_HIGHLIGHTS,
+  TOKENOMICS_SUMMARY,
+  VAULT_DISTRIBUTION_POINTS,
 } from "./types"
 import { SectionHeader } from "@/components/ui/SectionHeader"
-import { ContentCard } from "@/components/ui/ContentCard"
 import { DecorativeBackground } from "@/components/ui/DecorativeBackground"
+import { CTAButton } from "@/components/ui/CTAButton"
 import { TEN_K_TRIGGER_TEXT } from "./constants"
 
 /**
@@ -41,92 +34,102 @@ export function TokenomicsSection() {
       <DecorativeBackground variant="tokenomics" className="-z-10 opacity-70" />
 
       <SectionHeader
-        label="The Numbers"
-        title="Token distribution"
-        description="Membership-first launch ensures tokens arrive with a ready community. Track the presale layout and the milestone that unlocks it."
+        label="Tokenomics"
+        title="A token designed for real community income."
+        description="Asty is built on a hyper-deflationary model with a fixed supply of 21 million tokens. Every transaction strengthens the Vault — every holder shares the reward."
       />
 
-      <div
-        className="reveal-section relative overflow-hidden rounded-3xl border border-border/60 bg-card/70 p-6 shadow-2xl sm:p-10"
-        data-animate-on-scroll
-        data-visible="false"
-      >
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(146,68,255,0.18),_transparent_60%)]" />
-        <div className="relative grid gap-6 md:grid-cols-3">
-          {TOKENOMICS_SUMMARY.map((item) => (
-            <div key={item.title} className="flex flex-col gap-3 rounded-2xl border border-border/60 bg-background/70 p-5 backdrop-blur">
-              <div className="flex items-center gap-3">
-                <span className="flex size-10 items-center justify-center rounded-full border border-primary/40 bg-primary/10 text-primary">
-                  <item.icon className="size-5" aria-hidden="true" />
-                </span>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
-                    {item.title}
-                  </p>
-                  <p className="text-lg font-semibold text-foreground">{item.value}</p>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground">{item.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div
-        className="reveal-section overflow-hidden rounded-3xl border border-border/60 bg-card/60 shadow-2xl"
-        data-animate-on-scroll
-        data-visible="false"
-      >
-        <table className="w-full border-collapse text-left">
-          <caption className="sr-only">Asty token sale allocation table</caption>
-          <thead className="bg-background/70 text-sm uppercase tracking-[0.2em] text-muted-foreground">
-            <tr>
-              <th scope="col" className="px-6 py-4"></th>
-              <th scope="col" className="px-6 py-4">Type</th>
-              <th scope="col" className="px-6 py-4">Amount</th>
-              <th scope="col" className="px-6 py-4">Rate</th>
-            </tr>
-          </thead>
-          <tbody className="text-base">
-            {TOKENOMICS_ROWS.map((row, index) => (
-              <tr
-                key={row.type}
-                className={cn(
-                  "group relative overflow-hidden border-t border-border/40 transition hover:bg-background/80",
-                  index % 2 === 0 ? "bg-background/30" : "bg-background/20"
-                )}
-              >
-                <td
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-y-0 left-0 hidden rounded-e-full bg-primary/15 transition-all duration-500 group-hover:bg-primary/25 md:block"
-                  style={{ width: `${row.percent}%` }}
-                />
-                <th scope="row" className="px-6 py-5 font-semibold text-foreground">
-                  {row.type}
-                  <span className="mt-1 block text-xs font-medium uppercase tracking-[0.3em] text-primary/70">
-                    {row.percent}% allocation
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+        <div className="space-y-8">
+          <div
+            className="reveal-section space-y-4 rounded-3xl border border-border/60 bg-card/70 p-6 shadow-2xl"
+            data-animate-on-scroll
+            data-visible="false"
+          >
+            <h3 className="text-lg font-semibold text-foreground">Key Tokenomics Highlights</h3>
+            <ul className="space-y-4">
+              {TOKENOMICS_HIGHLIGHTS.map((highlight) => (
+                <li
+                  key={highlight.title}
+                  className="flex gap-4 rounded-2xl border border-border/40 bg-background/80 p-4 transition duration-200 hover:border-primary/50 hover:shadow-xl"
+                >
+                  <span className="mt-1 flex size-10 items-center justify-center rounded-full border border-primary/40 bg-primary/15 text-primary">
+                    <highlight.icon className="size-5" aria-hidden="true" />
                   </span>
-                </th>
-                <td className="px-6 py-5 align-top text-muted-foreground">
-                  <div className="rounded-2xl border border-border/40 bg-background/75 px-4 py-3 text-sm">
-                    {row.amount}
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">{highlight.title}</p>
+                    <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{highlight.description}</p>
                   </div>
-                </td>
-                <td className="px-6 py-5 align-top text-muted-foreground">
-                  <div className="rounded-2xl border border-border/40 bg-background/75 px-4 py-3 text-sm">
-                    {row.rate}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        {TOKENOMICS_CARDS.map((card) => (
-          <ContentCard key={card.title} title={card.title} description={card.body} />
-        ))}
+          <div
+            className="reveal-section rounded-3xl border border-border/60 bg-background/80 p-6 shadow-xl"
+            data-animate-on-scroll
+            data-visible="false"
+          >
+            <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+              Vault Distribution Model
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Rewards flow in predictable cycles so holders always know when income lands.
+            </p>
+            <ul className="mt-4 space-y-3">
+              {VAULT_DISTRIBUTION_POINTS.map((point) => (
+                <li key={point.title} className="flex gap-3 rounded-2xl border border-border/40 bg-card/70 p-4">
+                  <span className="mt-1 flex size-9 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary">
+                    <point.icon className="size-4" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">{point.title}</p>
+                    <p className="text-xs text-muted-foreground sm:text-sm">{point.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <CTAButton href="#tokenomics" label="View Tokenomics PDF" variant="default" />
+              <CTAButton href="#vault" label="See Vault Live" variant="outline" />
+            </div>
+          </div>
+        </div>
+
+        <aside
+          className="reveal-section relative overflow-hidden rounded-3xl border border-border/50 bg-card/70 p-8 shadow-2xl"
+          data-animate-on-scroll
+          data-visible="false"
+        >
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(146,68,255,0.18),_transparent_65%)]" aria-hidden="true" />
+          <div className="relative space-y-8">
+            <div className="mx-auto flex size-60 items-center justify-center rounded-full bg-[conic-gradient(from_140deg_at_50%_50%,_rgba(146,68,255,0.85)_0%,_rgba(146,68,255,0.4)_55%,_rgba(20,10,45,0.8)_100%)]">
+              <div className="flex size-36 flex-col items-center justify-center rounded-full border border-border/60 bg-background/90 text-center shadow-lg">
+                <span className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
+                  Total Supply
+                </span>
+                <span className="mt-2 text-2xl font-bold text-foreground">21,000,000</span>
+                <span className="text-xs font-medium text-muted-foreground">ASTY</span>
+              </div>
+            </div>
+            <div className="grid gap-4">
+              {TOKENOMICS_SUMMARY.map((item) => (
+                <div key={item.title} className="flex items-start gap-3 rounded-2xl border border-border/40 bg-background/75 p-4">
+                  <span className="flex size-10 items-center justify-center rounded-full border border-primary/40 bg-primary/15 text-primary">
+                    <item.icon className="size-5" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                      {item.title}
+                    </p>
+                    <p className="text-base font-semibold text-foreground">{item.value}</p>
+                    <p className="text-sm text-muted-foreground">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </aside>
       </div>
 
       <div

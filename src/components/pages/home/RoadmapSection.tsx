@@ -33,9 +33,9 @@ export function RoadmapSection() {
       className="space-y-12 border-b border-border/40 py-20"
     >
       <SectionHeader
-        label="Forward Motion"
-        title="Roadmap"
-        description="Three clear phases: finish network creation, launch the presale the moment 10,000 memberships lock in, and deliver the DeFi product with dividends and referral rewards live."
+        label="Roadmap"
+        title="Building the Asty Layer — Step by Step."
+        description="Asty's roadmap is focused on real ecosystem growth — from community network creation to DeFi infrastructure and utility tools."
       />
 
       <div

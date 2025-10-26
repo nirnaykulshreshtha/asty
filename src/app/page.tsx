@@ -28,7 +28,9 @@ import { TransparencySection } from "@/components/pages/home/TransparencySection
 import { MovementSection } from "@/components/pages/home/MovementSection"
 import { MembershipBenefitsGrid } from "@/components/pages/home/MembershipBenefitsGrid"
 import { SectionHeader } from "@/components/ui/SectionHeader"
+import { CTAButton } from "@/components/ui/CTAButton"
 import { useScrollReveal, useParallax } from "@/hooks/useScrollMotion"
+import { IntroducingSection } from "@/components/pages/home/IntroducingSection"
 
 
 /**
@@ -175,22 +177,38 @@ export default function Home() {
         onMobileNavClose={closeMobileNav}
       />
 
-      <main className="mx-auto max-w-7xl px-6">
+      <main className="mx-auto max-w-7xl px-6 space-y-24 lg:space-y-32">
         <HeroSection
           heroBurstIndex={heroBurstIndex}
           heroVariant={heroVariant}
           onAnchorClick={handleAnchorClick}
         />
 
+        <IntroducingSection />
+
         <VaultFlowSection onAnchorClick={handleAnchorClick} />
 
-        <section id="income" aria-label="Community income benefits" className="my-16 space-y-8">
+        <section id="income" aria-label="Community income benefits" className="space-y-8">
           <SectionHeader
             label="Community Income"
             title="Holding Asty means owning a share of community-driven income"
             description="Asty rewards real participation, not speculation. Holders benefit directly from the growth of the network and Vault — creating lifetime passive income."
           />
           <MembershipBenefitsGrid motionReduced={motionReduced} />
+          <div className="flex flex-wrap justify-center gap-4">
+            <CTAButton
+              href="#membership"
+              label="Join Asty Network"
+              onClick={handleAnchorClick}
+              variant="default"
+            />
+            <CTAButton
+              href="#vault"
+              label="Check Vault Rewards"
+              onClick={handleAnchorClick}
+              variant="outline"
+            />
+          </div>
         </section>
 
         <TokenomicsSection />

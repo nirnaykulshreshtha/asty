@@ -21,6 +21,7 @@ import { logger } from "@/lib/logger"
 import { MemesSectionHeader } from "./MemesSectionHeader"
 import { MembershipFoundationCard } from "./MembershipFoundationCard"
 import { RegistrationSection } from "./RegistrationSection"
+import { CTAButton } from "@/components/ui/CTAButton"
 
 interface MemesSectionProps {
   motionReduced: boolean
@@ -42,6 +43,12 @@ export function MemesSection({ motionReduced }: MemesSectionProps) {
       className="space-y-12 border-b border-border/40 py-20"
     >
       <MemesSectionHeader motionReduced={motionReduced} />
+
+      <div className="flex flex-wrap items-center justify-center gap-4">
+        <CTAButton href="#membership" label="Join Asty Network" variant="default" />
+        <CTAButton href="#vault" label="View Vault" variant="secondary" />
+        <CTAButton href="#whitepaper" label="Read Whitepaper" variant="outline" />
+      </div>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
         <MembershipFoundationCard motionReduced={motionReduced} />

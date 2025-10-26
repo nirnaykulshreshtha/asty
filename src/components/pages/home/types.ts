@@ -11,6 +11,7 @@
 import {
   AlertOctagon,
   ArrowBigUpDash,
+  CalendarClock,
   Coins,
   FileText,
   GraduationCap,
@@ -18,12 +19,12 @@ import {
   Layers3,
   LifeBuoy,
   Lock,
+  Network,
   PieChart,
   Rocket,
   Share2,
   ShieldCheck,
   Sparkles,
-  TrendingUp,
   Trophy,
   Users,
   Vault,
@@ -54,6 +55,12 @@ export interface HeroVariant {
 }
 
 export interface HeroPillar {
+  title: string
+  description: string
+  icon: typeof GraduationCap
+}
+
+export interface HeroValueProp {
   title: string
   description: string
   icon: typeof GraduationCap
@@ -107,6 +114,18 @@ export interface TokenomicsCard {
 export interface TokenomicsSummary {
   title: string
   value: string
+  description: string
+  icon: typeof Sparkles
+}
+
+export interface TokenomicsHighlight {
+  title: string
+  description: string
+  icon: typeof Sparkles
+}
+
+export interface DistributionPoint {
+  title: string
   description: string
   icon: typeof Sparkles
 }
@@ -220,10 +239,16 @@ export const HERO_CTAS: HeroCta[] = [
     tone: "primary",
   },
   {
-    label: "View Vault Model",
-    href: "#vault",
+    label: "Buy Token",
+    href: "#tokenomics",
     variant: "secondary",
     tone: "secondary",
+  },
+  {
+    label: "Read Whitepaper",
+    href: "#whitepaper",
+    variant: "outline",
+    tone: "outline",
   },
 ]
 
@@ -274,6 +299,29 @@ export const HERO_PILLARS: HeroPillar[] = [
     title: "Facilitation",
     description: "Building tools that support trader needs across the Aster ecosystem.",
     icon: Wrench,
+  },
+]
+
+export const HERO_VALUE_PROPS: HeroValueProp[] = [
+  {
+    title: "21 Million Fixed Supply",
+    description: "On-chain, verifiable cap keeps scarcity permanent.",
+    icon: PieChart,
+  },
+  {
+    title: "Hyper-Deflationary Model",
+    description: "Automated burns tighten float as community activity accelerates.",
+    icon: AlertOctagon,
+  },
+  {
+    title: "Vault-Powered Rewards",
+    description: "Vault yield routes directly to holders with transparent tracking.",
+    icon: HandCoins,
+  },
+  {
+    title: "Early Network Advantage",
+    description: "Founding positions lock priority across referrals and presale access.",
+    icon: Rocket,
   },
 ]
 
@@ -409,39 +457,39 @@ export const HOW_STEPS: HowStep[] = [
   {
     title: "Secure Your Position",
     description:
-      "Lock in a $100 Early Membership and cement your place inside the structured ecosystem.",
+      "Contribute the $100 position fee to claim your slot in the 12-level referral structure.",
   },
   {
     title: "Build With Referrals",
     description:
-      "Grow a 12-level tree that channels referral earnings straight into the Vault.",
+      "Grow early, climb higher. Every direct invite expands the tree and your reward share.",
   },
   {
     title: "Earn Dividends",
     description:
-      "Collect biweekly and annual Vault distributions as the DeFi layer comes online.",
+      "Vault distributions flow biweekly and yearly based on position, rank, and contribution.",
   },
 ]
 
 export const POSITION_ADVANTAGES: PositionAdvantage[] = [
   {
-    title: "Top share of rewards",
-    description: "Early positions receive the highest share of referral and Vault income.",
+    title: "Top positions earn more",
+    description: "Highest referral and Vault share routes to the earliest placements.",
     icon: Trophy,
   },
   {
-    title: "Permanent placement",
-    description: "Once you lock a slot, it cannot be displaced—your spot pays forever.",
+    title: "Slots are permanent",
+    description: "Once you secure a position it cannot be displaced or reassigned.",
     icon: Lock,
   },
   {
-    title: "Compounding flow",
-    description: "Biweekly and yearly Vault payouts stack with every new network action.",
+    title: "Income keeps compounding",
+    description: "Biweekly and annual payouts land automatically as the network grows.",
     icon: Vault,
   },
   {
-    title: "Built for builders",
-    description: "Ideal for network leaders, early supporters, and long-term DeFi participants.",
+    title: "Built for long-term builders",
+    description: "Perfect for community leaders, early supporters, and patient holders.",
     icon: Users,
   },
 ]
@@ -473,20 +521,62 @@ export const TOKENOMICS_SUMMARY: TokenomicsSummary[] = [
   {
     title: "Total Supply",
     value: "21,000,000 ASTY",
-    description: "Fixed issuance paired with hyper-deflationary mechanics preserves scarcity.",
-    icon: Sparkles,
+    description: "Fixed issuance aligned with the Vault keeps scarcity real.",
+    icon: PieChart,
   },
   {
-    title: "Vault Distribution",
-    value: "Biweekly & yearly",
-    description: "Income flows to holders based on position and token ownership.",
-    icon: Vault,
+    title: "Hyper-Deflationary",
+    value: "Built-in burns",
+    description: "Automated mechanics contract supply as activity scales.",
+    icon: AlertOctagon,
   },
   {
-    title: "Network First",
-    value: "10,000 memberships",
-    description: "Presale unlocks once the community layer reaches critical mass.",
-    icon: TrendingUp,
+    title: "Vault-Powered Yield",
+    value: "Holders earn",
+    description: "Every transaction reinforces the Vault and shares rewards back.",
+    icon: HandCoins,
+  },
+  {
+    title: "Community-Driven",
+    value: "No speculation",
+    description: "Participation, not hype, drives long-term value in the ecosystem.",
+    icon: Users,
+  },
+]
+
+export const TOKENOMICS_HIGHLIGHTS: TokenomicsHighlight[] = [
+  {
+    title: "Total Supply: 21,000,000 ASTY",
+    description: "The cap is immutable and tied to Vault growth.",
+    icon: PieChart,
+  },
+  {
+    title: "Hyper-Deflationary",
+    description: "Burn mechanics reduce float with every ecosystem action.",
+    icon: AlertOctagon,
+  },
+  {
+    title: "Vault-Powered Yield",
+    description: "Transparent rewards flow back to every holder in the network.",
+    icon: HandCoins,
+  },
+  {
+    title: "Sustainable Ecosystem",
+    description: "Community activity fuels value—no middlemen, no speculation.",
+    icon: Users,
+  },
+]
+
+export const VAULT_DISTRIBUTION_POINTS: DistributionPoint[] = [
+  {
+    title: "Biweekly & yearly payouts",
+    description: "Routine distributions land in wallets on a predictable cadence.",
+    icon: CalendarClock,
+  },
+  {
+    title: "Weighted by contribution",
+    description: "Token holdings and network position define each holder's share.",
+    icon: Network,
   },
 ]
 
@@ -555,22 +645,22 @@ export const PARTICIPATION_PILLARS: ParticipationPillar[] = [
 
 export const COMMUNITY_INCOME_BENEFITS: IncomeBenefit[] = [
   {
-    title: "Lifetime passive income",
-    description: "Vault distributions reward positions forever once the network activates.",
+    title: "Lifetime Passive Income",
+    description: "Earned through Vault distributions that reward positions forever.",
     icon: Coins,
   },
   {
-    title: "Early entry advantage",
-    description: "Top placements receive long-term benefits across referrals and dividends.",
+    title: "Early Entry Advantage",
+    description: "Top positions collect long-term benefits across referrals and dividends.",
     icon: Rocket,
   },
   {
-    title: "DeFi + community power",
-    description: "Sustainable, transparent model anchored to real ecosystem activity.",
+    title: "DeFi+ Community Power",
+    description: "Sustainable, transparent model anchored to real community activity.",
     icon: Users,
   },
   {
-    title: "Value appreciation",
+    title: "Value Appreciation",
     description: "Hyper-deflationary tokenomics create lasting scarcity for holders.",
     icon: ArrowBigUpDash,
   },
@@ -605,22 +695,22 @@ export const TRANSPARENCY_PILLARS: TransparencyPillar[] = [
 
 export const MOMENTUM_STATS: MomentumStat[] = [
   {
-    title: "21 Million fixed supply",
+    title: "21 Million Fixed Supply",
     detail: "Scarcity is hard-coded. Every token ties back to the Vault economy.",
     icon: PieChart,
   },
   {
-    title: "Hyper-deflationary model",
+    title: "Hyper-Deflationary Model",
     detail: "Burn mechanics reduce float as community-driven activity accelerates.",
     icon: AlertOctagon,
   },
   {
-    title: "Vault-based income",
+    title: "Vault-Based Income",
     detail: "Network actions generate real, transparent cash flow for participants.",
     icon: HandCoins,
   },
   {
-    title: "Early entry advantage",
+    title: "Early Entry Advantage",
     detail: "Secure a founding position before the referral tree locks in full.",
     icon: Rocket,
   },

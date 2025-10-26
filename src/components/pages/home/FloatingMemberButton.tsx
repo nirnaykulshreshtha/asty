@@ -115,8 +115,8 @@ export function FloatingMemberButton({ onAnchorClick }: FloatingMemberButtonProp
       href="#membership"
       onClick={handleClick}
       className={cn(
-        "group fixed right-6 top-1/2 -translate-y-1/2 z-[9999]",
-        "flex items-center justify-center",
+        "group fixed right-6 top-1/2 -translate-y-0 z-[9999]",
+        "flex items-center justify-center cursor-pointer",
         "w-16 h-52 rounded-full",
         "relative overflow-hidden",
         "bg-gradient-to-br from-primary via-primary to-primary/90",
@@ -125,12 +125,14 @@ export function FloatingMemberButton({ onAnchorClick }: FloatingMemberButtonProp
         "border-2 border-primary/60 shadow-2xl",
         "hover:border-primary hover:shadow-primary/40",
         "transition-all duration-500 ease-out",
-        "hover:scale-105 hover:-translate-y-1",
+        "hover:scale-105 hover:-translate-y-0",
         "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/40 focus-visible:ring-offset-2",
         "backdrop-blur-sm",
         "animate-[pulse_3s_ease-in-out_infinite]",
         "transition-all duration-500",
-        isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
+        isVisible
+          ? "translate-x-0 opacity-100"
+          : "translate-x-[100%] opacity-40 hover:translate-x-0 hover:opacity-100 focus-visible:translate-x-0 focus-visible:opacity-100"
       )}
       style={{ position: 'fixed' }}
       aria-label="Register for Asty Membership"
@@ -141,9 +143,9 @@ export function FloatingMemberButton({ onAnchorClick }: FloatingMemberButtonProp
       {/* Inner content */}
       <div className="relative flex flex-col items-center gap-4 z-10">
         <span 
-          className="text-white text-sm font-black uppercase tracking-widest whitespace-nowrap [writing-mode:vertical-lr] [text-orientation:mixed] select-none"
+          className="text-white text-sm font-black uppercase tracking-[0.2em] whitespace-nowrap [writing-mode:vertical-lr] [text-orientation:mixed] select-none"
         >
-          R E G I S T E R
+          JOIN ASTY 
         </span>
         <div className="flex flex-col items-center gap-1">
           <LogIn 

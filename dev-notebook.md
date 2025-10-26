@@ -358,3 +358,39 @@ Next Steps:
 - Refactor existing sections to use updated data structures
 - Add remaining slide content to complete the narrative
 
+## 2025-10-26 – Header Simplification and Footer Organization
+
+Context: The header navigation had too many items (10 links), making it cluttered and overwhelming for users. Only essential navigation should remain in the header, with secondary links moved to the footer for better organization and user experience.
+
+Changes:
+- **Navigation Split** (`src/components/pages/home/types.ts`):
+  - Created `PRIMARY_NAV_ITEMS` array with 5 essential items: Vault, Why Asty, Membership, How It Works, Trust
+  - Created `SECONDARY_NAV_ITEMS` array with 5 secondary items: Benefits, Tokenomics, Roadmap, FAQ, Community
+  - Maintained `NAV_ITEMS` export for backward compatibility (combines both arrays)
+- **Header Simplification** (`src/components/pages/home/Header.tsx`):
+  - Updated to use `PRIMARY_NAV_ITEMS` instead of full `NAV_ITEMS` for desktop navigation
+  - Desktop nav now shows 5 key items (reduced from original 10)
+  - Mobile menu still uses full `NAV_ITEMS` for complete navigation
+  - Updated documentation to reflect essential navigation approach
+- **Footer Enhancement** (`src/components/pages/home/Footer.tsx`):
+  - Added "Quick Links" section displaying all `SECONDARY_NAV_ITEMS`
+  - Restructured footer into three columns: Branding, Quick Links, Social Links
+  - Secondary navigation items now available in footer as an organized quick reference
+  - Updated documentation to reflect new footer structure
+
+Features:
+- **Focused Header**: 5 essential navigation items (Vault, Why Asty, Membership, How It Works, Trust)
+- **Clean Desktop Nav**: Balanced navigation without clutter
+- **Complete Mobile Nav**: Full navigation still available in mobile menu
+- **Organized Footer**: Secondary links grouped in "Quick Links" section
+- **Three-Column Layout**: Branding, Quick Links, and Social Links
+- **Better UX**: Well-organized header with all links still accessible
+
+Impact:
+- Cleaner, more focused header design
+- Reduced cognitive load while maintaining key navigation options
+- Better visual hierarchy with essential items prominent
+- All navigation still accessible via footer quick links
+- Improved user experience with organized information architecture
+- Professional appearance with appropriate information placement
+

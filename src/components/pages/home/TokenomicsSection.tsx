@@ -11,7 +11,6 @@
 import { logger } from "@/lib/logger"
 import {
   TOKENOMICS_HIGHLIGHTS,
-  TOKENOMICS_SUMMARY,
   VAULT_DISTRIBUTION_POINTS,
 } from "./types"
 import { SectionHeader } from "@/components/ui/SectionHeader"

@@ -16,6 +16,7 @@ import {
   FileText,
   GraduationCap,
   HandCoins,
+  Handshake,
   Layers3,
   LifeBuoy,
   Lock,
@@ -144,19 +145,12 @@ export interface VaultRevenueStream {
 }
 
 // Roadmap types
-export interface RoadmapPhase {
-  phase: string
-  detail: string
-  status: "complete" | "active" | "upcoming"
-  quarter: string
-  progress: number
-}
-
-export interface RoadmapStatusMeta {
-  label: string
-  badgeClass: string
-  glowClass: string
-  progressClass: string
+export interface RoadmapStep {
+  title: string
+  description: string
+  icon: typeof Rocket
+  status: "in-progress" | "upcoming"
+  footnote?: string
 }
 
 // FAQ types
@@ -217,18 +211,26 @@ export interface ToastState {
 }
 
 // Navigation items
-export const NAV_ITEMS: NavItem[] = [
-  { label: "Vault", href: "#vault" },
-  { label: "Why Asty", href: "#participation" },
-  { label: "Membership", href: "#membership" },
+// Primary navigation - Key items for header (essential only)
+export const PRIMARY_NAV_ITEMS: NavItem[] = [
+  { label: "Why Asty?", href: "#participation" },
   { label: "How It Works", href: "#how" },
+  { label: "Trust", href: "#trust" },
+  { label: "Vault", href: "#vault" },
+  { label: "Join Asty", href: "#membership" },
+]
+
+// Secondary navigation - Additional links for footer
+export const SECONDARY_NAV_ITEMS: NavItem[] = [
   { label: "Benefits", href: "#income" },
   { label: "Tokenomics", href: "#tokenomics" },
   { label: "Roadmap", href: "#roadmap" },
-  { label: "Trust", href: "#trust" },
   { label: "FAQ", href: "#faq" },
   { label: "Community", href: "#community" },
 ]
+
+// Legacy export for backward compatibility
+export const NAV_ITEMS: NavItem[] = [...PRIMARY_NAV_ITEMS, ...SECONDARY_NAV_ITEMS]
 
 // Hero CTAs
 export const HERO_CTAS: HeroCta[] = [
@@ -717,53 +719,44 @@ export const MOMENTUM_STATS: MomentumStat[] = [
 ]
 
 // Roadmap data
-export const ROADMAP_PHASES: RoadmapPhase[] = [
+export const ROADMAP_STEPS: RoadmapStep[] = [
   {
-    phase: "Phase 1",
-    detail: "Network creation with $100 entry and 12-level referral income.",
-    status: "active",
-    quarter: "Current Launch",
-    progress: 70,
+    title: "Network Launch",
+    description: "Early participants secure top positions in the 12-level structure.",
+    icon: Rocket,
+    status: "in-progress",
   },
   {
-    phase: "Phase 2",
-    detail: "Token presale — Early members take priority across all rounds.",
+    title: "Presale",
+    description: "Limited 21M supply prioritized for founding members.",
+    icon: Coins,
     status: "upcoming",
-    quarter: "Triggers at 10k",
-    progress: 20,
   },
   {
-    phase: "Phase 3",
-    detail: "DeFi launch with dividends and referral rewards going live.",
+    title: "DAO Referral Activation",
+    description: "Bridge to the underlying DEX layer to start referral earnings.",
+    icon: Handshake,
     status: "upcoming",
-    quarter: "Post-Presale",
-    progress: 5,
+  },
+  {
+    title: "DeFi Live",
+    description: "Vault distributions begin with biweekly and yearly cycles.",
+    icon: Sparkles,
+    status: "upcoming",
+  },
+  {
+    title: "Asty School",
+    description: "Launch the education layer to onboard and train traders.",
+    icon: GraduationCap,
+    status: "upcoming",
+  },
+  {
+    title: "Tools",
+    description: "Deploy trader utilities that amplify ecosystem revenue streams.",
+    icon: Wrench,
+    status: "upcoming",
   },
 ]
-
-export const ROADMAP_STATUS_META: Record<
-  RoadmapPhase["status"],
-  RoadmapStatusMeta
-> = {
-  complete: {
-    label: "Complete",
-    badgeClass: "border-emerald-400/40 bg-emerald-400/10 text-emerald-200",
-    glowClass: "from-emerald-400/25",
-    progressClass: "bg-emerald-400",
-  },
-  active: {
-    label: "In Flight",
-    badgeClass: "border-primary/40 bg-primary/15 text-primary",
-    glowClass: "from-primary/30",
-    progressClass: "bg-primary",
-  },
-  upcoming: {
-    label: "Queued",
-    badgeClass: "border-border/60 bg-border/15 text-muted-foreground",
-    glowClass: "from-border/25",
-    progressClass: "bg-border/80",
-  },
-}
 
 // FAQ data
 export const FAQ_ITEMS: FaqItem[] = [

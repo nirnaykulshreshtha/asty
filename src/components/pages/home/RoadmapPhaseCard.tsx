@@ -8,74 +8,60 @@
 
 "use client"
 
-import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
-import { astroz } from "@/styles/fonts"
-import { Pill } from "@/components/ui/Pill"
-import { ROADMAP_STATUS_META, type RoadmapPhase } from "./types"
+import { cn } from "@/lib/utils"
+import { type RoadmapStep } from "./types"
 
-export interface RoadmapPhaseCardProps {
-  item: RoadmapPhase
+export interface RoadmapStepCardProps {
+  step: RoadmapStep
   index: number
 }
 
 /**
- * Renders a roadmap phase card with status badge, description, and progress bar.
+ * Roadmap step displayed in a horizontal timeline with icon node and info card.
  */
-export function RoadmapPhaseCard({ item, index }: RoadmapPhaseCardProps) {
-  const meta = ROADMAP_STATUS_META[item.status]
-  logger.info("component:roadmap-phase-card:render", { phase: item.phase, status: item.status })
+export function RoadmapStepCard({ step, index }: RoadmapStepCardProps) {
+  const isActive = step.status === "in-progress"
+  logger.info("component:roadmap-step-card:render", { step: step.title, status: step.status })
 
   return (
-    <li
-      className="group relative rounded-3xl border border-border/40 bg-background/70 p-6 shadow-lg transition hover:border-primary/50 hover:shadow-xl"
-    >
+    <li className="relative flex min-w-[240px] flex-col items-center gap-6 pt-6 text-center lg:min-w-0">
+      <span
+        className={cn(
+          "flex size-16 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary shadow-[0_18px_50px_rgba(127,90,240,0.35)] transition duration-300",
+          isActive ? "scale-110 bg-primary/20 text-primary-foreground" : ""
+        )}
+      >
+        <step.icon className="size-6" aria-hidden="true" />
+      </span>
+
       <div
         className={cn(
-          "pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-100",
-          meta.glowClass,
-          "to-transparent"
+          "w-full rounded-[2rem] border p-6 text-left shadow-lg transition duration-200 hover:-translate-y-0.5 hover:shadow-xl",
+          isActive
+            ? "border-primary/40 bg-gradient-to-br from-primary/20 via-background/85 to-card/70"
+            : "border-border/60 bg-card/70"
         )}
-        aria-hidden="true"
-      />
-
-      <div className="relative flex items-start justify-between gap-4">
-        <span className={cn("text-sm font-semibold uppercase tracking-[0.3em]", astroz.className)}>
-          {item.phase}
-        </span>
-        <Pill className={cn(meta.badgeClass)}>{meta.label}</Pill>
-      </div>
-
-      <p className="relative mt-3 text-sm text-muted-foreground">{item.detail}</p>
-
-      <div className="relative mt-6 space-y-3">
-        <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          <span>{item.quarter}</span>
-          <span>{item.progress}%</span>
+      >
+        <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">
+          <span>Step {String(index + 1).padStart(2, "0")}</span>
+          <span
+            className={cn(
+              "rounded-full px-3 py-1 text-[0.65rem] tracking-[0.25em]",
+              isActive ? "bg-primary/20 text-primary" : "bg-border/20 text-muted-foreground"
+            )}
+          >
+            {isActive ? "" : ""}
+          </span>
         </div>
-        <div className="h-2 rounded-full border border-border/60 bg-background/60 p-0.5">
-          <div
-            className={cn("h-full rounded-full transition-all duration-700", meta.progressClass)}
-            style={{ width: `${item.progress}%` }}
-            aria-hidden="true"
-          />
-        </div>
-      </div>
-
-      <div className="relative mt-6 flex items-center gap-3 text-xs text-muted-foreground">
-        <span className="inline-flex size-8 items-center justify-center rounded-full border border-border/50 bg-background/80 font-semibold text-primary">
-          {String(index + 1).padStart(2, "0")}
-        </span>
-        <p className="flex-1">
-          {item.status === "complete"
-            ? "Phase delivered and community onboarded."
-            : item.status === "active"
-              ? "Membership onboarding and tooling rolling out."
-              : "Launch steps queued once the 10k trigger is met."}
-        </p>
+        <h3 className="mt-4 text-lg font-semibold text-foreground">{step.title}</h3>
+        <p className="mt-2 text-sm text-muted-foreground">{step.description}</p>
+        {step.footnote && (
+          <p className="mt-3 rounded-2xl border border-border/40 bg-background/70 p-3 text-xs text-muted-foreground">
+            {step.footnote}
+          </p>
+        )}
       </div>
     </li>
   )
 }
-
-

@@ -2,15 +2,19 @@
  * Header Component
  * ---------------
  * Responsive navigation header with mobile menu functionality and wallet connection.
- * Features the Asty logo, primary navigation, wallet connect button, mode toggle, and mobile hamburger menu.
+ * Features the Asty logo, essential navigation items (Vault, Why Asty, Membership, How It Works, Trust), 
+ * wallet connect button, mode toggle, and mobile hamburger menu.
  * 
  * Handles:
  * - Desktop and mobile navigation states
  * - Smooth scrolling to page sections
  * - Mobile menu toggle with accessibility features
- * - Logo branding with "Earn Forever" tagline
+ * - Logo branding with minimal design
  * - Wallet connection via CustomConnectButton (desktop and mobile)
  * - Responsive design with connect button visibility
+ * 
+ * Note: Displays PRIMARY_NAV_ITEMS for key navigation (5 items). 
+ * Secondary links are moved to footer for better organization.
  */
 
 "use client"
@@ -24,7 +28,7 @@ import { CustomConnectButton } from "@/components/ui/custom-connect-button"
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
 import { astroz } from "@/styles/fonts"
-import { NAV_ITEMS } from "./types"
+import { NAV_ITEMS, PRIMARY_NAV_ITEMS } from "./types"
 
 interface HeaderProps {
   onAnchorClick: (event: ReactMouseEvent<HTMLAnchorElement>) => void
@@ -79,7 +83,7 @@ export function Header({
           </Link>
 
           <nav aria-label="Primary navigation" className="hidden items-center gap-1 lg:flex">
-            {NAV_ITEMS.map((item) => (
+            {PRIMARY_NAV_ITEMS.map((item) => (
               <a
                 key={item.href}
                 href={item.href}

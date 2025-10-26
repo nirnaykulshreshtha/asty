@@ -1,14 +1,15 @@
 /**
  * Footer Component
  * ---------------
- * Site footer with branding, contract address, and social media links.
- * Features copyright information and social platform navigation.
+ * Site footer with branding, secondary navigation links, contract address, and social media links.
+ * Features copyright information and comprehensive site navigation.
  * 
  * Features:
  * - Asty branding with contract address
+ * - Quick Links section with secondary navigation items (Benefits, Tokenomics, Roadmap, FAQ, Community)
  * - Social media links (X, Telegram, Discord)
  * - Copyright information
- * - Responsive layout
+ * - Responsive three-column layout
  */
 
 "use client"
@@ -16,6 +17,7 @@
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
 import { astroz } from "@/styles/fonts"
+import { SECONDARY_NAV_ITEMS } from "./types"
 
 /**
  * Renders the site footer with branding and social links.
@@ -25,21 +27,41 @@ export function Footer() {
 
   return (
     <footer className="border-t border-border/40 bg-background/90 py-12">
-      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 md:flex-row md:items-start md:justify-between">
-        <div className="space-y-3">
-          <p className={cn("text-2xl tracking-[0.6em] text-primary", astroz.className)}>ASTY</p>
-          <p className="max-w-sm text-sm text-muted-foreground">
-            Celestial Vault contract address:{" "}
-            <span className="font-mono text-foreground">0xASTY000000000000000000000000</span>
-          </p>
-          <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Asty. All rights reserved.
-          </p>
-        </div>
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
+          {/* Branding Section */}
+          <div className="space-y-3">
+            <p className={cn("text-2xl tracking-[0.6em] text-primary", astroz.className)}>ASTY</p>
+            <p className="max-w-sm text-sm text-muted-foreground">
+              Celestial Vault contract address:{" "}
+              <span className="font-mono text-foreground">0xASTY000000000000000000000000</span>
+            </p>
+            <p className="text-xs text-muted-foreground">
+              © {new Date().getFullYear()} Asty. All rights reserved.
+            </p>
+          </div>
 
-        <nav aria-label="Footer links" className="space-y-4">
-          <p className="text-sm font-semibold text-foreground">Follow Asty</p>
-          <ul className="flex flex-wrap gap-4">
+          {/* Quick Links Section */}
+          <nav aria-label="Quick links" className="space-y-4">
+            <p className="text-sm font-semibold text-foreground">Quick Links</p>
+            <ul className="flex flex-wrap gap-3">
+              {SECONDARY_NAV_ITEMS.map((item) => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    className="text-sm text-muted-foreground transition hover:text-foreground"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Social Links Section */}
+          <nav aria-label="Footer links" className="space-y-4">
+            <p className="text-sm font-semibold text-foreground">Follow Asty</p>
+            <ul className="flex flex-wrap gap-4">
             <li>
               <a
                 href="https://x.com/asty"
@@ -105,6 +127,7 @@ export function Footer() {
             </li>
           </ul>
         </nav>
+        </div>
       </div>
     </footer>
   )

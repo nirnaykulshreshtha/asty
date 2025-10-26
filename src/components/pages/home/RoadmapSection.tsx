@@ -15,10 +15,10 @@
 "use client"
 
 import { logger } from "@/lib/logger"
-import { ROADMAP_PHASES } from "./types"
+import { ROADMAP_STEPS } from "./types"
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { DecorativeBackground } from "@/components/ui/DecorativeBackground"
-import { RoadmapPhaseCard } from "./RoadmapPhaseCard"
+import { RoadmapStepCard } from "./RoadmapPhaseCard"
 
 /**
  * Renders the roadmap section with project phases and progress indicators.
@@ -43,15 +43,13 @@ export function RoadmapSection() {
         data-animate-on-scroll
         data-visible="false"
       >
-        <DecorativeBackground variant="roadmap" className="opacity-80" />
+        <DecorativeBackground variant="roadmap" className="opacity-70" />
 
-        <div className="relative mx-auto max-w-5xl">
-          <div className="pointer-events-none absolute inset-y-0 left-4 hidden w-px bg-gradient-to-b from-primary/40 via-border/40 to-transparent md:block" />
-          <div className="pointer-events-none absolute inset-y-0 right-4 hidden w-px bg-gradient-to-b from-transparent via-border/40 to-primary/40 md:block" />
-
-          <ol className="relative grid gap-8 md:grid-cols-2">
-            {ROADMAP_PHASES.map((item, index) => (
-              <RoadmapPhaseCard key={item.phase} item={item} index={index} />
+        <div className="relative">
+          <span className="pointer-events-none absolute left-12 right-12 top-[3.75rem] hidden h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent lg:block" />
+          <ol className="relative flex gap-6 overflow-x-auto pb-6 pr-4 lg:gap-10 lg:overflow-visible lg:pb-0 lg:pr-0">
+            {ROADMAP_STEPS.map((step, index) => (
+              <RoadmapStepCard key={step.title} step={step} index={index} />
             ))}
           </ol>
         </div>

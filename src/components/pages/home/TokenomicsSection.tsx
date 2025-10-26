@@ -64,36 +64,16 @@ export function TokenomicsSection() {
               ))}
             </ul>
           </div>
-
           <div
-            className="reveal-section rounded-3xl border border-border/60 bg-background/80 p-6 shadow-xl"
-            data-animate-on-scroll
-            data-visible="false"
-          >
-            <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              Vault Distribution Model
-            </h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Rewards flow in predictable cycles so holders always know when income lands.
-            </p>
-            <ul className="mt-4 space-y-3">
-              {VAULT_DISTRIBUTION_POINTS.map((point) => (
-                <li key={point.title} className="flex gap-3 rounded-2xl border border-border/40 bg-card/70 p-4">
-                  <span className="mt-1 flex size-9 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary">
-                    <point.icon className="size-4" aria-hidden="true" />
-                  </span>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">{point.title}</p>
-                    <p className="text-xs text-muted-foreground sm:text-sm">{point.description}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <CTAButton href="#tokenomics" label="View Tokenomics PDF" variant="default" />
-              <CTAButton href="#vault" label="See Vault Live" variant="outline" />
-            </div>
-          </div>
+        className="reveal-section rounded-3xl border border-primary/40 bg-gradient-to-r from-primary/15 via-background to-accent/15 p-6 text-sm text-foreground shadow-xl"
+        data-animate-on-scroll
+        data-visible="false"
+      >
+        <p className="font-semibold">
+          Early memberships only: <span className="text-primary">$100</span> secures a lifetime position ahead of presale.
+        </p>
+        <p className="mt-2 text-muted-foreground">{TEN_K_TRIGGER_TEXT}</p>
+      </div>
         </div>
 
         <aside
@@ -113,34 +93,33 @@ export function TokenomicsSection() {
               </div>
             </div>
             <div className="grid gap-4">
-              {TOKENOMICS_SUMMARY.map((item) => (
-                <div key={item.title} className="flex items-start gap-3 rounded-2xl border border-border/40 bg-background/75 p-4">
-                  <span className="flex size-10 items-center justify-center rounded-full border border-primary/40 bg-primary/15 text-primary">
-                    <item.icon className="size-5" aria-hidden="true" />
+            <div
+            className="reveal-section rounded-2xl border border-border/60 bg-background/80 p-2 shadow-xl"
+            data-animate-on-scroll
+            data-visible="false"
+          >
+            <ul className="mt-4 space-y-3">
+              {VAULT_DISTRIBUTION_POINTS.map((point) => (
+                <li key={point.title} className="flex gap-3 rounded-2xl border border-border/40 bg-card/70 p-4">
+                  <span className="mt-1 flex size-9 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary">
+                    <point.icon className="size-4" aria-hidden="true" />
                   </span>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                      {item.title}
-                    </p>
-                    <p className="text-base font-semibold text-foreground">{item.value}</p>
-                    <p className="text-sm text-muted-foreground">{item.description}</p>
+                    <p className="text-sm font-semibold text-foreground">{point.title}</p>
+                    <p className="text-xs text-muted-foreground sm:text-sm">{point.description}</p>
                   </div>
-                </div>
+                </li>
               ))}
+            </ul>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <CTAButton href="#tokenomics" label="View Tokenomics PDF" variant="default" />
+              <CTAButton href="#vault" label="See Vault Live" variant="outline" />
             </div>
           </div>
+            </div>
+            
+          </div>
         </aside>
-      </div>
-
-      <div
-        className="reveal-section rounded-3xl border border-primary/40 bg-gradient-to-r from-primary/15 via-background to-accent/15 p-6 text-sm text-foreground shadow-xl"
-        data-animate-on-scroll
-        data-visible="false"
-      >
-        <p className="font-semibold">
-          Early memberships only: <span className="text-primary">$100</span> secures a lifetime position ahead of presale.
-        </p>
-        <p className="mt-2 text-muted-foreground">{TEN_K_TRIGGER_TEXT}</p>
       </div>
     </section>
   )

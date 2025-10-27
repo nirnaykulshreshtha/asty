@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
 import { astroz } from "@/styles/fonts"
 import { Pill } from "@/components/ui/Pill"
-import { AuroraText } from "@/components/ui/aurora-text"
-import { WordRotate } from "./word-rotate"
+import { AuroraText, DEFAULT_AURORA_COLORS } from "@/components/ui/aurora-text"
+import { WordRotate } from "./word-rotate-old"
 import * as React from "react"
 
 /**
@@ -167,37 +167,30 @@ function renderWithTokens(
     const shouldHighlightToken = auroraToken?.enabled && auroraToken.tokenName === name
 
     if (Array.isArray(value)) {
-      const rotatingContent = (
+      parts.push(
         <WordRotate
           key={`${name}-${match.index}-wrap`}
           className={cn("inline align-baseline [&&]:py-0", baseRotateClassName, tokenClassName[name])}
           containerClassName="max-w-[24ch]"
           wordClassName="inline m-0 p-0 align-baseline"
           words={value.length ? value : defaultRotateWords}
+          aurora={
+            shouldHighlightToken
+              ? {
+                  colors: auroraToken?.colors ?? DEFAULT_AURORA_COLORS,
+                  speed: auroraToken?.speed,
+                  className: auroraToken?.className,
+                }
+              : undefined
+          }
         />
       )
-
-      if (shouldHighlightToken) {
-        parts.push(
-          <AuroraText
-            key={`${name}-${match.index}-aurora`}
-            colors={auroraToken?.colors}
-            speed={auroraToken?.speed}
-            className={cn("inline-block align-baseline", auroraToken?.className)}
-            duplicateChildren={false}
-          >
-            {rotatingContent}
-          </AuroraText>
-        )
-      } else {
-        parts.push(rotatingContent)
-      }
     } else if (typeof value === "string") {
       if (shouldHighlightToken) {
         parts.push(
           <AuroraText
             key={`${name}-${match.index}-aurora-string`}
-            colors={auroraToken?.colors}
+            colors={auroraToken?.colors ?? DEFAULT_AURORA_COLORS}
             speed={auroraToken?.speed}
             className={cn("inline-block align-baseline", auroraToken?.className)}
             duplicateChildren={false}

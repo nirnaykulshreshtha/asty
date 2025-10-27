@@ -2,6 +2,8 @@
 
 import React, { memo } from "react"
 
+export const DEFAULT_AURORA_COLORS = ["#FF0080", "#7928CA", "#0070F3", "#38bdf8"]
+
 interface AuroraTextProps {
   children: React.ReactNode
   className?: string
@@ -18,7 +20,7 @@ export const AuroraText = memo(
   ({
     children,
     className = "",
-    colors = ["#FF0080", "#7928CA", "#0070F3", "#38bdf8"],
+    colors = DEFAULT_AURORA_COLORS,
     speed = 1,
     duplicateChildren = true,
   }: AuroraTextProps) => {

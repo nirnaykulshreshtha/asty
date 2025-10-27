@@ -505,8 +505,10 @@ Context: Marketing requested the ability to aurora-highlight only the `{domain}`
 Changes:
 - Extended the `aurora` prop with a `domainToken` option that targets a specific token (defaulting to `domain`) and applies Aurora gradients solely to that token whether it is static text or a `WordRotate` instance.
 - Added `duplicateChildren` flag to `AuroraText` to prevent double-rendering when wrapping animated components and updated render pipeline to normalize token configuration once per render.
+- Refined `WordRotate` to accept inline aurora configuration so gradients are applied within the animated span, preserving `AnimatePresence` transitions when rotating words are highlighted.
 
 Impact:
 - Enables precise aurora emphasis for rotating domain words without affecting surrounding text.
 - Supports custom gradients, speed, and class overrides per token while reusing global settings.
 - Avoids rendering glitches by skipping duplicate children when wrapping interactive content.
+- Keeps motion animations intact even when aurora styling is applied to rotating tokens.

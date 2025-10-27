@@ -67,27 +67,13 @@ export function HeroSection({
               )}
             >
               Your LifeTime Passive Income Engine
+              {/* Turn Your Community Power Into Lifetime Income */}
             </h1>
             <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-              Asty combines education, referrals, and facilitator tooling to channel every community action into a shared Vault. Hold a position, build the network, and earn transparent income for life.
+            Asty lets people build, earn, and own together.
+            Every action adds value. Every member shares the upside.
+              {/* Asty combines education, referrals, and facilitator tooling to channel every community action into a shared Vault. Hold a position, build the network, and earn transparent income for life. */}
             </p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3">
-            {HERO_CTAS.map((cta) => (
-              <CTAButton
-                key={cta.label}
-                href={cta.href}
-                label={cta.label}
-                onClick={onAnchorClick}
-                variant={cta.variant}
-                size="lg"
-                className={cn(
-                  "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
-                  cta.tone === "outline" ? "backdrop-blur" : ""
-                )}
-              />
-            ))}
           </div>
 
           <div className="space-y-4">
@@ -107,6 +93,23 @@ export function HeroSection({
                 </div>
               ))}
             </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            {HERO_CTAS.map((cta) => (
+              <CTAButton
+                key={cta.label}
+                href={cta.href}
+                label={cta.label}
+                onClick={onAnchorClick}
+                variant={cta.variant}
+                size="lg"
+                className={cn(
+                  "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
+                  cta.tone === "outline" ? "backdrop-blur" : ""
+                )}
+              />
+            ))}
           </div>
         </div>
 

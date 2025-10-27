@@ -241,12 +241,6 @@ export const HERO_CTAS: HeroCta[] = [
     tone: "primary",
   },
   {
-    label: "Buy Token",
-    href: "#tokenomics",
-    variant: "secondary",
-    tone: "secondary",
-  },
-  {
     label: "Read Whitepaper",
     href: "#whitepaper",
     variant: "outline",
@@ -289,17 +283,17 @@ export const HERO_BURSTS: string[] = [
 export const HERO_PILLARS: HeroPillar[] = [
   {
     title: "Education",
-    description: "Empowering DEX users through actionable, community-first content.",
+    description: "Empower yourself with on-chain learning and community-driven insights.",
     icon: GraduationCap,
   },
   {
     title: "Referral",
-    description: "Driving network growth and shared rewards via a 12-level program.",
+    description: "Grow the network through trust-based links and earn from real participation, not hype.",
     icon: Share2,
   },
   {
     title: "Facilitation",
-    description: "Building tools that support trader needs across the Aster ecosystem.",
+    description: "Build and use tools that support creators, traders, and educators across the ecosystem.",
     icon: Wrench,
   },
 ]

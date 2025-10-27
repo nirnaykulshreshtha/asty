@@ -69,11 +69,9 @@ export function HeroSection({
               )}
             >
               Your LifeTime Passive Income Engine
-              {/* Turn Your Community Power Into Lifetime Income */}
             </h1>
             <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
             Every action adds value. Every member shares the upside. <AuroraText colors={["#f97316", "#FF0000", "#f6339a", "#f97316"]}>Asty lets people build, earn, and own together.</AuroraText>
-              {/* Asty combines education, referrals, and facilitator tooling to channel every community action into a shared Vault. Hold a position, build the network, and earn transparent income for life. */}
             </p>
           </div>
 
@@ -117,11 +115,11 @@ export function HeroSection({
 
         {/* Mascot on the right with bounce animation */}
         <div className="hidden lg:flex lg:justify-center">
-          <div className="group relative flex size-100 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-primary/20 via-background/80 to-accent/20 p-6 shadow-2xl transition-transform duration-500 hover:scale-105">
+          <div className="group relative flex size-100 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-primary/20 via-background/80 to-accent/20 shadow-2xl transition-transform duration-500 hover:scale-105 overflow-visible">
             <Image
               src={AstyCharacter}
               alt="Asty mascot"
-              className="h-auto w-full object-contain animate-[bounce_2.5s_ease-in-out_infinite] group-hover:[animation-play-state:paused]"
+              className="h-auto w-[160%] object-contain animate-[bounce_2.5s_ease-in-out_infinite] group-hover:[animation-play-state:paused]"
               priority
             />
           </div>

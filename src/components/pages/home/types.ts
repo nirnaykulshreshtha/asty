@@ -282,19 +282,19 @@ export const HERO_BURSTS: string[] = [
 
 export const HERO_PILLARS: HeroPillar[] = [
   {
-    title: "Education",
+    title: "Educate",
     description: "Empower yourself with on-chain learning and community-driven insights.",
     icon: GraduationCap,
   },
   {
-    title: "Referral",
-    description: "Grow the network through trust-based links and earn from real participation, not hype.",
-    icon: Share2,
-  },
-  {
-    title: "Facilitation",
+    title: "Facilitate",
     description: "Build and use tools that support creators, traders, and educators across the ecosystem.",
     icon: Wrench,
+  },
+  {
+    title: "Refer",
+    description: "Grow the network through trust-based links and earn from real participation, not hype.",
+    icon: Share2,
   },
 ]
 

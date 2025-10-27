@@ -23,6 +23,9 @@ import { CTAButton } from "@/components/ui/CTAButton"
 import { DecorativeBackground } from "@/components/ui/DecorativeBackground"
 import Image from "next/image"
 import AstyCharacter from "@/assets/images/asty character.png"
+import { MagicCard } from "@/components/ui/magic-card"
+import { AuroraText } from "@/components/ui/aurora-text"
+import { TypingAnimation } from "@/components/ui/typing-animation"
 
 interface HeroSectionProps {
   heroBurstIndex: number
@@ -66,12 +69,11 @@ export function HeroSection({
                 astroz.className
               )}
             >
-              Your LifeTime Passive Income Engine
+              <TypingAnimation startOnView>Your LifeTime Passive Income Engine</TypingAnimation>
               {/* Turn Your Community Power Into Lifetime Income */}
             </h1>
             <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Asty lets people build, earn, and own together.
-            Every action adds value. Every member shares the upside.
+            Every action adds value. Every member shares the upside. <AuroraText colors={["#f97316", "#ad46ff", "#f6339a", "#f97316"]}>Asty lets people build, earn, and own together.</AuroraText>
               {/* Asty combines education, referrals, and facilitator tooling to channel every community action into a shared Vault. Hold a position, build the network, and earn transparent income for life. */}
             </p>
           </div>
@@ -79,37 +81,41 @@ export function HeroSection({
           <div className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-3">
               {HERO_PILLARS.map((pillar) => (
-                <div
-                  key={pillar.title}
-                  className="rounded-2xl border border-border/60 bg-background/80 p-5 shadow-lg transition hover:border-primary/40 hover:shadow-xl"
-                >
-                  <div className="flex items-center gap-3 text-sm font-semibold text-foreground">
-                    <pillar.icon className="size-4 text-primary" aria-hidden="true" />
-                    <span>{pillar.title}</span>
-                  </div>
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    {pillar.description}
-                  </p>
+                <MagicCard key={pillar.title} className="rounded-2xl bg-background/80 p-5 shadow-lg transition hover:shadow-xl" >
+                  <div>
+                    <div className="flex items-center gap-3 text-sm font-semibold text-foreground">
+                      <pillar.icon className="size-4 text-primary" aria-hidden="true" />
+                      <span>{pillar.title}</span>
+                    </div>
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      {pillar.description}
+                    </p>
                 </div>
+                </MagicCard>
               ))}
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            {HERO_CTAS.map((cta) => (
-              <CTAButton
-                key={cta.label}
-                href={cta.href}
-                label={cta.label}
-                onClick={onAnchorClick}
-                variant={cta.variant}
-                size="lg"
-                className={cn(
-                  "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
-                  cta.tone === "outline" ? "backdrop-blur" : ""
-                )}
-              />
-            ))}
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              {HERO_CTAS.map((cta) => (
+                <CTAButton
+                  key={cta.label}
+                  href={cta.href}
+                  label={cta.label}
+                  onClick={onAnchorClick}
+                  variant={cta.variant}
+                  size="lg"
+                  className={cn(
+                    "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
+                    cta.tone === "outline" ? "backdrop-blur" : ""
+                  )}
+                />
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground/70 m-0">
+              Powered by PeopleFi — transparent, collective, rewarding.
+            </p>
           </div>
         </div>
 

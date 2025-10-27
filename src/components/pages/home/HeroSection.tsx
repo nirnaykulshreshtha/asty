@@ -25,7 +25,6 @@ import Image from "next/image"
 import AstyCharacter from "@/assets/images/asty character.png"
 import { MagicCard } from "@/components/ui/magic-card"
 import { AuroraText } from "@/components/ui/aurora-text"
-import { TypingAnimation } from "@/components/ui/typing-animation"
 
 interface HeroSectionProps {
   heroBurstIndex: number
@@ -69,11 +68,11 @@ export function HeroSection({
                 astroz.className
               )}
             >
-              <TypingAnimation startOnView>Your LifeTime Passive Income Engine</TypingAnimation>
+              Your LifeTime Passive Income Engine
               {/* Turn Your Community Power Into Lifetime Income */}
             </h1>
             <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Every action adds value. Every member shares the upside. <AuroraText colors={["#f97316", "#ad46ff", "#f6339a", "#f97316"]}>Asty lets people build, earn, and own together.</AuroraText>
+            Every action adds value. Every member shares the upside. <AuroraText colors={["#f97316", "#FF0000", "#f6339a", "#f97316"]}>Asty lets people build, earn, and own together.</AuroraText>
               {/* Asty combines education, referrals, and facilitator tooling to channel every community action into a shared Vault. Hold a position, build the network, and earn transparent income for life. */}
             </p>
           </div>

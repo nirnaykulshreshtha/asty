@@ -101,8 +101,8 @@ const mascotVariants = {
 
 const Mascot = React.forwardRef<SVGSVGElement, MascotProps>(({ 
   enableStrokeDrawing = true,
-  enableFilterEffects = true,
-  enableMaskAnimations = true,
+  enableFilterEffects = false,
+  enableMaskAnimations = false,
   height=200,
   width=200,
   ...props 
@@ -246,84 +246,6 @@ const Mascot = React.forwardRef<SVGSVGElement, MascotProps>(({
           />
         </g>
       </g>
-      
-      {/* Animated background elements */}
-      <motion.circle
-        cx="405"
-        cy="506"
-        r="400"
-        fill="url(#animatedGradient)"
-        opacity="0.1"
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.1, 0.2, 0.1],
-          rotate: [0, 360]
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-      
-      {/* Floating particles */}
-      <motion.circle
-        cx="200"
-        cy="300"
-        r="3"
-        fill="#ff6b6b"
-        opacity="0.6"
-        animate={{
-          y: [0, -20, 0],
-          opacity: [0.6, 1, 0.6],
-          scale: [1, 1.2, 1]
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 0
-        }}
-      />
-      
-      <motion.circle
-        cx="600"
-        cy="400"
-        r="2"
-        fill="#4ecdc4"
-        opacity="0.8"
-        animate={{
-          y: [0, -15, 0],
-          opacity: [0.8, 1, 0.8],
-          scale: [1, 1.3, 1]
-        }}
-        transition={{
-          duration: 2.5,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1
-        }}
-      />
-      
-      <motion.circle
-        cx="300"
-        cy="700"
-        r="2.5"
-        fill="#45b7d1"
-        opacity="0.7"
-        animate={{
-          y: [0, -18, 0],
-          opacity: [0.7, 1, 0.7],
-          scale: [1, 1.1, 1]
-        }}
-        transition={{
-          duration: 3.5,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 2
-        }}
-      />
-      
     </g>
   </motion.svg>
 ));

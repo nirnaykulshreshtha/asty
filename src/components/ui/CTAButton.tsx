@@ -18,6 +18,7 @@ import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { logger } from "@/lib/logger"
+import { cn } from "@/lib/utils"
 
 export interface CTAButtonProps {
   href: string
@@ -35,8 +36,14 @@ export function CTAButton({ href, label, onClick, variant = "default", size = "l
   const isHash = href.startsWith("#")
   const linkProps = external && !isHash ? { target: "_blank", rel: "noopener noreferrer" } : {}
 
+  const classes = cn(
+    "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
+    variant === "outline" ? "backdrop-blur" : "outline",
+    className
+  )
+
   return (
-    <Button asChild variant={variant} size={size} className={className}>
+    <Button asChild variant={variant} size={size} className={classes}>
       <Link href={href} onClick={onClick} {...linkProps}>
         <span>{label}</span>
         <ArrowRight className="size-4" aria-hidden="true" />
@@ -44,5 +51,4 @@ export function CTAButton({ href, label, onClick, variant = "default", size = "l
     </Button>
   )
 }
-
 

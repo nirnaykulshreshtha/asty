@@ -709,3 +709,87 @@ Impact:
 - Improved readability and visual hierarchy throughout
 - More engaging user experience with enhanced visual feedback
 - Maintains accessibility while adding visual depth
+
+## 2025-01-27 – Custom Address Input for Referral Link Dialog
+
+Context: Users needed the ability to generate referral links for any Ethereum address, not just their own connected wallet address. This enables scenarios where users want to create referral links for other addresses or proxy accounts.
+
+Changes:
+- Enhanced `src/components/pages/home/ReferralLinkDialog.tsx` with custom address input functionality:
+  - Added toggle buttons to switch between "Use My Address" and "Custom Address" modes
+  - Added text input field with real-time Ethereum address validation
+  - Implemented `isEthereumAddress` validation from `src/lib/referrals.ts`
+  - Added visual feedback for valid/invalid address formats (error messages and success checkmarks)
+  - Added conditional rendering so action buttons only appear when a valid link can be generated
+  - Added helpful error message when custom address format is invalid
+  - Comprehensive logging for debugging custom address input flows
+- Updated documentation to reflect custom address generation capability
+
+Features:
+- **Dual Mode**: Toggle between using connected wallet address or custom address
+- **Real-time Validation**: Instant feedback on address format validity
+- **Visual Feedback**: Error messages for invalid addresses, success checkmark for valid addresses
+- **Smart Button Rendering**: Action buttons only appear when valid referral link can be generated
+- **Helpful Guidance**: Clear error messages and placeholder text guide user input
+- **Comprehensive Logging**: Debug-friendly with detailed logging for custom address flows
+- **Input Sanitization**: Auto-clears errors when switching between modes
+
+Impact:
+- Enables users to generate referral links for any Ethereum address
+- Flexible referral link generation for advanced use cases
+- Better user experience with real-time validation and clear feedback
+- Reduces errors with visual validation indicators
+- Professional appearance with proper error handling
+- Comprehensive debugging capabilities for support scenarios
+
+Follow-up Changes:
+- Hide "How it works" section when in custom address mode to avoid misleading users about their own earnings
+- The earnings information is only relevant when using your own wallet address, not when generating links for other addresses
+- Added validation to prevent users from entering their own logged-in address in custom address field
+- Shows helpful error message: "Cannot use your own address. Switch to 'Use My Address' mode instead."
+- Validates both address format and checks against connected wallet address (case-insensitive)
+- Prevents redundant referral link generation when users can simply use their connected wallet
+
+## 2025-01-27 – Auto-Validation of Referral Address in Secure Your Position
+
+Context: Users accessing the site via referral links should have their referral address automatically validated without needing to manually enter it. This improves user experience and eliminates the possibility of manual entry errors.
+
+Changes:
+- **Added `extractReferralFromURL()` function** in `src/lib/referrals.ts`:
+  - Extracts the `ref` parameter from URL query string
+  - Validates the extracted address using existing `isEthereumAddress()` function
+  - Returns the validated address or null if not present/invalid
+  - Comprehensive logging for debugging referral extraction flows
+- **Enhanced `RegistrationSection.tsx`** with automatic referral validation:
+  - Added `autoExtractedReferral` and `referralExtractionError` state variables
+  - Added useEffect hook to extract referral address from URL on component mount
+  - Validates extracted referral against connected wallet to prevent self-referral
+  - Updates formData with extracted referral address when valid
+  - Comprehensive logging for automatic referral detection and validation
+- **Removed manual input field** from the UI:
+  - Completely removed the referral address input field and its associated Label
+  - Removed unused imports (Input, Label, cn utilities)
+  - Removed unused handleInputChange callback function
+  - Cleaned up form UI to show only success/error messages
+- **Added success/error message display**:
+  - Shows green success alert when valid referral address is detected from URL
+  - Shows red error alert when referral address fails validation (invalid format or self-referral)
+  - Success message shows abbreviated referral address (first 6 and last 4 chars)
+  - Error message clearly explains why the referral failed validation
+
+Features:
+- **Automatic Detection**: Extracts referral address from URL parameters (?ref=0x...) on page load
+- **Real-time Validation**: Validates format and prevents self-referral automatically
+- **User-Friendly Feedback**: Clear success/error messages without manual input required
+- **Clean UI**: No input field cluttering the registration form
+- **Comprehensive Logging**: Detailed logging for debugging referral extraction and validation
+- **Self-Referral Prevention**: Automatically detects and prevents users from referring themselves
+- **Silent Success**: If no referral in URL, shows clean registration form without any messages
+
+Impact:
+- Significantly improved user experience with automatic referral detection
+- Eliminates manual entry errors by removing the input field
+- Cleaner, more focused registration form UI
+- Better conversion funnel with seamless referral credit application
+- Professional appearance with clear visual feedback
+- Maintains all existing validation logic and error handling

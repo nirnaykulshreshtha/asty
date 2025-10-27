@@ -6,6 +6,8 @@
  * 
  * Features:
  * - Automatic referral link generation based on wallet address
+ * - Custom address input for generating referral links for any Ethereum address
+ * - Real-time address validation with user feedback
  * - Copy to clipboard with fallback support
  * - Web Share API integration with graceful fallback
  * - Clean, focused dialog UI
@@ -21,8 +23,10 @@ import { toast } from "sonner"
 import { Check, Copy, Share2, ExternalLink, X } from "lucide-react"
 
 import { logger } from "@/lib/logger"
-import { buildReferralLink } from "@/lib/referrals"
+import { buildReferralLink, isEthereumAddress } from "@/lib/referrals"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Dialog,
   DialogContent,
@@ -49,13 +53,58 @@ export function ReferralLinkDialog({ open, onOpenChange }: ReferralLinkDialogPro
   logger.info("component:referral-link-dialog:render", { open })
   
   const [hasCopied, setHasCopied] = useState(false)
+  const [customAddress, setCustomAddress] = useState("")
+  const [useCustomAddress, setUseCustomAddress] = useState(false)
+  const [addressError, setAddressError] = useState<string | null>(null)
   const { address, isConnected } = useAccount()
 
+  const effectiveAddress = useMemo(() => {
+    if (useCustomAddress && customAddress) {
+      logger.debug("referral-link-dialog:using-custom-address", { customAddress })
+      return customAddress
+    }
+    return address
+  }, [useCustomAddress, customAddress, address])
+
   const referralLink = useMemo(() => {
-    if (!address || !isConnected) return ""
-    logger.debug("referral-link-dialog:generating-link", { address })
-    return buildReferralLink(address)
-  }, [address, isConnected])
+    if (!effectiveAddress) return ""
+    logger.debug("referral-link-dialog:generating-link", { address: effectiveAddress, isCustom: useCustomAddress })
+    return buildReferralLink(effectiveAddress)
+  }, [effectiveAddress, useCustomAddress])
+
+  const handleCustomAddressChange = (value: string) => {
+    logger.debug("referral-link-dialog:custom-address-changed", { value })
+    setCustomAddress(value)
+    
+    if (!value) {
+      setAddressError(null)
+      return
+    }
+    
+    if (!isEthereumAddress(value)) {
+      setAddressError("Invalid Ethereum address format")
+      logger.warn("referral-link-dialog:invalid-address-format", { value })
+    } else if (address && value.toLowerCase() === address.toLowerCase()) {
+      setAddressError("Cannot use your own address. Switch to 'Use My Address' mode instead.")
+      logger.warn("referral-link-dialog:own-address-entered", { value })
+    } else {
+      setAddressError(null)
+    }
+  }
+
+  const canGenerateLink = () => {
+    if (useCustomAddress) {
+      if (!customAddress || !isEthereumAddress(customAddress)) {
+        return false
+      }
+      // Don't allow generating link if it's the user's own address
+      if (address && customAddress.toLowerCase() === address.toLowerCase()) {
+        return false
+      }
+      return true
+    }
+    return isConnected && address
+  }
 
   const handleCopyReferral = () => {
     if (!referralLink) {
@@ -185,68 +234,134 @@ export function ReferralLinkDialog({ open, onOpenChange }: ReferralLinkDialogPro
             </>
           ) : (
             <>
-              <div className="rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 p-4 border border-primary/20 shadow-sm">
-                <p className="text-xs font-medium text-muted-foreground mb-2">Your Referral Link</p>
-                <p className="break-words text-sm font-mono text-foreground bg-background/50 p-2 rounded border">
-                  {referralLink}
-                </p>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Button
+                    type="button"
+                    variant={!useCustomAddress ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => {
+                      setUseCustomAddress(false)
+                      setAddressError(null)
+                      logger.debug("referral-link-dialog:switched-to-my-address")
+                    }}
+                  >
+                    Use My Address
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={useCustomAddress ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => {
+                      setUseCustomAddress(true)
+                      logger.debug("referral-link-dialog:switched-to-custom-address")
+                    }}
+                  >
+                    Custom Address
+                  </Button>
+                </div>
+
+                {useCustomAddress && (
+                  <div className="space-y-2">
+                    <Label htmlFor="custom-address" className="text-sm">
+                      Enter Ethereum Address
+                    </Label>
+                    <Input
+                      id="custom-address"
+                      type="text"
+                      placeholder="0x..."
+                      value={customAddress}
+                      onChange={(e) => handleCustomAddressChange(e.target.value)}
+                      className={addressError ? "border-destructive" : ""}
+                    />
+                    {addressError && (
+                      <p className="text-xs text-destructive">{addressError}</p>
+                    )}
+                    {customAddress && isEthereumAddress(customAddress) && !addressError && (
+                      <p className="text-xs text-green-600 dark:text-green-400">✓ Valid address format</p>
+                    )}
+                  </div>
+                )}
+
+                {canGenerateLink() && (
+                  <div className="rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 p-4 border border-primary/20 shadow-sm">
+                    <p className="text-xs font-medium text-muted-foreground mb-2">
+                      {useCustomAddress ? "Custom Referral Link" : "Your Referral Link"}
+                    </p>
+                    <p className="break-words text-sm font-mono text-foreground bg-background/50 p-2 rounded border">
+                      {referralLink}
+                    </p>
+                  </div>
+                )}
               </div>
               
-              <div className="flex gap-2">
-                <Button
-                  onClick={handleCopyReferral}
-                  variant="default"
-                  size="default"
-                  className="flex-1"
-                >
-                  <span className="inline-flex items-center gap-2">
-                    {hasCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                    {hasCopied ? "Copied" : "Copy"}
-                  </span>
-                </Button>
-                
-                <Button
-                  onClick={handleShare}
-                  variant="outline"
-                  size="default"
-                  className="flex-1"
-                >
-                  <span className="inline-flex items-center gap-2">
+              {canGenerateLink() && (
+                <div className="flex gap-2">
+                  <Button
+                    onClick={handleCopyReferral}
+                    variant="default"
+                    size="default"
+                    className="flex-1"
+                  >
+                    <span className="inline-flex items-center gap-2">
+                      {hasCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                      {hasCopied ? "Copied" : "Copy"}
+                    </span>
+                  </Button>
+                  
+                  <Button
+                    onClick={handleShare}
+                    variant="outline"
+                    size="default"
+                    className="flex-1"
+                  >
+                    <span className="inline-flex items-center gap-2">
+                      <Share2 className="h-4 w-4" />
+                      Share
+                    </span>
+                  </Button>
+
+                  <Button
+                    onClick={handleVisitLink}
+                    variant="outline"
+                    size="default"
+                    className="shrink-0"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+
+              {useCustomAddress && !canGenerateLink() && customAddress && (
+                <div className="rounded-lg bg-muted/50 border border-border p-3">
+                  <p className="text-sm text-muted-foreground">
+                    Please enter a valid Ethereum address (0x followed by 40 hex characters)
+                  </p>
+                </div>
+              )}
+
+              {!useCustomAddress && (
+                <div className="rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/20 p-4 shadow-sm">
+                  <p className="font-semibold text-primary mb-2 flex items-center gap-2">
                     <Share2 className="h-4 w-4" />
-                    Share
-                  </span>
-                </Button>
-
-                <Button
-                  onClick={handleVisitLink}
-                  variant="outline"
-                  size="default"
-                  className="shrink-0"
-                >
-                  <ExternalLink className="h-4 w-4" />
-                </Button>
-              </div>
-
-              <div className="rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/20 p-4 shadow-sm">
-                <p className="font-semibold text-primary mb-2 flex items-center gap-2">
-                  <Share2 className="h-4 w-4" />
-                  How it works
-                </p>
-                <ul className="space-y-2 text-sm text-foreground">
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>Share this link with friends and colleagues</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>Earn <strong className="text-primary">10% USDT + 10% ASTY</strong> on every successful referral</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold">•</span>
-                    <span>Build your 12-level network and maximize your rewards</span>
-                  </li>
-                </ul>
-              </div>
+                    How it works
+                  </p>
+                  <ul className="space-y-2 text-sm text-foreground">
+                    <li className="flex items-start gap-2">
+                      <span className="text-primary font-bold">•</span>
+                      <span>Share this link with friends and colleagues</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-primary font-bold">•</span>
+                      <span>Earn <strong className="text-primary">10% USDT + 10% ASTY</strong> on every successful referral</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-primary font-bold">•</span>
+                      <span>Build your 12-level network and maximize your rewards</span>
+                    </li>
+                  </ul>
+                </div>
+              )}
             </>
           )}
         </div>

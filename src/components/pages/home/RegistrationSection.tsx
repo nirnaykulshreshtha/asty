@@ -2,18 +2,19 @@
  * Registration Section Component
  * ----------------------------
  * Displays a comprehensive registration form for Early Membership signup.
- * Handles wallet connection, form validation, and platform registration with optional referral address.
+ * Handles wallet connection, form validation, and platform registration with auto-validated referral address.
  * 
  * Features:
  * - Complete registration form with validation
  * - Wallet connection requirement for registration
- * - Optional referral address input with real-time validation
+ * - Automatic referral address extraction from URL parameters (?ref=...)
+ * - Auto-validation of extracted referral address on component mount
  * - Form submission handling with loading states
  * - Clear pricing and benefits display
  * - RainbowKit-powered wallet connection via CustomConnectButton
  * - Progress indicator showing current membership count
  * - Responsive design with gradient background
- * - Comprehensive error handling and user feedback
+ * - Comprehensive error handling and user feedback (success/error messages only)
  * - Scroll-based reveal animation
  * - Aggressive logging for debugging registration flow
  */
@@ -24,11 +25,8 @@ import { useState, useCallback, useEffect } from "react"
 import { useAccount } from "wagmi"
 import { CheckCircle, Loader2, AlertCircle, Check, X } from "lucide-react"
 
-import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
-import { isEthereumAddress } from "@/lib/referrals"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { isEthereumAddress, extractReferralFromURL } from "@/lib/referrals"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -91,9 +89,80 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
 
   const { address } = useAccount()
 
+  const [autoExtractedReferral, setAutoExtractedReferral] = useState<string | null>(null)
+  const [referralExtractionError, setReferralExtractionError] = useState<string | null>(null)
+
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  /**
+   * Validates the referral address input with enhanced checks
+   * @param inputAddress - The referral address to validate
+   * @returns Error message if invalid, undefined if valid
+   */
+  const validateReferralAddress = useCallback((inputAddress: string): string | undefined => {
+    const trimmedAddress = inputAddress.trim()
+    
+    if (!trimmedAddress) return undefined // Optional field
+    
+    // Check if it's a valid Ethereum address
+    if (!isEthereumAddress(trimmedAddress)) {
+      logger.warn("registration:validate-referral:invalid-format", { address: trimmedAddress })
+      return "Please enter a valid Ethereum address (0x followed by 40 hex characters)"
+    }
+    
+    // Check if it's the same as the connected wallet
+    if (address && trimmedAddress.toLowerCase() === address.toLowerCase()) {
+      logger.warn("registration:validate-referral:self-referral", { address: trimmedAddress })
+      return "Referral address cannot be the same as your wallet address"
+    }
+    
+    // Check minimum length for basic validation
+    if (trimmedAddress.length < 42) {
+      logger.warn("registration:validate-referral:too-short", { length: trimmedAddress.length })
+      return "Ethereum address must be 42 characters long"
+    }
+    
+    return undefined
+  }, [address])
+
+  // Extract and validate referral address from URL on mount
+  useEffect(() => {
+    if (mounted) {
+      const extractedRef = extractReferralFromURL()
+      
+      if (extractedRef) {
+        logger.info("registration:auto-extract-referral:extracted", { referral: extractedRef })
+        
+        // Full validation using validateReferralAddress
+        const validationError = validateReferralAddress(extractedRef)
+        
+        if (validationError) {
+          logger.warn("registration:auto-extract-referral:validation-failed", { 
+            referral: extractedRef, 
+            error: validationError 
+          })
+          setReferralExtractionError(validationError)
+          setAutoExtractedReferral(null)
+        } else if (address && extractedRef.toLowerCase() === address.toLowerCase()) {
+          logger.warn("registration:auto-extract-referral:self-referral", { referral: extractedRef })
+          setReferralExtractionError("Referral address cannot be the same as your wallet address")
+          setAutoExtractedReferral(null)
+        } else {
+          logger.info("registration:auto-extract-referral:success", { referral: extractedRef })
+          setAutoExtractedReferral(extractedRef)
+          setReferralExtractionError(null)
+          // Update formData with the extracted referral
+          setFormData(prev => ({ ...prev, referralAddress: extractedRef }))
+        }
+      } else {
+        logger.debug("registration:auto-extract-referral:no-referral")
+        setAutoExtractedReferral(null)
+        setReferralExtractionError(null)
+      }
+    }
+  }, [mounted, address, validateReferralAddress])
 
   const isWalletConnected = mounted && Boolean(address)
   const isRegistered = registrationState.isSubmitted
@@ -116,33 +185,6 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     }
   }, [formData])
 
-
-  /**
-   * Validates the referral address input with enhanced checks
-   * @param inputAddress - The referral address to validate
-   * @returns Error message if invalid, undefined if valid
-   */
-  const validateReferralAddress = useCallback((inputAddress: string): string | undefined => {
-    if (!inputAddress.trim()) return undefined // Optional field
-    
-    // Check if it's a valid Ethereum address
-    if (!isEthereumAddress(inputAddress)) {
-      return "Please enter a valid Ethereum address (0x followed by 40 hex characters)"
-    }
-    
-    // Check if it's the same as the connected wallet
-    if (address && inputAddress.toLowerCase() === address.toLowerCase()) {
-      return "Referral address cannot be the same as your wallet address"
-    }
-    
-    // Check minimum length for basic validation
-    if (inputAddress.length < 42) {
-      return "Ethereum address must be 42 characters long"
-    }
-    
-    return undefined
-  }, [address])
-
   /**
    * Validates the entire form
    * @returns Object containing validation errors
@@ -163,48 +205,6 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
 
     return errors
   }, [formData, validateReferralAddress])
-
-  /**
-   * Handles form input changes with real-time validation
-   * @param field - The field being updated
-   * @param value - The new value
-   */
-  const handleInputChange = useCallback((field: keyof FormData, value: string) => {
-    logger.debug("registration:form:input-change", { field, value })
-    
-    // Auto-format Ethereum addresses
-    let formattedValue = value
-    if (field === 'referralAddress' && value && !value.startsWith('0x')) {
-      formattedValue = '0x' + value
-    }
-    
-    setFormData(prev => ({ ...prev, [field]: formattedValue }))
-    
-    // Real-time validation for referral address
-    if (field === 'referralAddress') {
-      const error = validateReferralAddress(formattedValue)
-      setRegistrationState(prev => ({
-        ...prev,
-        errors: { ...prev.errors, [field]: error }
-      }))
-    } else {
-      // Clear errors when user starts typing
-      if (registrationState.errors[field]) {
-        setRegistrationState(prev => ({
-          ...prev,
-          errors: { ...prev.errors, [field]: undefined }
-        }))
-      }
-    }
-
-    // Clear general error when user starts interacting with the form
-    if (registrationState.errors.general) {
-      setRegistrationState(prev => ({
-        ...prev,
-        errors: { ...prev.errors, general: undefined }
-      }))
-    }
-  }, [registrationState.errors, validateReferralAddress])
 
   /**
    * Handles form submission for platform registration
@@ -316,48 +316,24 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
                   </Alert>
                 )}
 
-                {/* Referral Address Input */}
-                <div className="space-y-2">
-                  <Label htmlFor="referral" className="text-sm font-medium text-foreground">
-                    Referral Address (Optional)
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      id="referral"
-                      type="text"
-                      placeholder="0x..."
-                      value={formData.referralAddress}
-                      onChange={(e) => handleInputChange('referralAddress', e.target.value)}
-                      className={cn(
-                        "bg-background/50 border-white/10 text-foreground placeholder:text-muted-foreground pr-10",
-                        registrationState.errors.referralAddress && "border-red-400/50",
-                        formData.referralAddress && !registrationState.errors.referralAddress && "border-green-400/50"
-                      )}
-                      disabled={registrationState.isSubmitting}
-                    />
-                    {formData.referralAddress && (
-                      <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                        {registrationState.errors.referralAddress ? (
-                          <X className="w-4 h-4 text-red-400" />
-                        ) : (
-                          <Check className="w-4 h-4 text-green-400" />
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  {registrationState.errors.referralAddress && (
-                    <p className="text-xs text-red-400 flex items-center gap-1">
-                      <X className="w-3 h-3" />
-                      {registrationState.errors.referralAddress}
-                    </p>
-                  )}
-                  {formData.referralAddress && !registrationState.errors.referralAddress && (
-                    <p className="text-xs text-green-400 flex items-center gap-1">
-                      <Check className="w-3 h-3" />
-                      Valid Ethereum address
-                    </p>
-                  )}
-                </div>
+                {/* Auto-extracted Referral Status Messages */}
+                {referralExtractionError && (
+                  <Alert variant="destructive" className="border-red-400/50 bg-red-400/10">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription className="text-red-400">
+                      {referralExtractionError}
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                {autoExtractedReferral && !referralExtractionError && (
+                  <Alert className="border-green-400/50 bg-green-400/10">
+                    <Check className="h-4 w-4 text-green-400" />
+                    <AlertDescription className="text-green-400">
+                      Referral address detected: {autoExtractedReferral.slice(0, 6)}...{autoExtractedReferral.slice(-4)}
+                    </AlertDescription>
+                  </Alert>
+                )}
                 
                 {/* Single Button Display */}
                 <div className="space-y-3">

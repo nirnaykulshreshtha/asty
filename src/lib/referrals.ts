@@ -24,6 +24,25 @@ export function buildReferralLink(walletAddress: string, origin?: string): strin
   return `${normalizedOrigin}/?ref=${encodeURIComponent(walletAddress)}`
 }
 
+/**
+ * Extract referral address from URL query parameters.
+ * Automatically retrieves the 'ref' parameter from the current URL and returns it for validation.
+ * Note: Does not validate the address - leave that to the consuming component for proper error handling.
+ *
+ * @returns The referral address if present, null otherwise
+ */
+export function extractReferralFromURL(): string | null {
+  if (typeof window === "undefined") return null
+  
+  const urlParams = new URLSearchParams(window.location.search)
+  const refParam = urlParams.get("ref")
+  
+  if (!refParam) return null
+  
+  // Trim whitespace and return
+  return refParam.trim()
+}
+
 const ETHEREUM_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
 
 /**

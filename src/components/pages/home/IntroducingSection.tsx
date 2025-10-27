@@ -8,8 +8,6 @@
 
 "use client"
 
-import { CheckCircle2 } from "lucide-react"
-
 import { logger } from "@/lib/logger"
 import { PARTICIPATION_PILLARS } from "./types"
 import { SectionHeader } from "@/components/ui/SectionHeader"
@@ -17,13 +15,6 @@ import { AnimatedIntroductionSection } from "./AnimatedIntroductionSection"
 
 export function IntroducingSection() {
   logger.info("component:introducing:render")
-
-  const introductionHighlights = [
-    "Education unlocks adoption with guided pathways for new DEX users.",
-    "Referral mechanics reward community builders long before token launch.",
-    "Facilitator tools keep network activity flowing directly into the Vault.",
-  ]
-
   return (
     <section
       id="participation"

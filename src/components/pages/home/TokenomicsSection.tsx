@@ -18,15 +18,13 @@ import {
 } from "./types"
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { DecorativeBackground } from "@/components/ui/DecorativeBackground"
-import { CTAButton } from "@/components/ui/CTAButton"
-import { TEN_K_TRIGGER_TEXT } from "./constants"
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { PieChart, Pie, Cell, Label } from "recharts"
+import { PieChart, Pie, Cell } from "recharts"
 
 /**
  * Token Distribution Data

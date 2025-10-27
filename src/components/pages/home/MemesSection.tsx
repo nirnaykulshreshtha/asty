@@ -21,7 +21,6 @@ import { logger } from "@/lib/logger"
 import { MemesSectionHeader } from "./MemesSectionHeader"
 import { MembershipFoundationCard } from "./MembershipFoundationCard"
 import { RegistrationSection } from "./RegistrationSection"
-import { CTAButton } from "@/components/ui/CTAButton"
 
 interface MemesSectionProps {
   motionReduced: boolean

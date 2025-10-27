@@ -17,7 +17,6 @@ import {
   GraduationCap,
   HandCoins,
   Handshake,
-  Layers3,
   LifeBuoy,
   Lock,
   Network,

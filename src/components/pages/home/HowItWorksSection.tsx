@@ -16,10 +16,8 @@
 import { logger } from "@/lib/logger"
 import { HOW_STEPS, POSITION_ADVANTAGES } from "./types"
 import { SectionHeader } from "@/components/ui/SectionHeader"
-import { CTAButton } from "@/components/ui/CTAButton"
 import { Pill } from "@/components/ui/Pill"
 import { ChevronFlowDiagram } from "@/components/ui/ChevronFlowDiagram"
-import { cn } from "@/lib/utils"
 
 /**
  * Renders the how it works section explaining the token mechanics.

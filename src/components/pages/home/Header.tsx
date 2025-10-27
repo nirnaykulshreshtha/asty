@@ -3,15 +3,16 @@
  * ---------------
  * Responsive navigation header with mobile menu functionality and wallet connection.
  * Features the Asty logo, essential navigation items (Introducing, How It Works, Early Membership, Tokenomics, Roadmap), 
- * wallet connect button, mode toggle, and mobile hamburger menu.
+ * "Book Early Membership" CTA button, wallet connect button, and mobile hamburger menu.
  * 
  * Handles:
  * - Desktop and mobile navigation states
  * - Smooth scrolling to page sections
  * - Mobile menu toggle with accessibility features
  * - Logo branding with minimal design
+ * - Early Membership registration CTA button (desktop and mobile)
  * - Wallet connection via CustomConnectButton (desktop and mobile)
- * - Responsive design with connect button visibility
+ * - Responsive design with CTA and connect button visibility
  * 
  * Note: Displays PRIMARY_NAV_ITEMS for key navigation (5 items). 
  * Secondary links are moved to footer for better organization.
@@ -23,8 +24,8 @@ import Link from "next/link"
 import type { MouseEvent as ReactMouseEvent } from "react"
 import { ArrowRight, Menu, X } from "lucide-react"
 
-import { ModeToggle } from "@/components/mode-toggle"
 import { CustomConnectButton } from "@/components/ui/custom-connect-button"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
 import { astroz } from "@/styles/fonts"
@@ -96,9 +97,21 @@ export function Header({
           </nav>
 
           <div className="flex items-center gap-2">
-            <ModeToggle />
+            <Button
+              asChild
+              size="sm"
+              className="hidden md:flex"
+            >
+              <a href="#membership" onClick={onAnchorClick}>
+                Book Early Membership
+              </a>
+            </Button>
             <div className="hidden sm:block">
-              <CustomConnectButton size="sm" compact={true} />
+              <CustomConnectButton size="sm" compact={true} variant={{
+                connected: 'outline',
+                connect: 'outline',
+                wrongNetwork: 'destructive',
+              }} />
             </div>
             <button
               type="button"
@@ -124,6 +137,19 @@ export function Header({
             {/* Mobile Connect Button */}
             <div className="pt-4 pb-2">
               <CustomConnectButton size="sm" className="w-full" compact={true} />
+            </div>
+            
+            {/* Mobile Membership Button */}
+            <div className="pb-4">
+              <Button
+                asChild
+                size="sm"
+                className="w-full"
+              >
+                <a href="#membership" onClick={onAnchorClick}>
+                  Book Early Membership
+                </a>
+              </Button>
             </div>
             
             <ul className="flex flex-col gap-3 pt-2">

@@ -10,13 +10,25 @@
  * - Custom styling that matches Asty's design system
  * - Comprehensive logging for debugging wallet connection flows
  * - Support for different connection states (disconnected, wrong network, connected)
+ * - Dynamic button variants for different states
  * - Chain switching and account management
  * - Responsive design with proper accessibility
  * 
  * Usage:
  * import { CustomConnectButton } from '@/components/ui/custom-connect-button';
  * 
+ * // Basic usage with default outline variant
  * <CustomConnectButton />
+ * 
+ * // Customize variant for all states
+ * <CustomConnectButton variant="default" />
+ * 
+ * // Customize variant for each state individually
+ * <CustomConnectButton variant={{
+ *   connect: 'default',
+ *   connected: 'outline',
+ *   wrongNetwork: 'destructive'
+ * }} />
  */
 
 import React from 'react';
@@ -46,6 +58,17 @@ interface CustomConnectButtonProps {
    * Whether to show only the account address when connected (compact mode)
    */
   compact?: boolean;
+  /**
+   * Button variant for different states. Can be a string to apply to all buttons,
+   * or an object to customize each state individually
+   */
+  variant?: 
+    | 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
+    | {
+        connect?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+        connected?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+        wrongNetwork?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+      };
 }
 
 /**
@@ -53,7 +76,22 @@ interface CustomConnectButtonProps {
  * with enhanced styling and comprehensive logging for debugging purposes.
  * 
  * @param props - Component props
+ * @param props.variant - Button variant(s) for different states. Can be a string to apply globally,
+ *                        or an object with `connect`, `connected`, and `wrongNetwork` properties
+ *                        to customize each state individually
  * @returns JSX element representing the custom connect button
+ * 
+ * @example
+ * // Apply the same variant to all states
+ * <CustomConnectButton variant="default" />
+ * 
+ * @example
+ * // Customize variants for each state
+ * <CustomConnectButton variant={{
+ *   connect: 'default',
+ *   connected: 'default',
+ *   wrongNetwork: 'destructive'
+ * }} />
  */
 export function CustomConnectButton({
   className,
@@ -61,12 +99,22 @@ export function CustomConnectButton({
   showChainName = true,
   showBalance = true,
   compact = false,
+  variant = 'default',
 }: CustomConnectButtonProps) {
   logger.debug('custom-connect-button:render', { 
     size, 
     showChainName, 
-    showBalance 
+    showBalance,
+    variant
   });
+
+  // Helper function to get the appropriate variant based on state
+  const getVariant = (state: 'connect' | 'connected' | 'wrongNetwork'): 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' => {
+    if (typeof variant === 'string') {
+      return variant;
+    }
+    return variant[state] || 'default';
+  };
 
   return (
     <ConnectButton.Custom>
@@ -128,7 +176,8 @@ export function CustomConnectButton({
                       openConnectModal();
                     }}
                     size={size}
-                    className="font-medium"
+                    className={cn("font-medium cursor-pointer", className)}
+                    variant={getVariant('connect')}
                   >
                     Connect Wallet
                   </Button>
@@ -147,8 +196,8 @@ export function CustomConnectButton({
                       openChainModal();
                     }}
                     size={size}
-                    variant="destructive"
-                    className="font-medium"
+                    variant={getVariant('wrongNetwork')}
+                    className="font-medium cursor-pointer"
                   >
                     Wrong Network
                   </Button>
@@ -170,8 +219,8 @@ export function CustomConnectButton({
                       openAccountModal();
                     }}
                     size={size}
-                    variant="outline"
-                    className="font-medium"
+                    variant={getVariant('connected')}
+                    className="font-medium cursor-pointer"
                   >
                     {account.displayName}
                   </Button>
@@ -187,8 +236,8 @@ export function CustomConnectButton({
                         openChainModal();
                       }}
                       size={size}
-                      variant="outline"
-                      className="font-medium"
+                      variant={getVariant('connected')}
+                      className="font-medium cursor-pointer"
                     >
                       {chain.hasIcon && (
                         <div
@@ -217,8 +266,8 @@ export function CustomConnectButton({
                       openAccountModal();
                     }}
                     size={size}
-                    variant="outline"
-                    className="font-medium"
+                    variant={getVariant('connected')}
+                    className="font-medium cursor-pointer"
                   >
                     {account.displayName}
                     {showBalance && account.displayBalance

@@ -512,3 +512,99 @@ Impact:
 - Supports custom gradients, speed, and class overrides per token while reusing global settings.
 - Avoids rendering glitches by skipping duplicate children when wrapping interactive content.
 - Keeps motion animations intact even when aurora styling is applied to rotating tokens.
+
+## 2025-01-27 – Dark Theme Set as Default
+
+Context: The application should default to dark theme regardless of user's system preferences to maintain consistent branding and user experience across all devices.
+
+Changes:
+- Updated `src/app/layout.tsx` to set `enableSystem={false}` in the ThemeProvider configuration
+- Dark theme will now always be the initial theme on first visit
+- Users can still toggle to light theme using the mode toggle button
+
+Features:
+- **Consistent Branding**: Dark theme as the default experience
+- **No System Override**: Ignores system preferences to enforce dark mode
+- **User Choice**: Mode toggle still allows users to switch to light theme if preferred
+- **Persistent Preference**: User's theme choice is saved and remembered
+
+Impact:
+- Consistent visual identity across all devices and platforms
+- Better brand experience with dark theme as the primary interface
+- Users still have the option to switch themes if they prefer
+- Maintains professional appearance with enforced dark mode default
+
+## 2025-01-27 – Removed Mode Toggle from Header
+
+Context: With dark theme enforced as the default and users needing a clean, focused header, the mode toggle button was removed to simplify the navigation and reduce clutter.
+
+Changes:
+- Removed `ModeToggle` import and component usage from `src/components/pages/home/Header.tsx`
+- Updated header documentation to reflect removal of mode toggle
+- Header now focuses on essential navigation and wallet connection only
+
+Features:
+- **Cleaner Header**: Reduced visual clutter with one less UI element
+- **Focused Navigation**: Essential navigation items and wallet connection only
+- **Better UX**: Less distracting header that focuses user attention on key actions
+- **Consistent Branding**: Aligns with dark theme default approach
+
+Impact:
+- Simpler, more focused header design
+- Reduced cognitive load for users
+- Cleaner visual hierarchy without mode toggle button
+- Professional appearance with essential elements only
+
+## 2025-01-27 – Added Early Membership CTA to Header
+
+Context: Users need easy, prominent access to the Early Membership registration from the header across all devices to increase conversion and improve user experience.
+
+Changes:
+- Added "Book Early Membership" button to desktop header (before wallet connect button)
+- Added "Book Early Membership" button to mobile menu (after wallet connect button)
+- Button links to `#membership` section with smooth scrolling
+- Button uses primary variant with proper sizing for desktop (sm) and mobile (full width)
+- Desktop button hidden on small screens (md:flex) to prevent clutter
+- Mobile button is full-width in mobile menu for better touch target
+
+Features:
+- **Prominent CTA**: Eye-catching button placement in header
+- **Dual Placement**: Visible on both desktop and mobile
+- **Smooth Navigation**: Uses existing smooth scroll handler
+- **Responsive Design**: Shows/hides appropriately for screen size
+- **Accessible**: Proper button semantics and focus states
+- **Consistent Styling**: Uses existing Button component
+
+Impact:
+- Improved conversion funnel with prominent membership CTA
+- Better user experience with easy access to registration
+- Clear call-to-action that guides users to membership section
+- Professional appearance with well-placed CTA button
+- Mobile-friendly with full-width button in mobile menu
+
+## 2025-01-27 – Added Global Button Hover Animation
+
+Context: All buttons across the application should have a consistent, professional hover animation to provide better visual feedback and improve user experience.
+
+Changes:
+- Updated `src/components/ui/button.tsx` to add global hover animation to all buttons:
+  - Added `group` class for group-based hover states
+  - Added `transition-transform duration-200` for smooth transitions
+  - Added `hover:-translate-y-0.5` for slight upward movement on hover
+  - Added `hover:shadow-xl` for enhanced shadow on hover
+  - Added `disabled:-translate-y-0 disabled:shadow-none` to disable animation for disabled buttons
+- Removed duplicate animation classes from `src/components/ui/CTAButton.tsx` since they're now in the base Button component
+
+Features:
+- **Consistent Animation**: All buttons now have the same smooth hover effect
+- **Visual Feedback**: Users get clear feedback when hovering over interactive elements
+- **Professional Polish**: Subtle lift and shadow enhance the overall UX
+- **Accessibility**: Animation disabled for disabled buttons
+- **Automatic Application**: All buttons using the Button component get the animation without extra code
+
+Impact:
+- Consistent user experience across all buttons
+- Better visual feedback for interactive elements
+- More polished and professional appearance
+- Improved perceived quality and attention to detail
+- No code duplication - animation defined once in base component

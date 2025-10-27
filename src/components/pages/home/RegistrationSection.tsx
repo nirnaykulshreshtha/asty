@@ -479,13 +479,18 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
                   {!isWalletConnected ? (
                     <CustomConnectButton 
                       className="w-full"
-                      size="lg"
+                      size="sm"
+                      variant={{
+                        connected: 'default',
+                        connect: 'default',
+                        wrongNetwork: 'destructive',
+                      }}
                     />
                   ) : (
                     <Button
                       type="submit"
                       className="w-full"
-                      size="lg"
+                      size="sm"
                       disabled={registrationState.isSubmitting}
                     >
                       {registrationState.isSubmitting ? (

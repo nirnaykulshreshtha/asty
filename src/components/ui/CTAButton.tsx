@@ -37,8 +37,7 @@ export function CTAButton({ href, label, onClick, variant = "default", size = "l
   const linkProps = external && !isHash ? { target: "_blank", rel: "noopener noreferrer" } : {}
 
   const classes = cn(
-    "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
-    variant === "outline" ? "backdrop-blur" : "outline",
+    variant === "outline" ? "backdrop-blur" : "",
     className
   )
 

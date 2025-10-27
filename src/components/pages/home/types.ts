@@ -623,20 +623,15 @@ export const VAULT_REVENUE_STREAMS: VaultRevenueStream[] = [
 
 export const PARTICIPATION_PILLARS: ParticipationPillar[] = [
   {
-    title: "Educate",
-    description: "Onboard the next wave of DEX users with guided curriculum and support.",
+    title: "",
+    description: "Every referral, every trade, every tool – builds income for the community.",
     icon: GraduationCap,
   },
   {
-    title: "Reward",
-    description: "Share fair income distributions across every contributor in the network.",
+    title: "",
+    description: "No middlemen. Just the Vault and holders.",
     icon: HandCoins,
-  },
-  {
-    title: "Facilitate",
-    description: "Deploy tools that strengthen traders and expand the ecosystem flywheel.",
-    icon: Layers3,
-  },
+  }
 ]
 
 export const COMMUNITY_INCOME_BENEFITS: IncomeBenefit[] = [

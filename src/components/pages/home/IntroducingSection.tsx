@@ -13,7 +13,7 @@ import { CheckCircle2 } from "lucide-react"
 import { logger } from "@/lib/logger"
 import { PARTICIPATION_PILLARS } from "./types"
 import { SectionHeader } from "@/components/ui/SectionHeader"
-import { AnimatedBeamMultipleOutputDemo } from "./AnimatedIntroductionSection"
+import { AnimatedIntroductionSection } from "./AnimatedIntroductionSection"
 
 export function IntroducingSection() {
   logger.info("component:introducing:render")
@@ -34,8 +34,8 @@ export function IntroducingSection() {
 <div className="mx-auto flex max-w-6xl flex-col gap-16">
     <SectionHeader
             label="Introducing Asty"
-            title="The community-driven DeFi layer for DEX adoption"
-            description="Every lesson, referral, and facilitation tool adds value to the Vault — so members earn transparently as the network scales."
+            title="Community is the engine. The Vault is the reward"
+            description="Every action — from education to referrals to trading tools — grows the Vault. The Vault then rewards holders and network participants fairly and transparently."
 
           />
 
@@ -49,14 +49,14 @@ export function IntroducingSection() {
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(146,68,255,0.18),_transparent_70%)]" />
 
             <div className="relative space-y-8">
-            <AnimatedBeamMultipleOutputDemo />
+            <AnimatedIntroductionSection />
             </div>
           </div>
 
           <aside className="flex flex-col gap-6 lg:gap-8">
           {PARTICIPATION_PILLARS.map((pillar, index) => (
             <div
-              key={pillar.title}
+              key={`${pillar.title}-${index}`}
               className="reveal-section flex items-start gap-4 rounded-3xl border-l-4 border-primary/60 bg-background/85 p-5 shadow-lg transition duration-200 hover:-translate-y-1 hover:border-primary/80 hover:shadow-xl"
               data-animate-on-scroll
               data-visible="false"

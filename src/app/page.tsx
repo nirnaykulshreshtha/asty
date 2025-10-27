@@ -187,11 +187,13 @@ export default function Home() {
           onAnchorClick={handleAnchorClick}
         />
 
+        <MovementSection onAnchorClick={handleAnchorClick} />
+
         <IntroducingSection />
 
-        <VaultFlowSection onAnchorClick={handleAnchorClick} />
+        {/* <VaultFlowSection onAnchorClick={handleAnchorClick} /> */}
 
-        <section id="income" aria-label="Community income benefits" className="space-y-8">
+        {/* <section id="income" aria-label="Community income benefits" className="space-y-8">
           <SectionHeader
             label="Community Income"
             title="Holding Asty means owning a share of community-driven income"
@@ -212,7 +214,7 @@ export default function Home() {
               variant="outline"
             />
           </div>
-        </section>
+        </section> */}
 
         <TokenomicsSection />
 
@@ -220,11 +222,9 @@ export default function Home() {
 
         <HowItWorksSection />
 
-        <MovementSection onAnchorClick={handleAnchorClick} />
-
         <RoadmapSection />
 
-        <TransparencySection onAnchorClick={handleAnchorClick} />
+        {/* <TransparencySection onAnchorClick={handleAnchorClick} /> */}
 
         <FAQSection />
 

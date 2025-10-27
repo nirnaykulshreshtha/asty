@@ -13,6 +13,7 @@ import { CheckCircle2 } from "lucide-react"
 import { logger } from "@/lib/logger"
 import { PARTICIPATION_PILLARS } from "./types"
 import { SectionHeader } from "@/components/ui/SectionHeader"
+import { AnimatedBeamMultipleOutputDemo } from "./AnimatedIntroductionSection"
 
 export function IntroducingSection() {
   logger.info("component:introducing:render")
@@ -34,7 +35,7 @@ export function IntroducingSection() {
     <SectionHeader
             label="Introducing Asty"
             title="The community-driven DeFi layer for DEX adoption"
-            description="Every learning module, referral, and facilitator tool feeds value into the Vault so holders capture real, transparent income."
+            description="Every lesson, referral, and facilitation tool adds value to the Vault — so members earn transparently as the network scales."
 
           />
 
@@ -48,23 +49,7 @@ export function IntroducingSection() {
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(146,68,255,0.18),_transparent_70%)]" />
 
             <div className="relative space-y-8">
-              <header className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-                <div className="max-w-xl space-y-3">
-                  <p className="text-sm text-muted-foreground">
-                  Asty focuses on the community layer first. We onboard, reward, and equip members so the Vault spins up with a ready network the moment token and DeFi phases unlock.
-                  </p>
-                </div>
-              </header>
-              <ul className="space-y-3 text-sm text-foreground">
-              {introductionHighlights.map((item) => (
-                <li key={item} className="flex items-start gap-3 rounded-2xl border border-border/40 bg-card/70 p-3">
-                  <span className="mt-0.5 text-primary">
-                    <CheckCircle2 className="size-5" aria-hidden="true" />
-                  </span>
-                  <span className="text-sm text-muted-foreground sm:text-base">{item}</span>
-                </li>
-              ))}
-            </ul>
+            <AnimatedBeamMultipleOutputDemo />
             </div>
           </div>
 
@@ -90,54 +75,6 @@ export function IntroducingSection() {
           </aside>
         </div>
       </div>
-
-      {/* <div className="mx-auto flex max-w-6xl flex-col gap-12 lg:flex-row lg:items-start">
-        <div className="space-y-8 lg:w-[56%]">
-          <SectionHeader
-            label="Introducing Asty"
-            title="The community-driven DeFi layer for DEX adoption"
-            description="Every learning module, referral, and facilitator tool feeds value into the Vault so holders capture real, transparent income."
-            className="space-y-6"
-          />
-
-          <div className="reveal-section space-y-4 rounded-3xl border border-border/50 bg-background/80 p-8 shadow-xl" data-animate-on-scroll data-visible="false">
-            <p className="text-sm text-muted-foreground">
-              Asty focuses on the community layer first. We onboard, reward, and equip members so the Vault spins up with a ready network the moment token and DeFi phases unlock.
-            </p>
-            <ul className="space-y-3 text-sm text-foreground">
-              {introductionHighlights.map((item) => (
-                <li key={item} className="flex items-start gap-3 rounded-2xl border border-border/40 bg-card/70 p-3">
-                  <span className="mt-0.5 text-primary">
-                    <CheckCircle2 className="size-5" aria-hidden="true" />
-                  </span>
-                  <span className="text-sm text-muted-foreground sm:text-base">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="grid gap-4 lg:w-[44%]">
-          {PARTICIPATION_PILLARS.map((pillar, index) => (
-            <div
-              key={pillar.title}
-              className="reveal-section flex items-start gap-4 rounded-3xl border-l-4 border-primary/60 bg-background/85 p-5 shadow-lg transition duration-200 hover:-translate-y-1 hover:border-primary/80 hover:shadow-xl"
-              data-animate-on-scroll
-              data-visible="false"
-            >
-              <span className="flex size-10 items-center justify-center rounded-full border border-primary/40 bg-primary/15 text-primary">
-                <pillar.icon className="size-5" aria-hidden="true" />
-              </span>
-              <div className="space-y-1">
-                <p className="text-sm font-semibold text-foreground">
-                  {index + 1 < 10 ? `0${index + 1}` : index + 1}. {pillar.title}
-                </p>
-                <p className="text-xs text-muted-foreground sm:text-sm">{pillar.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div> */}
     </section>
   )
 }

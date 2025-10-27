@@ -113,9 +113,6 @@ export function HeroSection({
                 />
               ))}
             </div>
-            <p className="text-xs text-muted-foreground/70 m-0">
-              Powered by PeopleFi — transparent, collective, rewarding.
-            </p>
           </div>
         </div>
 

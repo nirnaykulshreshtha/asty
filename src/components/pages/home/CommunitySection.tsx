@@ -37,7 +37,7 @@ export function CommunitySection({ onAnchorClick }: CommunitySectionProps) {
     <section
       id="community"
       data-section-label="Community"
-      className="space-y-12 border-b border-border/40 py-20"
+      className="space-y-4 border-b border-border/40 py-20"
     >
       <SectionHeader
         label="Stay Connected"

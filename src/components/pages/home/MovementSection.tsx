@@ -24,6 +24,7 @@ import { ContentCard } from "@/components/ui/ContentCard"
 import { CTAButton } from "@/components/ui/CTAButton"
 import { MOVEMENT_SECTION_INTRO } from "./constants"
 import { DecorativeBackground } from "@/components/ui/DecorativeBackground"
+import { AuroraText } from "@/components/ui/aurora-text"
 
 interface MovementSectionProps {
   onAnchorClick: (event: React.MouseEvent<HTMLAnchorElement>) => void
@@ -51,9 +52,7 @@ export function MovementSection({ onAnchorClick }: MovementSectionProps) {
           <h2 className={cn("text-4xl font-bold text-foreground sm:text-5xl lg:text-6xl", astroz.className)}>
             This isn&apos;t just another{" "}
             <span className="text-foreground">token.</span>{" "}
-            <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              It&apos;s a movement.
-            </span>
+            <AuroraText colors={["#f97316", "#FF0000", "#f6339a", "#f97316"]}>It&apos;s a movement.</AuroraText>
           </h2>
           
           <p className="max-w-2xl mx-auto text-lg text-muted-foreground">

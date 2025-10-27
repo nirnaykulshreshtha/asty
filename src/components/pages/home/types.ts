@@ -453,17 +453,17 @@ export const HOW_STEPS: HowStep[] = [
   {
     title: "Secure Your Position",
     description:
-      "Contribute the $100 position fee to claim your slot in the 12-level referral structure.",
+      "",
   },
   {
     title: "Build With Referrals",
     description:
-      "Grow early, climb higher. Every direct invite expands the tree and your reward share.",
+      "",
   },
   {
     title: "Earn Dividends",
     description:
-      "Vault distributions flow biweekly and yearly based on position, rank, and contribution.",
+      "",
   },
 ]
 
@@ -477,16 +477,6 @@ export const POSITION_ADVANTAGES: PositionAdvantage[] = [
     title: "Slots are permanent",
     description: "Once you secure a position it cannot be displaced or reassigned.",
     icon: Lock,
-  },
-  {
-    title: "Income keeps compounding",
-    description: "Biweekly and annual payouts land automatically as the network grows.",
-    icon: Vault,
-  },
-  {
-    title: "Built for long-term builders",
-    description: "Perfect for community leaders, early supporters, and patient holders.",
-    icon: Users,
   },
 ]
 
@@ -788,18 +778,6 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     description: "Secure your membership slot and grow alongside early builders.",
     href: "#membership",
     external: false,
-  },
-  {
-    title: "View Vault Dashboard",
-    description: "Track live Vault stats, flows, and historic distributions.",
-    href: "#vault",
-    external: false,
-  },
-  {
-    title: "Audit Reports",
-    description: "Review third-party contract audits and transparency packages.",
-    href: "https://example.com/audit-reports",
-    external: true,
   },
   {
     title: "Community Hub",

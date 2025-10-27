@@ -187,6 +187,10 @@ export default function Home() {
           onAnchorClick={handleAnchorClick}
         />
 
+        <HowItWorksSection />
+
+        <MemesSection motionReduced={motionReduced} />
+
         <MovementSection onAnchorClick={handleAnchorClick} />
 
         <IntroducingSection />
@@ -214,13 +218,9 @@ export default function Home() {
               variant="outline"
             />
           </div>
-        </section> */}
-
-        <HowItWorksSection />
+        </section> */}      
 
         <TokenomicsSection />
-
-        <MemesSection motionReduced={motionReduced} />
 
         <RoadmapSection />
 

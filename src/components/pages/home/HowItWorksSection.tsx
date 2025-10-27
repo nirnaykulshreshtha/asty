@@ -74,9 +74,6 @@ export function HowItWorksSection() {
             <Pill tone="muted" className="border-border/60">
               Why position matters
             </Pill>
-            <p className="text-sm text-muted-foreground">
-              Secure placement once, and your rewards stay locked in across referrals, Vault distributions, and future launches.
-            </p>
           </div>
           <ul className="space-y-4">
             {POSITION_ADVANTAGES.map((advantage) => (

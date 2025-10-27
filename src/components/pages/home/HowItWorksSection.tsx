@@ -36,7 +36,7 @@ export function HowItWorksSection() {
       <SectionHeader
         label="Early Positioning"
         title="Early Position = Lifetime Advantage."
-        description="Asty's first stage isn't just about joining a network — it's about locking your place in a structured ecosystem that pays forever."
+        description="Asty's isn't just about joining a network — it's about locking your position in an ecosystem that pays forever."
       />
 
       <ChevronFlowDiagram
@@ -44,7 +44,7 @@ export function HowItWorksSection() {
         className="mt-4"
       />
 
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+      <div className="grid gap-8">
         <aside
           className="reveal-section flex flex-col gap-6 rounded-3xl border border-border/50 bg-background/80 p-8 shadow-xl"
           data-animate-on-scroll
@@ -55,7 +55,7 @@ export function HowItWorksSection() {
               Why position matters
             </Pill>
           </div>
-          <ul className="space-y-4">
+          <ul className="space-x-4 grid grid-cols-2 gap-4">
             {POSITION_ADVANTAGES.map((advantage) => (
               <li
                 key={advantage.title}
@@ -75,29 +75,6 @@ export function HowItWorksSection() {
             &ldquo;A single early position can create a lifetime income stream.&rdquo;
           </p>
         </aside>
-      </div>
-
-      <div className="flex flex-wrap items-center justify-center gap-4">
-        <CTAButton
-          href="#membership"
-          label="Reserve Position"
-          variant="default"
-          size="lg"
-          className={cn(
-            "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
-            "backdrop-blur"
-          )}
-        />
-        <CTAButton
-          href="#tokenomics"
-          label="Learn Reward Structure"
-          variant="outline"
-          size="lg"
-          className={cn(
-            "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
-            "outline"
-          )}
-        />
       </div>
     </section>
   )

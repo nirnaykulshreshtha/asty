@@ -14,6 +14,7 @@
 
 "use client"
 
+import { memo } from "react"
 import { logger } from "@/lib/logger"
 import { ROADMAP_STEPS } from "./types"
 import { SectionHeader } from "@/components/ui/SectionHeader"
@@ -23,7 +24,7 @@ import { RoadmapStepCard } from "./RoadmapPhaseCard"
 /**
  * Renders the roadmap section with project phases and progress indicators.
  */
-export function RoadmapSection() {
+function RoadmapSectionComponent() {
   logger.info("component:roadmap:render")
 
   return (
@@ -57,3 +58,5 @@ export function RoadmapSection() {
     </section>
   )
 }
+
+export const RoadmapSection = memo(RoadmapSectionComponent)

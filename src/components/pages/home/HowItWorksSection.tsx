@@ -13,6 +13,7 @@
 
 "use client"
 
+import { memo } from "react"
 import { logger } from "@/lib/logger"
 import { HOW_STEPS, POSITION_ADVANTAGES } from "./types"
 import { SectionHeader } from "@/components/ui/SectionHeader"
@@ -22,7 +23,7 @@ import { ChevronFlowDiagram } from "@/components/ui/ChevronFlowDiagram"
 /**
  * Renders the how it works section explaining the token mechanics.
  */
-export function HowItWorksSection() {
+function HowItWorksSectionComponent() {
   logger.info("component:how-it-works:render")
 
   return (
@@ -77,3 +78,5 @@ export function HowItWorksSection() {
     </section>
   )
 }
+
+export const HowItWorksSection = memo(HowItWorksSectionComponent)

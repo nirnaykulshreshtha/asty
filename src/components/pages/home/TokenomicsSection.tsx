@@ -11,6 +11,7 @@
 
 "use client"
 
+import { memo } from "react"
 import { logger } from "@/lib/logger"
 import {
   TOKENOMICS_HIGHLIGHTS,
@@ -51,7 +52,7 @@ const chartConfig = {
  * Renders the tokenomics section with distribution data and key metrics.
  * Includes an interactive pie chart showing token allocation breakdown.
  */
-export function TokenomicsSection() {
+function TokenomicsSectionComponent() {
   logger.info("component:tokenomics:render")
 
   return (
@@ -142,3 +143,5 @@ export function TokenomicsSection() {
     </section>
   )
 }
+
+export const TokenomicsSection = memo(TokenomicsSectionComponent)

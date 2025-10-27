@@ -9,10 +9,10 @@
  */
 
 import type { MouseEvent as ReactMouseEvent } from "react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 
 import { logger } from "@/lib/logger"
-import { HERO_VARIANTS, HERO_BURSTS, ToastState } from "@/components/pages/home/types"
+import { ToastState } from "@/components/pages/home/types"
 import { Header } from "@/components/pages/home/Header"
 import { HeroSection } from "@/components/pages/home/HeroSection"
 import { HowItWorksSection } from "@/components/pages/home/HowItWorksSection"
@@ -37,12 +37,9 @@ export default function Home() {
 
   const [mobileOpen, setMobileOpen] = useState(false)
   const [toast, setToast] = useState<ToastState>({ message: "", visible: false })
-  const [heroBurstIndex, setHeroBurstIndex] = useState(0)
   const [motionReduced, setMotionReduced] = useState(false)
   const toastTimeoutRef = useRef<number | null>(null)
   const prefersReducedMotion = useRef(false)
-
-  const heroVariant = HERO_VARIANTS[heroBurstIndex % HERO_VARIANTS.length]
 
   useScrollReveal({ threshold: 0.25 })
   useParallax({ speed: 0.25, maxShift: 140 })
@@ -64,29 +61,7 @@ export default function Home() {
     }
   }, [])
 
-  useEffect(() => {
-    if (motionReduced) {
-      logger.info("page:home:hero-burst:disable", { reason: "reduced_motion" })
-      return
-    }
-
-    const interval = window.setInterval(() => {
-      setHeroBurstIndex((prev) => (prev + 1) % HERO_BURSTS.length)
-    }, 2600)
-
-    logger.info("page:home:hero-burst:init", { totalBursts: HERO_BURSTS.length })
-
-    return () => {
-      window.clearInterval(interval)
-    }
-  }, [motionReduced])
-
-  useEffect(() => {
-    logger.debug?.("page:home:hero-burst:update", {
-      burst: HERO_BURSTS[heroBurstIndex],
-      index: heroBurstIndex,
-    })
-  }, [heroBurstIndex])
+  // Hero rotation moved into HeroSection to localize re-renders
 
   useEffect(() => {
     const heroHeading = document.querySelector("[data-animate-hero]")
@@ -128,7 +103,7 @@ export default function Home() {
     }
   }, [])
 
-  const showToast = (message: string) => {
+  const showToast = useCallback((message: string) => {
     setToast({ message, visible: true })
 
     if (toastTimeoutRef.current) {
@@ -138,12 +113,12 @@ export default function Home() {
     toastTimeoutRef.current = window.setTimeout(() => {
       setToast((prev) => ({ ...prev, visible: false }))
     }, 3200)
-  }
+  }, [])
 
-  const closeMobileNav = () => setMobileOpen(false)
-  const toggleMobileNav = () => setMobileOpen((prev) => !prev)
+  const closeMobileNav = useCallback(() => setMobileOpen(false), [])
+  const toggleMobileNav = useCallback(() => setMobileOpen((prev) => !prev), [])
 
-  const handleAnchorClick = (event: ReactMouseEvent<HTMLAnchorElement>) => {
+  const handleAnchorClick = useCallback((event: ReactMouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
     const href = event.currentTarget.getAttribute("href")
     if (!href) return
@@ -159,7 +134,7 @@ export default function Home() {
     if (mobileOpen) {
       closeMobileNav()
     }
-  }
+  }, [mobileOpen, showToast, closeMobileNav])
 
   return (
     <>
@@ -176,8 +151,7 @@ export default function Home() {
 
       <main className="mx-auto max-w-7xl px-6 space-y-16 lg:space-y-20">
         <HeroSection
-          heroBurstIndex={heroBurstIndex}
-          heroVariant={heroVariant}
+          motionReduced={motionReduced}
           onAnchorClick={handleAnchorClick}
         />
 

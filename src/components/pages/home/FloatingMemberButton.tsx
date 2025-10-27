@@ -15,7 +15,7 @@
 
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, memo } from "react"
 import { LogIn } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
@@ -29,7 +29,7 @@ interface FloatingMemberButtonProps {
  * 
  * @param onAnchorClick - Handler for smooth scrolling to membership section
  */
-export function FloatingMemberButton({ onAnchorClick }: FloatingMemberButtonProps) {
+function FloatingMemberButtonComponent({ onAnchorClick }: FloatingMemberButtonProps) {
   const [scrollY, setScrollY] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
 
@@ -162,3 +162,5 @@ export function FloatingMemberButton({ onAnchorClick }: FloatingMemberButtonProp
     </a>
   )
 }
+
+export const FloatingMemberButton = memo(FloatingMemberButtonComponent)

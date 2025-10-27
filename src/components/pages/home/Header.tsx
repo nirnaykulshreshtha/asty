@@ -22,6 +22,7 @@
 
 import Link from "next/link"
 import type { MouseEvent as ReactMouseEvent } from "react"
+import { memo } from "react"
 import { ArrowRight, Menu, X } from "lucide-react"
 
 import { CustomConnectButton } from "@/components/ui/custom-connect-button"
@@ -46,7 +47,7 @@ interface HeaderProps {
  * @param onMobileNavToggle - Function to toggle mobile menu state
  * @param onMobileNavClose - Function to close mobile menu
  */
-export function Header({ 
+function HeaderComponent({ 
   onAnchorClick, 
   mobileOpen, 
   onMobileNavToggle
@@ -172,3 +173,5 @@ export function Header({
     </>
   )
 }
+
+export const Header = memo(HeaderComponent)

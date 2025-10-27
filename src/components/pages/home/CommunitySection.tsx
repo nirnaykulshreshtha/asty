@@ -14,6 +14,7 @@
 "use client"
 
 import type { MouseEvent as ReactMouseEvent } from "react"
+import { memo } from "react"
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
 import { astroz } from "@/styles/fonts"
@@ -30,7 +31,7 @@ interface CommunitySectionProps {
  * 
  * @param onAnchorClick - Handler for smooth scrolling to sections
  */
-export function CommunitySection({ onAnchorClick }: CommunitySectionProps) {
+function CommunitySectionComponent({ onAnchorClick }: CommunitySectionProps) {
   logger.info("component:community:render")
 
   return (
@@ -72,3 +73,5 @@ export function CommunitySection({ onAnchorClick }: CommunitySectionProps) {
     </section>
   )
 }
+
+export const CommunitySection = memo(CommunitySectionComponent)

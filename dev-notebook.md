@@ -499,6 +499,29 @@ Impact:
 - Maintains aggressive logging and documentation standards for future debugging.
 
 ## 2025-10-27 – Token-Level Aurora Highlighting
+## 2025-10-27 – Homepage Re-render Optimization
+
+Context: The entire homepage was re-rendering every ~2.6s due to a ticking state in the root `Home` component controlling the hero burst rotation. Non-memoized sections consequently re-rendered with each tick. Additionally, provider values (RainbowKit theme object and motion context value) were recreated on every render.
+
+Changes:
+- Localized hero rotation into `src/components/pages/home/HeroSection.tsx`:
+  - Added internal `heroBurstIndex` state and interval effect gated by `motionReduced`.
+  - Removed hero rotation state and effects from `src/app/page.tsx` and passed only `motionReduced` + `onAnchorClick`.
+- Memoized heavy sections to prevent unnecessary re-renders:
+  - Wrapped `MemesSection`, `CommunitySection`, `RoadmapSection`, and `IntroducingSection` in `React.memo`.
+- Stabilized provider values:
+  - `src/components/providers/wagmi-provider.tsx`: memoized RainbowKit `theme` with `useMemo` over `isDark`.
+  - `src/components/motion/LazyMotionProvider.tsx`: memoized context value `{ prefersReducedMotion }` with `useMemo`.
+
+Impact:
+- Only the hero area re-renders during rotation; other sections stay stable.
+- Reduced unnecessary reconciliations and layout work across the page.
+- Provider updates no longer cascade re-renders via identity changes.
+
+Notes:
+- Aggressive logging remains to verify render frequency per component.
+- Further improvements could memoize any section receiving frequently-changing props.
+
 
 Context: Marketing requested the ability to aurora-highlight only the `{domain}` token inside `SectionHeader` copy, leaving the rest of the text unaffected.
 
@@ -608,3 +631,81 @@ Impact:
 - More polished and professional appearance
 - Improved perceived quality and attention to detail
 - No code duplication - animation defined once in base component
+
+## 2025-01-27 – Referral Link Dialog Implementation
+
+Context: Users need a dedicated dialog for generating and sharing their referral links, providing a professional interface that integrates wallet connection and referral link functionality.
+
+Changes:
+- Created `src/components/pages/home/ReferralLinkDialog.tsx`:
+  - Full-featured dialog with wallet connection integration
+  - Automatic referral link generation based on connected wallet address
+  - Copy to clipboard with comprehensive fallback support
+  - Web Share API integration for native sharing
+  - Visit link button to test referral URL
+  - Helpful "How it works" section with earning information
+  - Comprehensive error handling and user feedback
+  - Aggressive logging for debugging referral generation flows
+- Enhanced `src/components/pages/home/HeroSection.tsx`:
+  - Added referral dialog state management
+  - Modified "Generate Referral Link" CTA to open dialog instead of scrolling
+  - Integrated ReferralLinkDialog component with open/close handlers
+  - Added proper logging for dialog interactions
+- Fixed `src/components/pages/home/ReferralLinkCard.tsx`:
+  - Fixed JSX structure issue with proper wrapper div
+  - Improved component structure and spacing
+
+Features:
+- **Dialog Integration**: Professional modal interface for referral link generation
+- **Wallet Connection**: Requires wallet connection to generate link
+- **Copy Functionality**: One-click copy to clipboard with visual feedback
+- **Native Sharing**: Uses Web Share API when available, falls back to copy
+- **Link Preview**: Displays the full referral link for verification
+- **How It Works**: Educational content about referral earnings
+- **Error Handling**: Comprehensive error handling with user-friendly messages
+- **Accessibility**: Proper ARIA labels and keyboard navigation support
+
+Impact:
+- Provides a professional, dedicated interface for referral link generation
+- Improves user experience with clear workflow and helpful information
+- Better conversion funnel with prominent referral generation feature
+- Enhances trust and transparency with clear earning information
+- Maintains design consistency with existing component library
+- Professional appearance with polished UI interactions
+
+## 2025-01-27 – Enhanced Dialog Visual Design
+
+Context: The dialog needed more visual presence with enhanced backdrop effects and improved styling to stand out from the background and create a more premium user experience.
+
+Changes:
+- Enhanced `src/components/ui/dialog.tsx`:
+  - Upgraded backdrop from `bg-black/50` to `bg-black/80` for darker, more prominent overlay
+  - Added `backdrop-blur-sm` to backdrop for professional glass effect
+  - Enhanced dialog content with `backdrop-blur-xl` for frosted glass effect on content
+  - Increased shadow from `shadow-lg` to `shadow-2xl` for more depth
+  - Added border styling with `border-border/50` for better definition
+- Enhanced `src/components/pages/home/ReferralLinkDialog.tsx`:
+  - Added gradient background effect to dialog content using `bg-gradient-to-br from-primary/5 via-transparent to-accent/5`
+  - Increased border thickness from default to `border-2 border-primary/20`
+  - Added custom shadow effect: `shadow-[0_25px_50px_rgba(0,0,0,0.5)]`
+  - Enhanced header with larger title (`text-2xl`) and description (`text-base`)
+  - Improved referral link display with gradient background and better contrast
+  - Enhanced "How it works" section with gradient background, thicker border, and icon
+  - Better visual hierarchy with emphasized earnings information
+  - Increased button size from `sm` to `default` for better touch targets
+
+Features:
+- **Enhanced Backdrop**: Darker overlay (80% opacity) with blur effect for better focus
+- **Premium Glass Effect**: Backdrop blur on both overlay and content for polished look
+- **Visual Depth**: Stronger shadows and borders create three-dimensional appearance
+- **Gradient Accents**: Subtle gradient backgrounds tie into Asty brand colors
+- **Better Contrast**: Improved readability with enhanced text sizing and backgrounds
+- **Professional Polish**: All enhancements maintain design consistency
+
+Impact:
+- Dialog has much more visual presence and stands out clearly from background
+- Premium, polished appearance that matches Asty's professional brand
+- Better user focus and attention on referral link generation
+- Improved readability and visual hierarchy throughout
+- More engaging user experience with enhanced visual feedback
+- Maintains accessibility while adding visual depth

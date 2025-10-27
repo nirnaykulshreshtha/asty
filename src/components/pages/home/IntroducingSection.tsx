@@ -8,12 +8,13 @@
 
 "use client"
 
+import { memo } from "react"
 import { logger } from "@/lib/logger"
 import { PARTICIPATION_PILLARS } from "./types"
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { AnimatedIntroductionSection } from "./AnimatedIntroductionSection"
 
-export function IntroducingSection() {
+function IntroducingSectionComponent() {
   logger.info("component:introducing:render")
   return (
     <section
@@ -69,3 +70,5 @@ export function IntroducingSection() {
     </section>
   )
 }
+
+export const IntroducingSection = memo(IntroducingSectionComponent)

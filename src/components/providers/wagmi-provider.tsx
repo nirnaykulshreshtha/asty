@@ -7,6 +7,7 @@ import { config } from '@/configs/wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { useTheme } from 'next-themes';
+import { useMemo } from 'react';
 import { createRainbowKitTheme } from './rainbowkit-theme';
 
 import '@rainbow-me/rainbowkit/styles.css';
@@ -25,10 +26,11 @@ function ThemedRainbowKitProvider({ children }: { children: React.ReactNode }) {
   
   // Use resolvedTheme to get the actual theme (handles 'system' theme)
   const isDark = resolvedTheme === 'dark';
+  const rainbowTheme = useMemo(() => createRainbowKitTheme(isDark), [isDark]);
   
   return (
     <RainbowKitProvider
-      theme={createRainbowKitTheme(isDark)}
+      theme={rainbowTheme}
       appInfo={{
         appName: 'Asty',
       }}

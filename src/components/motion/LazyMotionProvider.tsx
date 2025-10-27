@@ -9,7 +9,7 @@
 "use client";
 
 import { LazyMotion, domAnimation, m } from "framer-motion";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 import { logger } from "@/lib/logger";
 
 const MotionContext = createContext({ prefersReducedMotion: false });
@@ -20,7 +20,7 @@ export function LazyMotionProvider({ children }: { children: React.ReactNode }) 
   logger.debug("motion:provider:init", { prefersReducedMotion });
 
   return (
-    <MotionContext.Provider value={{ prefersReducedMotion }}>
+    <MotionContext.Provider value={useMemo(() => ({ prefersReducedMotion }), [prefersReducedMotion])}>
       <LazyMotion features={domAnimation}>{children}</LazyMotion>
     </MotionContext.Provider>
   );

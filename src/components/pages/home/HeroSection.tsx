@@ -10,25 +10,29 @@
  * - Hero pillars (Education, Referral, Facilitation)
  * - Ambient background glow for visual depth
  * - Responsive design for all screen sizes
+ * - Referral link dialog integration for wallet-connected users
  */
 
 "use client"
 
 import type { MouseEvent as ReactMouseEvent } from "react"
+import { memo, useEffect, useState } from "react"
+import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
 import { astroz } from "@/styles/fonts"
-import { HERO_CTAS, HERO_VARIANTS, HERO_PILLARS } from "./types"
+import { HERO_CTAS, HERO_VARIANTS, HERO_PILLARS, HERO_BURSTS } from "./types"
 import { CTAButton } from "@/components/ui/CTAButton"
 import { DecorativeBackground } from "@/components/ui/DecorativeBackground"
 import Image from "next/image"
 import AstyCharacter from "@/assets/images/asty character.png"
 import { MagicCard } from "@/components/ui/magic-card"
 import { AuroraText } from "@/components/ui/aurora-text"
+import { ReferralLinkDialog } from "./ReferralLinkDialog"
+import { Button } from "@/components/ui/button"
 
 interface HeroSectionProps {
-  heroBurstIndex: number
-  heroVariant: typeof HERO_VARIANTS[0]
+  motionReduced: boolean
   onAnchorClick: (event: ReactMouseEvent<HTMLAnchorElement>) => void
 }
 
@@ -40,11 +44,37 @@ interface HeroSectionProps {
  * @param heroBurst - Current burst message text
  * @param onAnchorClick - Handler for smooth scrolling to sections
  */
-export function HeroSection({
-  heroBurstIndex,
-  heroVariant,
+function HeroSectionComponent({
+  motionReduced,
   onAnchorClick,
 }: HeroSectionProps) {
+  const [heroBurstIndex, setHeroBurstIndex] = useState(0)
+  const [referralDialogOpen, setReferralDialogOpen] = useState(false)
+  const heroVariant = HERO_VARIANTS[heroBurstIndex % HERO_VARIANTS.length]
+
+  useEffect(() => {
+    if (motionReduced) {
+      logger.info("component:hero:burst:disable", { reason: "reduced_motion" })
+      return
+    }
+
+    const interval = window.setInterval(() => {
+      setHeroBurstIndex((prev) => (prev + 1) % HERO_BURSTS.length)
+    }, 2600)
+
+    logger.info("component:hero:burst:init", { totalBursts: HERO_BURSTS.length })
+
+    return () => {
+      window.clearInterval(interval)
+    }
+  }, [motionReduced])
+
+  useEffect(() => {
+    logger.debug?.("component:hero:burst:update", {
+      burst: HERO_BURSTS[heroBurstIndex],
+      index: heroBurstIndex,
+    })
+  }, [heroBurstIndex])
   logger.info("component:hero:render", { 
     heroBurstIndex, 
     variant: heroVariant.id, 
@@ -95,20 +125,44 @@ export function HeroSection({
 
           <div className="flex flex-col gap-3">
             <div className="flex flex-wrap items-center gap-3">
-              {HERO_CTAS.map((cta) => (
-                <CTAButton
-                  key={cta.label}
-                  href={cta.href}
-                  label={cta.label}
-                  onClick={onAnchorClick}
-                  variant={cta.variant}
-                  size="lg"
-                  className={cn(
-                    "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
-                    cta.tone === "outline" ? "backdrop-blur" : ""
-                  )}
-                />
-              ))}
+              {HERO_CTAS.map((cta) => {
+                // Special handling for "Generate Referral Link" button to open dialog
+                if (cta.label === "Generate Referral Link") {
+                  return (
+                    <Button
+                      key={cta.label}
+                      variant={cta.variant}
+                      size="lg"
+                      onClick={() => {
+                        logger.info("component:hero:referral-dialog:open")
+                        setReferralDialogOpen(true)
+                      }}
+                      className={cn(
+                        "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
+                        cta.tone === "outline" ? "backdrop-blur" : ""
+                      )}
+                    >
+                      <span>{cta.label}</span>
+                      <ArrowRight className="size-4" aria-hidden="true" />
+                    </Button>
+                  )
+                }
+                
+                return (
+                  <CTAButton
+                    key={cta.label}
+                    href={cta.href}
+                    label={cta.label}
+                    onClick={onAnchorClick}
+                    variant={cta.variant}
+                    size="lg"
+                    className={cn(
+                      "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
+                      cta.tone === "outline" ? "backdrop-blur" : ""
+                    )}
+                  />
+                )
+              })}
             </div>
           </div>
         </div>
@@ -136,6 +190,14 @@ export function HeroSection({
           }
         `}</style>
       </div>
+
+      {/* Referral Link Dialog */}
+      <ReferralLinkDialog 
+        open={referralDialogOpen} 
+        onOpenChange={setReferralDialogOpen} 
+      />
     </section>
   )
 }
+
+export const HeroSection = memo(HeroSectionComponent)

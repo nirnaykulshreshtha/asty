@@ -14,6 +14,7 @@
 
 "use client"
 
+import { memo } from "react"
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
 import { astroz } from "@/styles/fonts"
@@ -22,7 +23,7 @@ import { SECONDARY_NAV_ITEMS } from "./types"
 /**
  * Renders the site footer with branding and social links.
  */
-export function Footer() {
+function FooterComponent() {
   logger.info("component:footer:render")
 
   return (
@@ -132,3 +133,5 @@ export function Footer() {
     </footer>
   )
 }
+
+export const Footer = memo(FooterComponent)

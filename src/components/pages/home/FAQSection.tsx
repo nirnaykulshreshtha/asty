@@ -13,6 +13,7 @@
 
 "use client"
 
+import { memo } from "react"
 import {
   Accordion,
   AccordionContent,
@@ -29,7 +30,7 @@ import { SectionHeader } from "@/components/ui/SectionHeader"
 /**
  * Renders the FAQ section with accordion-style questions and answers.
  */
-export function FAQSection() {
+function FAQSectionComponent() {
   logger.info("component:faq:render")
 
   return (
@@ -88,3 +89,5 @@ export function FAQSection() {
     </section>
   )
 }
+
+export const FAQSection = memo(FAQSectionComponent)

@@ -22,7 +22,7 @@
 
 import { useState, useCallback, useEffect } from "react"
 import { useAccount } from "wagmi"
-import { CheckCircle, Loader2, AlertCircle, Check, X, Wallet, UserPlus, Sparkles } from "lucide-react"
+import { CheckCircle, Loader2, AlertCircle, Check, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
@@ -35,7 +35,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { DecorativeBackground } from "@/components/ui/DecorativeBackground"
 import { MEMBERSHIP_PROGRESS } from "./types"
 import { CustomConnectButton } from "@/components/ui/custom-connect-button"
-import { ReferralLinkCard } from "./ReferralLinkCard"
 import { ConfettiStars } from "@/components/ui/confetti-stars"
 
 interface RegistrationSectionProps {
@@ -55,87 +54,8 @@ interface RegistrationState {
   isSubmitting: boolean
   isSubmitted: boolean
   errors: FormErrors
-  currentStep: 'wallet' | 'referral' | 'register' | 'success'
 }
 
-interface StepIndicatorProps {
-  currentStep: string
-  steps: Array<{ id: string; label: string; icon: React.ReactNode; completed: boolean }>
-}
-
-/**
- * Step Indicator Component
- * 
- * Displays a visual progress indicator for the registration process.
- * Shows current step and completed steps with appropriate icons and styling.
- * 
- * @param currentStep - The current active step
- * @param steps - Array of step definitions with labels and icons
- */
-function StepIndicator({ currentStep, steps }: StepIndicatorProps) {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
-    return (
-      <div className="flex items-center justify-center space-x-4 mb-6">
-        {steps.map((step, index) => (
-          <div key={step.id} className="flex items-center">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full border-2 bg-background/50 border-muted-foreground/30 text-muted-foreground">
-              {step.icon}
-            </div>
-            <span className="ml-2 text-xs font-medium text-muted-foreground">
-              {step.label}
-            </span>
-            {index < steps.length - 1 && (
-              <div className="w-8 h-0.5 mx-2 bg-muted-foreground/30" />
-            )}
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  return (
-    <div className="flex items-center justify-center space-x-4 mb-6">
-      {steps.map((step, index) => (
-        <div key={step.id} className="flex items-center">
-          <div className={cn(
-            "flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-300",
-            step.completed 
-              ? "bg-green-500 border-green-500 text-white" 
-              : step.id === currentStep
-              ? "bg-primary border-primary text-white"
-              : "bg-background/50 border-muted-foreground/30 text-muted-foreground"
-          )}>
-            {step.completed ? (
-              <Check className="w-4 h-4" />
-            ) : (
-              step.icon
-            )}
-          </div>
-          <span className={cn(
-            "ml-2 text-xs font-medium transition-colors duration-300",
-            step.completed || step.id === currentStep
-              ? "text-foreground"
-              : "text-muted-foreground"
-          )}>
-            {step.label}
-          </span>
-          {index < steps.length - 1 && (
-            <div className={cn(
-              "w-8 h-0.5 mx-2 transition-colors duration-300",
-              step.completed ? "bg-green-500" : "bg-muted-foreground/30"
-            )} />
-          )}
-        </div>
-      ))}
-    </div>
-  )
-}
 
 /**
  * Renders a comprehensive registration form for Early Membership signup.
@@ -166,8 +86,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
   const [registrationState, setRegistrationState] = useState<RegistrationState>({
     isSubmitting: false,
     isSubmitted: false,
-    errors: {},
-    currentStep: 'wallet'
+    errors: {}
   })
 
   const { address } = useAccount()
@@ -179,12 +98,6 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
   const isWalletConnected = mounted && Boolean(address)
   const isRegistered = registrationState.isSubmitted
 
-  // Step management
-  useEffect(() => {
-    if (isWalletConnected && registrationState.currentStep === 'wallet') {
-      setRegistrationState(prev => ({ ...prev, currentStep: 'referral' }))
-    }
-  }, [isWalletConnected, registrationState.currentStep])
 
   // Clear general error when wallet connects
   useEffect(() => {
@@ -203,27 +116,6 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     }
   }, [formData])
 
-  // Define registration steps
-  const steps = [
-    {
-      id: 'wallet',
-      label: 'Connect Wallet',
-      icon: <Wallet className="w-4 h-4" />,
-      completed: isWalletConnected
-    },
-    {
-      id: 'referral',
-      label: 'Referral (Optional)',
-      icon: <UserPlus className="w-4 h-4" />,
-      completed: isWalletConnected && (formData.referralAddress === '' || !registrationState.errors.referralAddress)
-    },
-    {
-      id: 'register',
-      label: 'Register',
-      icon: <Sparkles className="w-4 h-4" />,
-      completed: isRegistered
-    }
-  ]
 
   /**
    * Validates the referral address input with enhanced checks
@@ -340,12 +232,11 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       return
     }
 
-    // Set submitting state and move to register step
+    // Set submitting state
     setRegistrationState(prev => ({ 
       ...prev, 
       isSubmitting: true, 
-      errors: {},
-      currentStep: 'register'
+      errors: {}
     }))
 
     try {
@@ -366,8 +257,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       setRegistrationState(prev => ({
         ...prev,
         isSubmitting: false,
-        isSubmitted: true,
-        currentStep: 'success'
+        isSubmitted: true
       }))
 
     } catch (error) {
@@ -404,11 +294,6 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
             Join {MEMBERSHIP_PROGRESS[0].value} members in the Asty Network
           </p>
         </div>
-
-        {/* Step Indicator */}
-        {!isRegistered && (
-          <StepIndicator currentStep={registrationState.currentStep} steps={steps} />
-        )}
 
         {/* Registration Form */}
         <Card className="mb-6 border-white/10 bg-white/5 backdrop-blur">
@@ -545,9 +430,26 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
         <div className="mt-auto">
           <div className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-center shadow-[0_10px_25px_rgba(12,8,32,0.25)] backdrop-blur">
             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.4em] text-muted-foreground mb-2">
-              Your Referral Link
+              Presale Progress
             </p>
-            <ReferralLinkCard />
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <span className="text-2xl font-bold text-foreground">
+                {MEMBERSHIP_PROGRESS[0].value}
+              </span>
+              <span className="text-muted-foreground">/</span>
+              <span className="text-2xl font-bold text-primary">
+                {MEMBERSHIP_PROGRESS[1].value}
+              </span>
+            </div>
+            <div className="w-full bg-white/10 rounded-full h-2">
+              <div 
+                className="bg-primary h-2 rounded-full transition-all duration-500"
+                style={{ width: `${(6320 / 10000) * 100}%` }}
+              />
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+              {MEMBERSHIP_PROGRESS[1].value} memberships unlock the presale
+            </p>
           </div>
         </div>
       </div>

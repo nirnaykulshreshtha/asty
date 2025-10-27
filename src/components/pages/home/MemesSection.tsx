@@ -17,6 +17,7 @@
 
 "use client"
 
+import { memo } from "react"
 import { logger } from "@/lib/logger"
 import { MemesSectionHeader } from "./MemesSectionHeader"
 import { MembershipFoundationCard } from "./MembershipFoundationCard"
@@ -32,7 +33,7 @@ interface MemesSectionProps {
  * 
  * @param motionReduced - Whether animations should be reduced
  */
-export function MemesSection({ motionReduced }: MemesSectionProps) {
+function MemesSectionComponent({ motionReduced }: MemesSectionProps) {
   logger.info("component:memes:render", { motionReduced })
 
   return (
@@ -50,3 +51,5 @@ export function MemesSection({ motionReduced }: MemesSectionProps) {
     </section>
   )
 }
+
+export const MemesSection = memo(MemesSectionComponent)

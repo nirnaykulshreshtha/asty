@@ -122,38 +122,38 @@ export function ReferralLinkCard() {
   }
 
   return (
-    <>
-    <div className="rounded-lg bg-muted/50 p-3">
-          <p className="break-words text-sm text-muted-foreground font-mono">
-            {referralLink}
-          </p>
-        </div>
+    <div className="space-y-3">
+      <div className="rounded-lg bg-muted/50 p-3">
+        <p className="break-words text-sm text-muted-foreground font-mono">
+          {referralLink}
+        </p>
+      </div>
+      
+      <div className="flex gap-2">
+        <Button
+          onClick={handleCopyReferral}
+          variant="secondary"
+          size="sm"
+          className="flex-1"
+        >
+          <span className="inline-flex items-center gap-2">
+            {hasCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+            {hasCopied ? "Copied" : "Copy"}
+          </span>
+        </Button>
         
-        <div className="flex gap-2">
-          <Button
-            onClick={handleCopyReferral}
-            variant="secondary"
-            size="sm"
-            className="flex-1"
-          >
-            <span className="inline-flex items-center gap-2">
-              {hasCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-              {hasCopied ? "Copied" : "Copy"}
-            </span>
-          </Button>
-          
-          <Button
-            onClick={handleShare}
-            variant="outline"
-            size="sm"
-            className="flex-1"
-          >
-            <span className="inline-flex items-center gap-2">
-              <Share2 className="h-4 w-4" />
-              Share
-            </span>
-          </Button>
-        </div>
-        </>
+        <Button
+          onClick={handleShare}
+          variant="outline"
+          size="sm"
+          className="flex-1"
+        >
+          <span className="inline-flex items-center gap-2">
+            <Share2 className="h-4 w-4" />
+            Share
+          </span>
+        </Button>
+      </div>
+    </div>
   )
 }

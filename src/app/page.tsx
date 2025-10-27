@@ -216,11 +216,11 @@ export default function Home() {
           </div>
         </section> */}
 
+        <HowItWorksSection />
+
         <TokenomicsSection />
 
         <MemesSection motionReduced={motionReduced} />
-
-        <HowItWorksSection />
 
         <RoadmapSection />
 

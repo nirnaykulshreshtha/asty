@@ -211,22 +211,19 @@ export interface ToastState {
 }
 
 // Navigation items
-// Primary navigation - Key items for header (essential only)
+// Primary navigation - Key items surfaced in the header for currently live sections
 export const PRIMARY_NAV_ITEMS: NavItem[] = [
-  { label: "Why Asty?", href: "#participation" },
   { label: "How It Works", href: "#how" },
-  { label: "Trust", href: "#trust" },
-  { label: "Vault", href: "#vault" },
-  { label: "Join Asty", href: "#membership" },
-]
-
-// Secondary navigation - Additional links for footer
-export const SECONDARY_NAV_ITEMS: NavItem[] = [
-  { label: "Benefits", href: "#income" },
+  { label: "Early Membership", href: "#membership" },
   { label: "Tokenomics", href: "#tokenomics" },
   { label: "Roadmap", href: "#roadmap" },
+]
+
+// Secondary navigation - Supporting links surfaced in the footer
+export const SECONDARY_NAV_ITEMS: NavItem[] = [
   { label: "FAQ", href: "#faq" },
   { label: "Community", href: "#community" },
+  { label: "Whitepaper", href: "#whitepaper" },
 ]
 
 // Legacy export for backward compatibility

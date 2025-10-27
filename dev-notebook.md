@@ -403,21 +403,19 @@ Next Steps:
 
 Context: The header navigation had too many items (10 links), making it cluttered and overwhelming for users. Only essential navigation should remain in the header, with secondary links moved to the footer for better organization and user experience.
 
-Changes:
-- **Navigation Split** (`src/components/pages/home/types.ts`):
-  - Created `PRIMARY_NAV_ITEMS` array with 5 essential items: Vault, Why Asty, Membership, How It Works, Trust
-  - Created `SECONDARY_NAV_ITEMS` array with 5 secondary items: Benefits, Tokenomics, Roadmap, FAQ, Community
-  - Maintained `NAV_ITEMS` export for backward compatibility (combines both arrays)
-- **Header Simplification** (`src/components/pages/home/Header.tsx`):
-  - Updated to use `PRIMARY_NAV_ITEMS` instead of full `NAV_ITEMS` for desktop navigation
-  - Desktop nav now shows 5 key items (reduced from original 10)
-  - Mobile menu still uses full `NAV_ITEMS` for complete navigation
-  - Updated documentation to reflect essential navigation approach
-- **Footer Enhancement** (`src/components/pages/home/Footer.tsx`):
-  - Added "Quick Links" section displaying all `SECONDARY_NAV_ITEMS`
-  - Restructured footer into three columns: Branding, Quick Links, Social Links
-  - Secondary navigation items now available in footer as an organized quick reference
-  - Updated documentation to reflect new footer structure
+- Changes:
+  - **Navigation Split** (`src/components/pages/home/types.ts`):
+    - Replaced primary set with sections that remain on the homepage after redesign: Introducing, How It Works, Early Membership, Tokenomics, Roadmap
+    - Trimmed secondary links to only currently visible anchors: FAQ, Community, Whitepaper placeholder in footer
+    - Maintained `NAV_ITEMS` export for mobile menu parity (primary + secondary)
+  - **Header Refresh** (`src/components/pages/home/Header.tsx`):
+    - Updated documentation to call out the new primary nav ordering
+    - Desktop nav now mirrors the revised primary list
+    - Logging remains untouched for traceability
+  - **Footer Refresh** (`src/components/pages/home/Footer.tsx`):
+    - Revised documentation to reference the leaner quick links set
+    - Quick Links now surface FAQ, Community, Whitepaper anchors only
+    - Retained three-column layout and social section
 
 Features:
 - **Focused Header**: 5 essential navigation items (Vault, Why Asty, Membership, How It Works, Trust)
@@ -473,3 +471,42 @@ Impact:
 - Enhances user experience with clear call-to-action
 - Professional appearance with smooth animations
 - Better mobile experience (hidden on small screens where it might obstruct)
+
+## 2025-10-27 – SectionHeader Word Alignment Fix
+
+Context: Rotating words inside `SectionHeader` were wrapping and misaligning with the hero heading, creating awkward spacing and making the tagline unreadable when long words appeared.
+
+Changes:
+- Updated `src/components/ui/word-rotate.tsx` to support `containerClassName` and `wordClassName` props with inline-flex baseline alignment to keep rotations flush with surrounding text. Added defensive logging for empty word arrays.
+- Refined `renderWithTokens` in `src/components/ui/SectionHeader.tsx` to render `WordRotate` directly (no extra span) and applied a measured max width container to prevent rotation overflow.
+
+Impact:
+- Maintains consistent baseline alignment between static and rotating words across headings and descriptions.
+- Eliminates layout shift when rotating words change length.
+- Provides clearer logging hooks when debugging future typography adjustments.
+
+## 2025-10-27 – SectionHeader AuroraText Support
+
+Context: Needed the option to apply animated aurora gradient text on section titles or descriptions when spotlighting key phrases.
+
+Changes:
+- Imported `AuroraText` into `src/components/ui/SectionHeader.tsx` and added an `aurora` configuration prop allowing per-instance toggles, custom colors, speed, and class overrides.
+- Updated rendering logic to wrap title and/or description content in `AuroraText` when enabled while preserving WordRotate token handling.
+
+Impact:
+- Gives designers control to highlight specific headers with animated gradients.
+- Centralizes aurora configuration to avoid ad-hoc wrappers in consuming components.
+- Maintains aggressive logging and documentation standards for future debugging.
+
+## 2025-10-27 – Token-Level Aurora Highlighting
+
+Context: Marketing requested the ability to aurora-highlight only the `{domain}` token inside `SectionHeader` copy, leaving the rest of the text unaffected.
+
+Changes:
+- Extended the `aurora` prop with a `domainToken` option that targets a specific token (defaulting to `domain`) and applies Aurora gradients solely to that token whether it is static text or a `WordRotate` instance.
+- Added `duplicateChildren` flag to `AuroraText` to prevent double-rendering when wrapping animated components and updated render pipeline to normalize token configuration once per render.
+
+Impact:
+- Enables precise aurora emphasis for rotating domain words without affecting surrounding text.
+- Supports custom gradients, speed, and class overrides per token while reusing global settings.
+- Avoids rendering glitches by skipping duplicate children when wrapping interactive content.

@@ -7,6 +7,11 @@ interface AuroraTextProps {
   className?: string
   colors?: string[]
   speed?: number
+  /**
+   * When true (default), duplicates children into a visually hidden span to preserve accessibility while rendering an animated clone.
+   * Set to false when children contain stateful components (e.g., WordRotate) that should not be rendered twice.
+   */
+  duplicateChildren?: boolean
 }
 
 export const AuroraText = memo(
@@ -15,6 +20,7 @@ export const AuroraText = memo(
     className = "",
     colors = ["#FF0080", "#7928CA", "#0070F3", "#38bdf8"],
     speed = 1,
+    duplicateChildren = true,
   }: AuroraTextProps) => {
     const gradientStyle = {
       backgroundImage: `linear-gradient(135deg, ${colors.join(", ")}, ${
@@ -27,14 +33,25 @@ export const AuroraText = memo(
 
     return (
       <span className={`relative inline-block ${className}`}>
-        <span className="sr-only">{children}</span>
-        <span
-          className="animate-aurora relative bg-[length:200%_auto] bg-clip-text text-transparent"
-          style={gradientStyle}
-          aria-hidden="true"
-        >
-          {children}
-        </span>
+        {duplicateChildren ? (
+          <>
+            <span className="sr-only">{children}</span>
+            <span
+              className="animate-aurora relative bg-[length:200%_auto] bg-clip-text text-transparent"
+              style={gradientStyle}
+              aria-hidden="true"
+            >
+              {children}
+            </span>
+          </>
+        ) : (
+          <span
+            className="animate-aurora relative bg-[length:200%_auto] bg-clip-text text-transparent"
+            style={gradientStyle}
+          >
+            {children}
+          </span>
+        )}
       </span>
     )
   }

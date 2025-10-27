@@ -6,7 +6,7 @@
  * 
  * Features:
  * - Asty branding with contract address
- * - Quick Links section with secondary navigation items (Benefits, Tokenomics, Roadmap, FAQ, Community)
+ * - Quick Links section with secondary navigation items (FAQ, Community, Whitepaper)
  * - Social media links (X, Telegram, Discord)
  * - Copyright information
  * - Responsive three-column layout

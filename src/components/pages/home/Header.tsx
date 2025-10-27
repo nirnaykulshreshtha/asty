@@ -2,7 +2,7 @@
  * Header Component
  * ---------------
  * Responsive navigation header with mobile menu functionality and wallet connection.
- * Features the Asty logo, essential navigation items (Vault, Why Asty, Membership, How It Works, Trust), 
+ * Features the Asty logo, essential navigation items (Introducing, How It Works, Early Membership, Tokenomics, Roadmap), 
  * wallet connect button, mode toggle, and mobile hamburger menu.
  * 
  * Handles:

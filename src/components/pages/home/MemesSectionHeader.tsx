@@ -30,9 +30,14 @@ export function MemesSectionHeader({ motionReduced }: MemesSectionHeaderProps) {
 
   return (
     <SectionHeader
+      as="span"
       label="The Missing Layer"
-      title="Asty Turns DeFi Participation into Real Rewards"
-      description="Today, DEX adoption faces one big barrier: onboarding and rewarding the community fairly. Asty solves this by combining education, referrals, and facilitator tools – and channels that value into a shared Vault for its holders."
+      title="Asty Turns Participation into Real Rewards with {domain}"
+      description=""
+      tokens={{
+        domain: ["DeFi", "PeopleFi"],
+      }}
+      aurora={{ domainToken: true, colors: ["#f97316", "#FF0000", "#f6339a", "#f97316"] }}
     />
   )
 }

@@ -793,3 +793,42 @@ Impact:
 - Better conversion funnel with seamless referral credit application
 - Professional appearance with clear visual feedback
 - Maintains all existing validation logic and error handling
+
+## 2025-01-27 – Referral Link Generator via Dialog in Registration Section
+
+Context: Users need the ability to generate referral links for any BNB/Ethereum chain address from the registration section. Initially added inline but was making the UI cluttered, so moved to a cleaner dialog-based approach.
+
+Changes:
+- **Added "Generate Referral Link" Button** to `src/components/pages/home/RegistrationSection.tsx`:
+  - Button shown both when wallet is connected and disconnected
+  - Opens ReferralLinkDialog when clicked
+  - Clean outline variant to distinguish from primary registration action
+  - Icon (Share2) for visual clarity
+  - Available at all times, regardless of wallet connection status
+- **Integrated ReferralLinkDialog** component which already exists with full functionality:
+  - Toggle between "Use My Address" and "Custom Address" modes
+  - Real-time Ethereum address validation
+  - Copy, Share, and Visit actions for generated links
+  - Comprehensive error handling and user feedback
+- **Removed inline referral generator** that was cluttering the registration card:
+  - Removed all referral link generation UI, input fields, and state management
+  - Cleaned up unused imports (Input, Label, toast, Copy, ExternalLink, Check)
+  - Simplified component focus on registration only
+- **Maintained dialog functionality** through existing ReferralLinkDialog component
+
+Features:
+- **Clean UI**: Registration section is no longer cluttered with inline generator
+- **Dedicated Dialog**: Full-featured referral link generation in focused modal interface
+- **Always Accessible**: Button available regardless of wallet connection state
+- **Professional Design**: Outline variant distinguishes secondary action from primary registration
+- **Consistent UX**: Uses existing ReferralLinkDialog with proven UX patterns
+- **Better Focus**: Registration card focuses on core membership signup flow
+
+Impact:
+- Significantly cleaner and less cluttered registration section
+- Better separation of concerns: registration vs. referral generation
+- Improved user experience with dedicated dialog interface
+- Registration flow is more focused and distraction-free
+- Professional appearance without overwhelming the UI
+- Users still have easy access to referral link generation via button
+- Maintains all functionality while improving visual hierarchy

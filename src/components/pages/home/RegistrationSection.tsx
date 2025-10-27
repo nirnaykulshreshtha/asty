@@ -9,6 +9,7 @@
  * - Wallet connection requirement for registration
  * - Automatic referral address extraction from URL parameters (?ref=...)
  * - Auto-validation of extracted referral address on component mount
+ * - "Generate Referral Link" button opens referral dialog for any address
  * - Form submission handling with loading states
  * - Clear pricing and benefits display
  * - RainbowKit-powered wallet connection via CustomConnectButton
@@ -23,7 +24,7 @@
 
 import { useState, useCallback, useEffect } from "react"
 import { useAccount } from "wagmi"
-import { CheckCircle, Loader2, AlertCircle, Check, X } from "lucide-react"
+import { CheckCircle, Loader2, AlertCircle, Check, Share2 } from "lucide-react"
 
 import { logger } from "@/lib/logger"
 import { isEthereumAddress, extractReferralFromURL } from "@/lib/referrals"
@@ -34,6 +35,7 @@ import { DecorativeBackground } from "@/components/ui/DecorativeBackground"
 import { MEMBERSHIP_PROGRESS } from "./types"
 import { CustomConnectButton } from "@/components/ui/custom-connect-button"
 import { ConfettiStars } from "@/components/ui/confetti-stars"
+import { ReferralLinkDialog } from "./ReferralLinkDialog"
 
 interface RegistrationSectionProps {
   motionReduced: boolean
@@ -91,6 +93,9 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
 
   const [autoExtractedReferral, setAutoExtractedReferral] = useState<string | null>(null)
   const [referralExtractionError, setReferralExtractionError] = useState<string | null>(null)
+  
+  // Dialog state for referral link generation
+  const [isReferralDialogOpen, setIsReferralDialogOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -338,31 +343,55 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
                 {/* Single Button Display */}
                 <div className="space-y-3">
                   {!isWalletConnected ? (
-                    <CustomConnectButton 
-                      className="w-full"
-                      size="sm"
-                      variant={{
-                        connected: 'default',
-                        connect: 'default',
-                        wrongNetwork: 'destructive',
-                      }}
-                    />
+                    <>
+                      <CustomConnectButton 
+                        className="w-full"
+                        size="sm"
+                        variant={{
+                          connected: 'default',
+                          connect: 'default',
+                          wrongNetwork: 'destructive',
+                        }}
+                      />
+                      <Button
+                        type="button"
+                        onClick={() => setIsReferralDialogOpen(true)}
+                        className="w-full"
+                        size="sm"
+                        variant="outline"
+                      >
+                        <Share2 className="mr-2 h-4 w-4" />
+                        Generate Referral Link
+                      </Button>
+                    </>
                   ) : (
-                    <Button
-                      type="submit"
-                      className="w-full"
-                      size="sm"
-                      disabled={registrationState.isSubmitting}
-                    >
-                      {registrationState.isSubmitting ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Registering...
-                        </>
-                      ) : (
-                        'Register for Early Membership'
-                      )}
-                    </Button>
+                    <div className="space-y-2">
+                      <Button
+                        type="submit"
+                        className="w-full"
+                        size="sm"
+                        disabled={registrationState.isSubmitting}
+                      >
+                        {registrationState.isSubmitting ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Registering...
+                          </>
+                        ) : (
+                          'Register for Early Membership'
+                        )}
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={() => setIsReferralDialogOpen(true)}
+                        className="w-full"
+                        size="sm"
+                        variant="outline"
+                      >
+                        <Share2 className="mr-2 h-4 w-4" />
+                        Generate Referral Link
+                      </Button>
+                    </div>
                   )}
                 </div>
               </form>
@@ -429,6 +458,12 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
           </div>
         </div>
       </div>
+      
+      {/* Referral Link Dialog */}
+      <ReferralLinkDialog 
+        open={isReferralDialogOpen}
+        onOpenChange={setIsReferralDialogOpen}
+      />
     </aside>
   )
 }

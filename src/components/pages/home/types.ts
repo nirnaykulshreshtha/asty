@@ -235,14 +235,14 @@ export const NAV_ITEMS: NavItem[] = [...PRIMARY_NAV_ITEMS, ...SECONDARY_NAV_ITEM
 // Hero CTAs
 export const HERO_CTAS: HeroCta[] = [
   {
-    label: "Reserve Position",
+    label: "Join Asty Network",
     href: "#membership",
     variant: "default",
     tone: "primary",
   },
   {
-    label: "Get Referral Link",
-    href: "#referral",
+    label: "Read Whitepaper",
+    href: "#whitepaper",
     variant: "outline",
     tone: "outline",
   },

@@ -130,7 +130,7 @@ export function HeroSection({
         <style jsx>{`
           @keyframes bounce {
             0%, 100% {
-              transform: translateY(0) scale(1);
+              transform: translateY(0) scale(1.0);
             }
             50% {
               transform: translateY(-12px) scale(1.02);

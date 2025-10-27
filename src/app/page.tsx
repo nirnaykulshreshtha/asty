@@ -180,7 +180,7 @@ export default function Home() {
         onMobileNavClose={closeMobileNav}
       />
 
-      <main className="mx-auto max-w-7xl px-6 space-y-24 lg:space-y-32">
+      <main className="mx-auto max-w-7xl px-6 space-y-16 lg:space-y-20">
         <HeroSection
           heroBurstIndex={heroBurstIndex}
           heroVariant={heroVariant}

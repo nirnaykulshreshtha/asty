@@ -18,6 +18,8 @@ import { HOW_STEPS, POSITION_ADVANTAGES } from "./types"
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { CTAButton } from "@/components/ui/CTAButton"
 import { Pill } from "@/components/ui/Pill"
+import { ChevronFlowDiagram } from "@/components/ui/ChevronFlowDiagram"
+import { cn } from "@/lib/utils"
 
 /**
  * Renders the how it works section explaining the token mechanics.
@@ -37,34 +39,12 @@ export function HowItWorksSection() {
         description="Asty's first stage isn't just about joining a network — it's about locking your place in a structured ecosystem that pays forever."
       />
 
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-        <div
-          className="reveal-section relative overflow-hidden rounded-3xl border border-border/50 bg-card/70 p-8 shadow-2xl"
-          data-animate-on-scroll
-          data-visible="false"
-        >
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(146,68,255,0.16),_transparent_65%)]" aria-hidden="true" />
-          <div className="relative space-y-6">
-            <Pill className="border-primary/40 text-primary">How positioning works</Pill>
-            <ol className="space-y-4">
-              {HOW_STEPS.map((step, index) => (
-                <li
-                  key={step.title}
-                  className="flex gap-4 rounded-2xl border border-border/40 bg-background/80 p-5 shadow-md transition duration-200 hover:border-primary/40 hover:shadow-xl"
-                >
-                  <span className="flex size-10 items-center justify-center rounded-full border border-primary/40 bg-primary/15 text-base font-semibold text-primary">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h3 className="text-lg font-semibold text-foreground">{step.title}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground">{step.description}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
+      <ChevronFlowDiagram
+        steps={HOW_STEPS}
+        className="mt-4"
+      />
 
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
         <aside
           className="reveal-section flex flex-col gap-6 rounded-3xl border border-border/50 bg-background/80 p-8 shadow-xl"
           data-animate-on-scroll
@@ -102,11 +82,21 @@ export function HowItWorksSection() {
           href="#membership"
           label="Reserve Position"
           variant="default"
+          size="lg"
+          className={cn(
+            "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
+            "backdrop-blur"
+          )}
         />
         <CTAButton
           href="#tokenomics"
           label="Learn Reward Structure"
           variant="outline"
+          size="lg"
+          className={cn(
+            "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
+            "outline"
+          )}
         />
       </div>
     </section>

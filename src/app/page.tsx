@@ -191,7 +191,7 @@ export default function Home() {
 
         <MemesSection motionReduced={motionReduced} />
 
-        <MovementSection onAnchorClick={handleAnchorClick} />
+        {/* <MovementSection onAnchorClick={handleAnchorClick} /> */}
 
         <IntroducingSection />
 

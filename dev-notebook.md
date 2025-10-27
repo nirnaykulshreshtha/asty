@@ -1,5 +1,46 @@
 # Asty Development Notebook
 
+## 2025-01-27 – Tokenomics Chart Visualization
+
+Context: The tokenomics section needed a proper data visualization to show token distribution more clearly, particularly the presale rounds and remaining supply breakdown. The existing static donut visual was not providing enough detail about how the 21M tokens are distributed.
+
+Changes:
+- **Enhanced `src/components/pages/home/TokenomicsSection.tsx`** with interactive chart visualization:
+  - Added tokenomics data structure with breakdown across presale rounds (10L, 10L, 5L tokens)
+  - Implemented interactive pie/donut chart using Recharts library (already in dependencies)
+  - Added ChartContainer with proper tooltip and legend functionality
+  - Included "Remaining Supply" slice showing 18.5M tokens after presale allocation
+  - Maintained existing UI styling with gradient backgrounds and animations
+  - Added comprehensive logging for debugging chart interactions
+  - Legend shows formatted values in millions for easy reading
+- **Palette Alignment**: Updated `TOKENOMICS_DATA` colors to pull from global `--chart-*` CSS variables for consistent theming; remaining supply uses `--muted` to stay subdued against presale slices.
+- **Updated documentation** to reflect chart integration and data structure
+- Imported Chart components from existing UI library (`src/components/ui/chart.tsx`)
+
+Features:
+- **Interactive Chart**: Hover tooltips showing exact token counts
+- **Legend Display**: Shows presale rounds and remaining supply with formatted values (1.0M, 2.5M tokens)
+- **Visual Breakdown**: Donut chart with distinct colors for each allocation
+- **Responsive Design**: Adapts to different screen sizes
+- **Accessible**: Proper ARIA labels and interactive elements
+- **Color Scheme**: Uses primary color gradients (hsl 262°) for consistency
+
+Token Distribution:
+- Presale Round 1: 1,000,000 tokens (1.0M)
+- Presale Round 2: 1,000,000 tokens (1.0M)
+- Presale Round 3: 500,000 tokens (0.5M)
+- Remaining Supply: 18,500,000 tokens (18.5M)
+- **Total: 21,000,000 tokens (21M)**
+
+Impact:
+- Much clearer visualization of token distribution
+- Interactive experience helps users understand allocation breakdown
+- Professional appearance with proper chart library integration
+- Maintains existing design system and visual language
+- Better user understanding of how tokens are allocated
+- Debug-friendly with comprehensive logging
+- Responsive and accessible for all users
+
 ## 2025-10-23 – Reusable BulletedListCard and MembershipBenefitsGrid refactor
 
 Context: Multiple sections used near-identical bulleted list markup (heading, accent dot, title, description). We extracted a reusable component to reduce duplication and applied it to the benefits grid rendered on the home page.

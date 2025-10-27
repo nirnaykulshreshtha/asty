@@ -4,6 +4,9 @@
  * Presents the "A token designed for real community income" narrative with
  * highlight cards, vault distribution explainer, and a hero donut visual for
  * total supply. Mirrors the latest deck copy and tightens the CTA flow.
+ * 
+ * Includes an interactive chart visualization showing token distribution
+ * across presale rounds and remaining supply.
  */
 
 "use client"
@@ -17,9 +20,38 @@ import { SectionHeader } from "@/components/ui/SectionHeader"
 import { DecorativeBackground } from "@/components/ui/DecorativeBackground"
 import { CTAButton } from "@/components/ui/CTAButton"
 import { TEN_K_TRIGGER_TEXT } from "./constants"
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart"
+import { PieChart, Pie, Cell } from "recharts"
+
+/**
+ * Token Distribution Data
+ * Represents the breakdown of 21M max supply across presale rounds
+ * Palette ties into the global chart variables for on-brand theming.
+ */
+const TOKENOMICS_DATA = [
+  { name: "Presale Round 1", value: 1000000, color: "var(--chart-3)" }, // 10L tokens
+  { name: "Presale Round 2", value: 1000000, color: "var(--chart-4)" }, // 10L tokens
+  { name: "Presale Round 3", value: 500000, color: "var(--muted)" }, // 5L tokens
+  { name: "Remaining Supply", value: 18500000, color: "var(--chart-1)" }, // 185L tokens
+]
+
+/**
+ * Chart configuration for tokenomics visualization
+ */
+const chartConfig = {
+  tokens: {
+    label: "Tokens",
+  },
+} satisfies ChartConfig
 
 /**
  * Renders the tokenomics section with distribution data and key metrics.
+ * Includes an interactive pie chart showing token allocation breakdown.
  */
 export function TokenomicsSection() {
   logger.info("component:tokenomics:render")
@@ -75,29 +107,53 @@ export function TokenomicsSection() {
       </div>
         </div>
 
-        <aside
-          className="reveal-section relative overflow-hidden rounded-3xl border border-border/50 bg-card/70 p-8 shadow-2xl"
-          data-animate-on-scroll
-          data-visible="false"
-        >
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(146,68,255,0.18),_transparent_65%)]" aria-hidden="true" />
-          <div className="relative space-y-8">
-            <div className="mx-auto flex size-60 items-center justify-center rounded-full bg-[conic-gradient(from_140deg_at_50%_50%,_rgba(146,68,255,0.85)_0%,_rgba(146,68,255,0.4)_55%,_rgba(20,10,45,0.8)_100%)]">
-              <div className="flex size-36 flex-col items-center justify-center rounded-full border border-border/60 bg-background/90 text-center shadow-lg">
-                <span className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
-                  Total Supply
-                </span>
-                <span className="mt-2 text-2xl font-bold text-foreground">21,000,000</span>
-                <span className="text-xs font-medium text-muted-foreground">ASTY</span>
-              </div>
-            </div>
-            <div className="grid gap-4">
-            <div
-            className="reveal-section rounded-2xl border border-border/60 bg-background/80 p-2 shadow-xl"
+        <aside className="space-y-8">
+          <div
+            className="reveal-section relative overflow-hidden rounded-3xl border border-border/50 bg-card/70 p-8 shadow-2xl"
             data-animate-on-scroll
             data-visible="false"
           >
-            <ul className="mt-4 space-y-3">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(146,68,255,0.18),_transparent_65%)]" aria-hidden="true" />
+            <div className="relative space-y-8">
+              <div className="text-center space-y-6">
+                <h3 className="text-lg font-semibold text-foreground">Token Distribution</h3>
+                <ChartContainer config={chartConfig} className="mx-auto w-full max-w-xs aspect-square">
+                  <PieChart>
+                    <ChartTooltip content={<ChartTooltipContent hideIndicator />} />
+                    <Pie
+                      data={TOKENOMICS_DATA}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={140}
+                      innerRadius={70}
+                      paddingAngle={3}
+                      stroke="none"
+                    >
+                      {TOKENOMICS_DATA.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </ChartContainer>
+                <div className="space-y-2">
+                  <span className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
+                    Total Supply
+                  </span>
+                  <div className="text-3xl font-bold text-foreground">21,000,000</div>
+                  <span className="text-sm font-medium text-muted-foreground">ASTY Tokens</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className="reveal-section rounded-2xl border border-border/60 bg-background/80 p-6 shadow-xl"
+            data-animate-on-scroll
+            data-visible="false"
+          >
+            <ul className="space-y-3">
               {VAULT_DISTRIBUTION_POINTS.map((point) => (
                 <li key={point.title} className="flex gap-3 rounded-2xl border border-border/40 bg-card/70 p-4">
                   <span className="mt-1 flex size-9 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary">
@@ -114,9 +170,6 @@ export function TokenomicsSection() {
               <CTAButton href="#tokenomics" label="View Tokenomics PDF" variant="default" />
               <CTAButton href="#vault" label="See Vault Live" variant="outline" />
             </div>
-          </div>
-            </div>
-            
           </div>
         </aside>
       </div>

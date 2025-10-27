@@ -13,9 +13,8 @@
 
 "use client"
 
-import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
-import { astroz } from "@/styles/fonts"
+import { SectionHeader } from "@/components/ui/SectionHeader"
 
 interface MemesSectionHeaderProps {
   motionReduced: boolean
@@ -30,16 +29,10 @@ export function MemesSectionHeader({ motionReduced }: MemesSectionHeaderProps) {
   logger.info("component:memes:header:render", { motionReduced })
 
   return (
-    <div className="reveal-section space-y-4" data-animate-on-scroll data-visible="false">
-      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-        The Missing Layer
-      </p>
-      <h2 className={cn("text-4xl text-foreground sm:text-5xl", astroz.className)}>
-        Asty Turns DeFi Participation into Real Rewards
-      </h2>
-      <p className="max-w-3xl text-base text-muted-foreground">
-        Today, DEX adoption faces one big barrier: onboarding and rewarding the community fairly. Asty solves this by combining education, referrals, and facilitator tools – and channels that value into a shared Vault for its holders.
-      </p>
-    </div>
+    <SectionHeader
+      label="The Missing Layer"
+      title="Asty Turns DeFi Participation into Real Rewards"
+      description="Today, DEX adoption faces one big barrier: onboarding and rewarding the community fairly. Asty solves this by combining education, referrals, and facilitator tools – and channels that value into a shared Vault for its holders."
+    />
   )
 }

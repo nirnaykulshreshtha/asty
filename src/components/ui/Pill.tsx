@@ -10,6 +10,7 @@
 
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
+import { AnimatedGradientText } from "./animated-gradient-text"
 
 export interface PillProps {
   children: React.ReactNode
@@ -17,7 +18,7 @@ export interface PillProps {
   className?: string
 }
 
-export function Pill({ children, tone = "neutral", className }: PillProps) {
+export function Pill({ children, tone = "primary", className }: PillProps) {
   logger.info("component:pill:render", { tone })
   const toneClass =
     tone === "primary"
@@ -28,7 +29,7 @@ export function Pill({ children, tone = "neutral", className }: PillProps) {
 
   return (
     <span className={cn("rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em]", toneClass, className)}>
-      {children}
+      <AnimatedGradientText>{children}</AnimatedGradientText>
     </span>
   )
 }

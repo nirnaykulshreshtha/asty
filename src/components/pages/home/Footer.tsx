@@ -2,13 +2,14 @@
  * Footer Component
  * ---------------
  * Site footer with branding, secondary navigation links, contract address, and social media links.
- * Features copyright information and comprehensive site navigation.
+ * Includes required marketing branding line and explicit copyright year.
  * 
  * Features:
  * - Asty branding with contract address
+ * - Marketing line: "Asty — PeopleFi. Built for collective value creation."
  * - Quick Links section with secondary navigation items (FAQ, Community, Whitepaper)
  * - Social media links (X, Telegram, Discord)
- * - Copyright information
+ * - Copyright line: "© Asty 2025"
  * - Responsive three-column layout
  */
 
@@ -25,6 +26,10 @@ import { SECONDARY_NAV_ITEMS } from "./types"
  */
 function FooterComponent() {
   logger.info("component:footer:render")
+  logger.info("component:footer:branding", {
+    tagline: "Asty — PeopleFi. Built for collective value creation.",
+    copyright: "© Asty 2025",
+  })
 
   return (
     <footer className="border-t border-border/40 bg-background/90 py-12">
@@ -34,12 +39,13 @@ function FooterComponent() {
           <div className="space-y-3">
             <p className={cn("text-2xl tracking-[0.6em] text-primary", astroz.className)}>ASTY</p>
             <p className="max-w-sm text-sm text-muted-foreground">
+              Asty — PeopleFi. Built for collective value creation.
+            </p>
+            <p className="max-w-sm text-sm text-muted-foreground">
               Vault contract address:{" "}
               <span className="font-mono text-foreground">0xASTY000000000000000000000000</span>
             </p>
-            <p className="text-xs text-muted-foreground">
-              © {new Date().getFullYear()} Asty. All rights reserved.
-            </p>
+            <p className="text-xs text-muted-foreground">© Asty {new Date().getFullYear()}. All rights reserved.</p>
           </div>
 
           {/* Quick Links Section */}

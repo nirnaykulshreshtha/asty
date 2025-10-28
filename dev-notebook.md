@@ -944,3 +944,20 @@ Follow-up Notes:
 - Can be extended to support additional chains or tokens
 - Payment widget supports Across Protocol for cross-chain bridging
 - Integrator ID should be configured in environment for production use
+
+## 2025-10-28 – Footer Branding and Copyright Update
+
+Context: Marketing requires a consistent branding line and explicit year in the site footer.
+
+Changes:
+- Updated `src/components/pages/home/Footer.tsx` branding section to include:
+  - Tagline: "Asty — PeopleFi. Built for collective value creation."
+  - Copyright set to exact string: "© Asty 2025" (replaces dynamic year + "All rights reserved.")
+- Added aggressive logging to trace branding render state.
+- Updated component documentation to reflect marketing requirement.
+
+Impact:
+- Footer now reflects required brand messaging verbatim.
+- Fixed year for 2025 per marketing directive.
+- Easier debugging with explicit branding log entry.
+

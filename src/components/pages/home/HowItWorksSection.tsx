@@ -38,8 +38,8 @@ function HowItWorksSectionComponent({ onAnchorClick }: HowItWorksSectionProps) {
       className="space-y-12 border-b border-border/40 py-20"
     >
       <SectionHeader
-        label="Early Positioning"
-        title="How does it work for you?"
+        label="HOW IT WORKS"
+        title="Engine works for you in 4 simple steps"
         description="One early move secures your place in the network.Rewards automatically begin as the project moves through each stage. You work once.The system works for you forever."
       />
 

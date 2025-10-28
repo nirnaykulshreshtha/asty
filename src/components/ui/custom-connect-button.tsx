@@ -43,6 +43,10 @@ interface CustomConnectButtonProps {
    */
   className?: string;
   /**
+   * Label to display on the primary connect button when disconnected
+   */
+  connectLabel?: string;
+  /**
    * Size variant for the button
    */
   size?: 'xs' | 'sm' | 'default' | 'lg';
@@ -95,6 +99,7 @@ interface CustomConnectButtonProps {
  */
 export function CustomConnectButton({
   className,
+  connectLabel = 'Connect Wallet',
   size = 'default',
   showChainName = true,
   showBalance = true,
@@ -179,7 +184,7 @@ export function CustomConnectButton({
                     className={cn("font-medium cursor-pointer", className)}
                     variant={getVariant('connect')}
                   >
-                    Connect Wallet
+                    {connectLabel}
                   </Button>
                 );
               }

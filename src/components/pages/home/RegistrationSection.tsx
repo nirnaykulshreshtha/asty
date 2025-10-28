@@ -338,7 +338,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
             Secure Your Position
           </h3>
           <p className="text-sm text-muted-foreground">
-            Join {MEMBERSHIP_PROGRESS[0].value} members in the Asty Network
+            Stage 1 positions are open—join {MEMBERSHIP_PROGRESS[0].value} members powering the Asty Network
           </p>
         </div>
 
@@ -347,7 +347,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
           <CardHeader className="pb-4">
             <CardTitle className="text-lg text-foreground">Early Membership</CardTitle>
             <CardDescription className="text-muted-foreground">
-              $100 lifetime position • 12-level referral network
+              $100 lifetime position • 12-level referral network • Lifetime income engine
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -389,6 +389,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
                       <CustomConnectButton 
                         className="w-full"
                         size="sm"
+                        connectLabel="Connect Wallet / Register"
                         variant={{
                           connected: 'default',
                           connect: 'default',
@@ -439,7 +440,11 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
                     </div>
                   )}
                 </div>
-                
+
+                <p className="text-xs text-muted-foreground">
+                  Stage 1 is your chance to lock in lifetime income before the network opens to everyone.
+                </p>
+
               </form>
             ) : (
               <div className="text-center space-y-6">
@@ -454,7 +459,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
                 </div>
                 <div className="space-y-2">
                   <h4 className="text-xl font-bold text-foreground">
-                    🎉 Registration Successful!
+                    🎉 Stage 1 Spot Secured!
                   </h4>
                 </div>
                 {formData.referralAddress && (
@@ -469,7 +474,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
                   <div className="flex justify-center space-x-4 text-xs text-muted-foreground">
                     <span>✓ $100 Lifetime Position</span>
                     <span>✓ 12-Level Referral Network</span>
-                    <span>✓ Early Access</span>
+                    <span>✓ Lifetime Income Engine</span>
                   </div>
                 </div>
               </div>
@@ -481,7 +486,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
         <div className="mt-auto">
           <div className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-center shadow-[0_10px_25px_rgba(12,8,32,0.25)] backdrop-blur">
             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.4em] text-muted-foreground mb-2">
-              Get Early Access To The Presale
+              Stage 1 Progress
             </p>
             <div className="flex items-center justify-center space-x-2 mb-2">
               <span className="text-2xl font-bold text-foreground">

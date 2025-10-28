@@ -31,7 +31,7 @@ export function MemesSectionHeader({ motionReduced }: MemesSectionHeaderProps) {
   return (
     <SectionHeader
       as="span"
-      label="The Missing Layer"
+      label="STAGE 1 LAUNCH"
       title="Be a Founder, Not a Follower"
       description="Stage 1 positions are open. Your early spot isn’t just a seat in the network — it’s your lifetime income engine"
       tokens={{

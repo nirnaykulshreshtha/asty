@@ -247,7 +247,7 @@ export const HERO_CTAS: HeroCta[] = [
 // Hero CTAs
 export const HOW_IT_WORKS_CTAS: HeroCta[] = [
   {
-    label: "Reserve Position",
+    label: "Reserve My Position",
     href: "#membership",
     variant: "default",
     tone: "primary",

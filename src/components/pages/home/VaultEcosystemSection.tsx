@@ -41,11 +41,11 @@ function VaultEcosystemSectionComponent() {
 
       <div className="relative mx-auto flex max-w-6xl flex-col gap-12 px-4 sm:px-6 lg:px-0">
         <SectionHeader
-          label="Section 6 · Vault Ecosystem"
-          title="Where All Value Converges."
+          label="Vault Ecosystem"
+          title="Where All Value Converges"
           description="Every action in the ecosystem flows into the Vault. The Vault rewards everyone."
           align="center"
-          showPill={false}
+          showPill={true}
         />
 
         <div

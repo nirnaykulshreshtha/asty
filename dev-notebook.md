@@ -523,6 +523,39 @@ Notes:
 - Further improvements could memoize any section receiving frequently-changing props.
 
 
+## 2025-10-28 – SectionHeader Description Accepts string[]
+
+Context: Consumers needed to pass multiple description lines to `SectionHeader` without manually composing custom markup. We also wanted to preserve token interpolation and optional `AuroraText` wrapping per line.
+
+Changes:
+- Updated `src/components/ui/SectionHeader.tsx`:
+  - `description` prop now accepts `string | string[]`.
+  - When an array is provided, each entry renders as a separate paragraph in order, inheriting the same typography (`max-w-3xl text-base text-muted-foreground`).
+  - Maintains token rendering via `renderWithTokens` for every entry.
+  - Preserves `aurora.enableDescription` behavior for each paragraph.
+  - Added aggressive logging to report description type and entry count for debugging.
+
+Impact:
+- Simpler API for multi-line descriptions with consistent styling.
+- No breaking changes; existing string usage continues to work.
+- Debuggability improved with structured logging around description handling.
+
+## 2025-10-28 – Per-Item Aurora for SectionHeader Descriptions
+
+Context: Need granular control to aurora-highlight individual description lines (different enable flags, gradients, speeds, and class overrides) when passing a `string[]` to `description`.
+
+Changes:
+- Extended `aurora` prop in `src/components/ui/SectionHeader.tsx` with `perDescription?: Array<{ enable?: boolean; colors?: string[]; speed?: number; className?: string }>`.
+- Each description line now resolves its own aurora configuration by merging per-item overrides with global `aurora` values.
+- When `description` is a single string, index 0 of `perDescription` applies if provided.
+- Added aggressive logging per line to trace enablement and override presence.
+
+Impact:
+- Designers can selectively aurora-highlight specific lines and customize gradients per line.
+- Backward compatible; global `enableDescription` still works as default.
+- Easier experimentation with different visual emphasis without changing markup.
+
+
 Context: Marketing requested the ability to aurora-highlight only the `{domain}` token inside `SectionHeader` copy, leaving the rest of the text unaffected.
 
 Changes:

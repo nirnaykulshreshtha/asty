@@ -21,8 +21,12 @@ export interface SectionHeaderProps {
   label?: string
   /** Main section title as a string template. Example: "Asty Turns {domain} Participation into Real Rewards" */
   title: string
-  /** Supporting description text. Can also include tokens like {domain}. */
-  description?: string
+  /**
+   * Supporting description text. Accepts a single string or an array of strings.
+   * When an array is provided, each item is rendered as its own paragraph in order.
+   * Tokens like {domain} are supported in each entry.
+   */
+  description?: string | string[]
   /** Optional additional class names for outer container */
   className?: string
   /**
@@ -45,7 +49,7 @@ export interface SectionHeaderProps {
   /**
    * Text alignment.
    */
-  align?: "start" | "center" | "end"
+  align?: "start" | "center" | "end" | string
   /**
    * Toggle the eyebrow pill.
    */
@@ -62,6 +66,21 @@ export interface SectionHeaderProps {
     enableTitle?: boolean
     /** Enable AuroraText wrapping on the description */
     enableDescription?: boolean
+    /**
+     * Optional per-item overrides for description lines. If provided, the index
+     * corresponds to the same index in the `description` array. When `description`
+     * is a single string, index 0 applies.
+     */
+    perDescription?: Array<{
+      /** Enable/disable AuroraText for this line (default falls back to enableDescription) */
+      enable?: boolean
+      /** Custom gradient colors for this specific line */
+      colors?: string[]
+      /** Animation speed override for this specific line */
+      speed?: number
+      /** Additional className for Aurora wrapper around this line */
+      className?: string
+    }>
     /** Custom gradient colors for AuroraText */
     colors?: string[]
     /** Animation speed multiplier */
@@ -243,11 +262,68 @@ export function SectionHeader({
 
   const TitleTag: React.ElementType = as ?? "h2"
   const alignClass =
-    align === "center" ? "text-center items-center" : align === "end" ? "text-right items-end" : "text-left items-start"
+    align === "center" ? "text-center items-center" : align === "end" ? "text-right items-end" : align === "start" ? "text-left items-start" : align
 
   const shouldRenderAuroraTitle = aurora?.enableTitle ?? false
   const shouldRenderAuroraDescription = aurora?.enableDescription ?? false
   const auroraTokenConfig = normalizeAuroraTokenConfig(aurora, tokens)
+
+  // Debug visibility into description type/length for aggressive logging
+  logger.debug("component:section-header:description:meta", {
+    type: Array.isArray(description) ? "array" : typeof description,
+    count: Array.isArray(description) ? description.length : description ? 1 : 0,
+  })
+
+  function renderDescription(): React.ReactNode {
+    if (!description) return null
+    const entries = Array.isArray(description) ? description : [description]
+    logger.debug("component:section-header:description:entries", { count: entries.length })
+
+    return entries.map((descText, idx) => {
+      const perItemAurora = aurora?.perDescription?.[idx]
+      const itemEnableAurora = perItemAurora?.enable ?? shouldRenderAuroraDescription
+      const itemAuroraColors = perItemAurora?.colors ?? aurora?.colors
+      const itemAuroraSpeed = perItemAurora?.speed ?? aurora?.speed
+      const itemAuroraClassName = cn("font-semibold", aurora?.descriptionClassName, perItemAurora?.className)
+
+      logger.debug("component:section-header:description:item", {
+        index: idx,
+        auroraEnabled: itemEnableAurora,
+        hasColors: Boolean(itemAuroraColors && itemAuroraColors.length),
+        hasClassName: Boolean(perItemAurora?.className),
+      })
+
+      const content = itemEnableAurora ? (
+        <AuroraText
+          colors={itemAuroraColors}
+          speed={itemAuroraSpeed}
+          className={itemAuroraClassName}
+        >
+          {renderWithTokens(descText, {
+            tokens,
+            tokenClassName,
+            defaultRotateWords,
+            baseRotateClassName: "font-semibold",
+            auroraToken: auroraTokenConfig,
+          })}
+        </AuroraText>
+      ) : (
+        renderWithTokens(descText, {
+          tokens,
+          tokenClassName,
+          defaultRotateWords,
+          baseRotateClassName: "font-semibold",
+          auroraToken: auroraTokenConfig,
+        })
+      )
+
+      return (
+        <p key={`desc-${idx}`} className="max-w-3xl text-base text-muted-foreground">
+          {content}
+        </p>
+      )
+    })
+  }
 
   return (
     <div
@@ -283,33 +359,7 @@ export function SectionHeader({
         )}
       </TitleTag>
 
-      {description ? (
-        <p className="max-w-3xl text-base text-muted-foreground">
-          {shouldRenderAuroraDescription ? (
-            <AuroraText
-              colors={aurora?.colors}
-              speed={aurora?.speed}
-              className={cn("font-semibold", aurora?.descriptionClassName)}
-            >
-              {renderWithTokens(description, {
-                tokens,
-                tokenClassName,
-                defaultRotateWords,
-                baseRotateClassName: "font-semibold",
-                auroraToken: auroraTokenConfig,
-              })}
-            </AuroraText>
-          ) : (
-            renderWithTokens(description, {
-              tokens,
-              tokenClassName,
-              defaultRotateWords,
-              baseRotateClassName: "font-semibold",
-              auroraToken: auroraTokenConfig,
-            })
-          )}
-        </p>
-      ) : null}
+      {renderDescription()}
     </div>
   )
 }

@@ -42,13 +42,24 @@ function PositionImportanceSectionComponent() {
       data-section-label="Why Your Position Matters"
       className="border-b border-border/40 py-20"
     >
-      <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+      <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-center">
         <div className="space-y-8">
           <SectionHeader
-            label="Why Your Position Matters"
+            label="Why Your Position Matters?"
             title="Early Position. Lifetime Advantage."
-            description="Your position in the Asty Network is your permanent share in a 12-level reward structure. Early positions earn more as the community grows."
+            description={[
+              "Your position in the Asty Network is your permanent share in a 12-level reward structure.",
+              "Early positions earn more as the community grows.",
+            ]}
+            aurora={{
+              enableDescription: false, // default; can still enable globally
+              perDescription: [
+                { enable: false },
+                { enable: true, colors: ["#ffcc00", "#ff0080"], speed: 1.2 }
+              ]
+            }}
           />
+          {/* Early positions earn more as the community grows. */}
 
           <ul className="grid gap-3 sm:grid-cols-2">
             {POSITION_POINTS.map(({ icon: Icon, text }) => (

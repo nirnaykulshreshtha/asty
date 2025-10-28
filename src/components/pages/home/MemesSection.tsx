@@ -45,7 +45,7 @@ function MemesSectionComponent({ motionReduced }: MemesSectionProps) {
       data-section-label="Early Membership"
       className="border-b border-border/40 py-20"
     >
-      <div className="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+      <div className="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-center">
         <div className="flex flex-col justify-between gap-10">
           <div className="space-y-8">
             <MemesSectionHeader motionReduced={motionReduced} />

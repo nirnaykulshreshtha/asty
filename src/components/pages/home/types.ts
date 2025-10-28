@@ -489,10 +489,8 @@ export const POSITION_ADVANTAGES: PositionAdvantage[] = [
 
 // Tokenomics data
 export const TOKENOMICS_ROWS: TokenomicsRow[] = [
-  { type: "Community Vault", amount: "9,000,000 ASTY", rate: "Vault-driven rewards", percent: 43 },
-  { type: "Public Circulation", amount: "5,000,000 ASTY", rate: "Unlocked post-launch", percent: 67 },
-  { type: "Strategic Growth", amount: "4,000,000 ASTY", rate: "Governed allocations", percent: 86 },
-  { type: "Presale Rounds", amount: "3,000,000 ASTY", rate: "Bi-stage early access", percent: 100 },
+  { type: "Reserved for Members", amount: "18,500,000 ASTY", rate: "Reserved for Members", percent: 43 },
+  { type: "Presale Rounds", amount: "2,500,000 ASTY", rate: "Bi-stage early access", percent: 14 },
 ]
 
 export const TOKENOMICS_CARDS: TokenomicsCard[] = [

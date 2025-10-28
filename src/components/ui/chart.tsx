@@ -60,10 +60,20 @@ function ChartContainer({
         )}
         {...props}
       >
+        <div className="pointer-events-none absolute inset-10 rounded-full border border-white/10 bg-gradient-to-b from-white/10 via-transparent to-white/5 blur-md" />
         <ChartStyle id={chartId} config={config} />
         <RechartsPrimitive.ResponsiveContainer>
           {children}
         </RechartsPrimitive.ResponsiveContainer>
+        <div className="pointer-events-none absolute left-1/2 top-1/2 flex w-44 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-border/40 bg-background/95 p-5 shadow-inner">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.35em] text-muted-foreground">
+                  Total Supply
+                </span>
+                <span className="text-3xl font-bold text-foreground">
+                21,000,000
+                </span>
+                <span className="text-xs text-muted-foreground">ASTY Tokens</span>
+              </div>
       </div>
     </ChartContext.Provider>
   )

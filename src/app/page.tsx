@@ -24,7 +24,9 @@ import { CommunitySection } from "@/components/pages/home/CommunitySection"
 import { Footer } from "@/components/pages/home/Footer"
 import { Toast } from "@/components/pages/home/Toast"
 import { useScrollReveal, useParallax } from "@/hooks/useScrollMotion"
-import { IntroducingSection } from "@/components/pages/home/IntroducingSection"
+import { PositionImportanceSection } from "@/components/pages/home/PositionImportanceSection"
+import { PeopleFiSection } from "@/components/pages/home/PeopleFiSection"
+import { VaultEcosystemSection } from "@/components/pages/home/VaultEcosystemSection"
 import { FloatingMemberButton } from "@/components/pages/home/FloatingMemberButton"
 
 
@@ -161,7 +163,13 @@ export default function Home() {
 
         {/* <MovementSection onAnchorClick={handleAnchorClick} /> */}
 
-        <IntroducingSection />
+        {/* <IntroducingSection /> */}
+
+        <PositionImportanceSection />
+
+        <PeopleFiSection />
+
+        <VaultEcosystemSection />
 
         {/* <VaultFlowSection onAnchorClick={handleAnchorClick} /> */}
 

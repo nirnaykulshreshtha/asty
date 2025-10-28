@@ -8,15 +8,18 @@
 
 import Link from "next/link"
 import { memo } from "react"
-import { ArrowRight, ArrowDown, Check, Vault } from "lucide-react"
+import { ArrowRight, ArrowDown, Check, Vault, Users, Wrench, Percent } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
 import { logger } from "@/lib/logger"
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { Button } from "@/components/ui/button"
 
-const VAULT_INPUTS = [
-  { id: "referrals", label: "Referral income", emoji: "🔸" },
-  { id: "tools", label: "Tools revenue", emoji: "🔸" },
-  { id: "tax", label: "Tax mechanism", emoji: "🔸" },
+type VaultInput = { id: string; label: string; icon: LucideIcon }
+
+const VAULT_INPUTS: readonly VaultInput[] = [
+  { id: "referrals", label: "Referral income", icon: Users },
+  { id: "tools", label: "Tools revenue", icon: Wrench },
+  { id: "tax", label: "Tax mechanism", icon: Percent },
 ] as const
 
 const VAULT_BENEFITS = [
@@ -55,18 +58,15 @@ function VaultEcosystemSectionComponent() {
         >
           <div className="flex flex-col gap-8">
             <div className="relative flex flex-col gap-6 rounded-3xl border border-border/50 bg-background/80 p-6 shadow-lg">
-              <p className="text-xs font-semibold uppercase tracking-[0.32em] text-muted-foreground">
-                Flow Diagram
-              </p>
               <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-center lg:gap-6">
                 <div className="flex flex-col gap-3">
-                  {VAULT_INPUTS.map(({ id, label, emoji }) => (
+                  {VAULT_INPUTS.map(({ id, label, icon: Icon }) => (
                     <div
                       key={id}
                       className="flex items-center gap-3 rounded-2xl border border-border/40 bg-background/90 px-4 py-3 text-sm font-medium text-muted-foreground shadow transition duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:text-foreground"
                     >
                       <span className="text-lg" aria-hidden="true">
-                        {emoji}
+                        <Icon className="size-4" />
                       </span>
                       {label}
                     </div>
@@ -79,8 +79,8 @@ function VaultEcosystemSectionComponent() {
                 </div>
 
                 <div className="flex flex-col items-center gap-4 rounded-3xl border border-primary/40 bg-primary/15 px-6 py-8 text-center text-sm text-primary-foreground shadow-lg">
-                  <span className="flex size-12 items-center justify-center rounded-full border border-primary/40 bg-primary/25 text-primary shadow-inner">
-                    <Vault className="size-5" aria-hidden="true" />
+                  <span className="flex size-20 items-center justify-center rounded-full border border-primary/40 bg-primary/25 text-primary shadow-inner">
+                    <Vault className="size-14" aria-hidden="true" />
                   </span>
                   <div className="space-y-1">
                     <h3 className="text-lg font-semibold text-foreground">Vault</h3>
@@ -92,8 +92,10 @@ function VaultEcosystemSectionComponent() {
               </div>
               <div className="pointer-events-none absolute -left-24 top-1/2 hidden h-52 w-52 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_rgba(59,130,246,0.22),transparent_70%)] blur-2xl lg:block" aria-hidden="true" />
             </div>
+          </div>
 
-            <div className="grid gap-3 rounded-3xl border border-border/50 bg-background/80 p-6 shadow-lg">
+          <div className="flex flex-col justify-start gap-8">
+          <div className="grid gap-3 rounded-3xl border border-border/50 bg-background/80 p-6 shadow-lg">
               {VAULT_BENEFITS.map((benefit) => (
                 <div key={benefit} className="flex items-start gap-3 text-sm text-muted-foreground">
                   <span className="mt-0.5 flex size-6 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary" aria-hidden="true">
@@ -102,19 +104,6 @@ function VaultEcosystemSectionComponent() {
                   <p>{benefit}</p>
                 </div>
               ))}
-            </div>
-          </div>
-
-          <div className="flex flex-col justify-between gap-8">
-            <div className="space-y-3 rounded-3xl border border-border/50 bg-background/80 p-6 shadow-lg">
-              <p className="text-sm text-muted-foreground">
-                Every referral, tool, and transactional touchpoint feeds the same treasury.
-                As the ecosystem expands, Vault rewards compound for everyone holding Asty.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                The design is transparent, automated, and entirely on-chain — ensuring the community
-                can audit how value is created and shared.
-              </p>
             </div>
 
             <Button asChild size="lg" className="self-start rounded-full px-8">

@@ -94,8 +94,8 @@ function TokenomicsSectionComponent() {
       <div className="mx-auto flex max-w-6xl flex-col gap-16">
         <SectionHeader
           label="Token Designed for Community Income"
-          title="Fixed supply. Vault-first distribution."
-          description="21 million ASTY is locked at genesis. The Vault routes emissions toward the people building the network — founders, early members, and the community that keeps activity flowing."
+          title="Fixed supply. Hyper-Deflationary. Yield bearing"
+          description="The Vault routes yield toward the people building the network - founders, early members, and the community that keeps activity flowing."
         />
 
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
@@ -113,8 +113,7 @@ function TokenomicsSectionComponent() {
                   Built to reward participation long after launch
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  Every tranche reinforces the Vault flywheel. Holders don&apos;t rely on hype —
-                  they capture real income as Asty tools, referrals, and education programs scale.
+                Every transaction reinforces the Vault flywheel. Holders don&apos;t rely on hype — they capture real income as Asty tools, referrals, and education programs scale.
                 </p>
               </header>
 
@@ -124,15 +123,12 @@ function TokenomicsSectionComponent() {
                     key={highlight.title}
                     className="flex gap-4 rounded-2xl border border-border/40 bg-background/70 p-4 shadow"
                   >
-                    <div className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-primary/40 bg-primary/15 text-primary">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-primary/40 bg-primary/15 text-primary">
                       <highlight.icon className="size-5" aria-hidden="true" />
                     </div>
-                    <div className="space-y-1">
+                    <div className="space-y-1 flex flex-col justify-center items-center">
                       <p className="text-sm font-semibold text-foreground">
                         {highlight.title}
-                      </p>
-                      <p className="text-xs text-muted-foreground sm:text-sm">
-                        {highlight.description}
                       </p>
                     </div>
                   </li>

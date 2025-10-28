@@ -60,7 +60,7 @@ function CommunitySectionComponent({ onAnchorClick }: CommunitySectionProps) {
             </div>
             <CTAButton
               href={card.href}
-              label={card.external ? "Open" : "Explore"}
+              label={card.external ? "Open" : "Secure your position"}
               onClick={card.href.startsWith("#") ? onAnchorClick : undefined}
               variant="outline"
               size="lg"

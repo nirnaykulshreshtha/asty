@@ -221,7 +221,6 @@ export const PRIMARY_NAV_ITEMS: NavItem[] = [
 // Secondary navigation - Supporting links surfaced in the footer
 export const SECONDARY_NAV_ITEMS: NavItem[] = [
   { label: "FAQ", href: "#faq" },
-  { label: "Community", href: "#community" },
   { label: "Whitepaper", href: "#whitepaper" },
 ]
 
@@ -538,22 +537,22 @@ export const TOKENOMICS_SUMMARY: TokenomicsSummary[] = [
 export const TOKENOMICS_HIGHLIGHTS: TokenomicsHighlight[] = [
   {
     title: "Total Supply: 21,000,000 ASTY",
-    description: "The cap is immutable and tied to Vault growth.",
+    description: "",
     icon: PieChart,
   },
   {
     title: "Hyper-Deflationary",
-    description: "Burn mechanics reduce float with every ecosystem action.",
+    description: "",
     icon: AlertOctagon,
   },
   {
     title: "Vault-Powered Yield",
-    description: "Transparent rewards flow back to every holder in the network.",
+    description: "",
     icon: HandCoins,
   },
   {
     title: "Sustainable Ecosystem",
-    description: "Community activity fuels value—no middlemen, no speculation.",
+    description: "",
     icon: Users,
   },
 ]
@@ -736,7 +735,7 @@ export const ROADMAP_STEPS: RoadmapStep[] = [
   },
   {
     title: "Tools",
-    description: "Deploy trader utilities that amplify ecosystem revenue streams.",
+    description: "Deploy utilities that amplify ecosystem revenue streams.",
     icon: Wrench,
     status: "upcoming",
   },
@@ -747,12 +746,12 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "What am I purchasing right now?",
     answer:
-      "Early Membership grants a $100 lifetime position in the Asty Network. Tokens are not on sale yet—this is purely for network access.",
+      "Early Members are purchasing a lifetime position in the Asty Network. Tokens are not on sale yet—this is purely for network access.",
   },
   {
     question: "When does the token presale launch?",
     answer:
-      "The presale opens immediately after 10,000 Early Memberships are booked. Members receive first access to all three rounds.",
+      "The presale opens immediately after 10,000 Early Memberships are booked.",
   },
   {
     question: "How do referral rewards work?",
@@ -767,7 +766,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Do I need to buy tokens separately?",
     answer:
-      "Not yet. Membership sales fund the foundation. You will be notified when presale rounds open so you can participate.",
+      "Not yet. Membership sales build the network foundation. You will be notified when presale rounds open so you can participate.",
   },
   {
     question: "Can my position transfer into DeFi products?",
@@ -785,8 +784,8 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     external: false,
   },
   {
-    title: "Community Hub",
-    description: "Tap into Telegram and social channels to coordinate launches.",
+    title: "Join on Telegram",
+    description: "Tap into Telegram to coordinate launches.",
     href: "https://t.me/asty",
     external: true,
   },

@@ -34,7 +34,7 @@ function FooterComponent() {
           <div className="space-y-3">
             <p className={cn("text-2xl tracking-[0.6em] text-primary", astroz.className)}>ASTY</p>
             <p className="max-w-sm text-sm text-muted-foreground">
-              Celestial Vault contract address:{" "}
+              Vault contract address:{" "}
               <span className="font-mono text-foreground">0xASTY000000000000000000000000</span>
             </p>
             <p className="text-xs text-muted-foreground">

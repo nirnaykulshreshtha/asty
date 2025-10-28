@@ -155,7 +155,7 @@ export default function Home() {
           onAnchorClick={handleAnchorClick}
         />
 
-        <HowItWorksSection />
+        <HowItWorksSection onAnchorClick={handleAnchorClick} />
 
         <MemesSection motionReduced={motionReduced} />
 

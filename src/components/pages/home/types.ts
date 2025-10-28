@@ -231,16 +231,26 @@ export const NAV_ITEMS: NavItem[] = [...PRIMARY_NAV_ITEMS, ...SECONDARY_NAV_ITEM
 // Hero CTAs
 export const HERO_CTAS: HeroCta[] = [
   {
-    label: "Book Early Membership",
+    label: "Reserve Position",
     href: "#membership",
     variant: "default",
     tone: "primary",
   },
   {
-    label: "Generate Referral Link",
+    label: "Why Position Matters",
     href: "#membership",
     variant: "outline",
     tone: "outline",
+  },
+]
+
+// Hero CTAs
+export const HOW_IT_WORKS_CTAS: HeroCta[] = [
+  {
+    label: "Reserve Position",
+    href: "#membership",
+    variant: "default",
+    tone: "primary",
   },
 ]
 
@@ -447,19 +457,20 @@ export const MEMBERSHIP_HIGHLIGHTS: MembershipHighlight[] = [
 // How it works steps
 export const HOW_STEPS: HowStep[] = [
   {
-    title: "Secure Your Position",
-    description:
-      "",
+    title: "Stage 1",
+    description:"Position Locking",
   },
   {
-    title: "Build With Referrals",
-    description:
-      "",
+    title: "Stage 2",
+    description: "Presale",
   },
   {
-    title: "Earn Dividends",
-    description:
-      "",
+    title: "Stage 3",
+    description: "Defi launch",
+  },
+  {
+    title: "Stage 4",
+    description: "Community Operations",
   },
 ]
 

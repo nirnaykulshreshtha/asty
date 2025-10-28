@@ -2,15 +2,16 @@
  * Registration Section Component
  * ----------------------------
  * Displays a comprehensive registration form for Early Membership signup.
- * Handles wallet connection, form validation, and platform registration with auto-validated referral address.
+ * Handles wallet connection, payment processing, and platform registration with auto-validated referral address.
  * 
  * Features:
  * - Complete registration form with validation
  * - Wallet connection requirement for registration
+ * - Payment widget integration for $100 membership fee via cross-chain payment
  * - Automatic referral address extraction from URL parameters (?ref=...)
  * - Auto-validation of extracted referral address on component mount
  * - "Generate Referral Link" button opens referral dialog for any address
- * - Form submission handling with loading states
+ * - Payment completion handling with success states
  * - Clear pricing and benefits display
  * - RainbowKit-powered wallet connection via CustomConnectButton
  * - Progress indicator showing current membership count
@@ -18,13 +19,22 @@
  * - Comprehensive error handling and user feedback (success/error messages only)
  * - Scroll-based reveal animation
  * - Aggressive logging for debugging registration flow
+ * 
+ * Payment Integration:
+ * - Integrated @matching-platform/payment-widget for cross-chain payments
+ * - Accepts any asset and delivers 100 USDC on Base Mainnet
+ * - Payment widget supports bridge, swap, and direct payment modes
+ * - Real-time payment tracking and status updates
+ * - Automatic completion handling on successful payment
  */
 
 "use client"
 
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect, useMemo } from "react"
 import { useAccount } from "wagmi"
 import { CheckCircle, Loader2, AlertCircle, Check, Share2 } from "lucide-react"
+import type { Address } from "viem"
+import { PaymentWidget, type PaymentConfig } from "@matching-platform/payment-widget"
 
 import { logger } from "@/lib/logger"
 import { isEthereumAddress, extractReferralFromURL } from "@/lib/referrals"
@@ -32,6 +42,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { DecorativeBackground } from "@/components/ui/DecorativeBackground"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { MEMBERSHIP_PROGRESS } from "./types"
 import { CustomConnectButton } from "@/components/ui/custom-connect-button"
 import { ConfettiStars } from "@/components/ui/confetti-stars"
@@ -96,6 +107,37 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
   
   // Dialog state for referral link generation
   const [isReferralDialogOpen, setIsReferralDialogOpen] = useState(false)
+  
+  // Payment dialog state
+  const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false)
+
+  // Payment configuration for $100 USD
+  const paymentConfig = useMemo(() => {
+    // Only create config if address is available
+    if (!address) {
+      return null
+    }
+
+    // Using the deposit token address from environment, fallback to USDC on Base
+    const depositTokenAddress = process.env.NEXT_PUBLIC_DEPOSIT_TOKEN_ADDRESS || "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+    
+    // 100 USDC = 100 * 1e6 (USDC has 6 decimals)
+    const targetAmount = BigInt(100 * 1_000_000) // 100 USDC
+    
+    logger.info("payment-widget:config:creating", { 
+      targetTokenAddress: depositTokenAddress,
+      targetChainId: 8453,
+      targetAmount: targetAmount.toString(),
+      recipient: address 
+    })
+    
+    return {
+      targetTokenAddress: depositTokenAddress as Address,
+      targetChainId: 8453, // Base Mainnet
+      targetAmount,
+      targetRecipient: address as Address,
+    } as PaymentConfig
+  }, [address])
 
   useEffect(() => {
     setMounted(true)
@@ -367,7 +409,8 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
                   ) : (
                     <div className="space-y-2">
                       <Button
-                        type="submit"
+                        type="button"
+                        onClick={() => setIsPaymentDialogOpen(true)}
                         className="w-full"
                         size="sm"
                         disabled={registrationState.isSubmitting}
@@ -377,8 +420,10 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             Registering...
                           </>
+                        ) : !paymentConfig ? (
+                          'Connect Wallet to Pay'
                         ) : (
-                          'Register for Early Membership'
+                          'Pay $100 for Early Membership'
                         )}
                       </Button>
                       <Button
@@ -394,6 +439,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
                     </div>
                   )}
                 </div>
+                
               </form>
             ) : (
               <div className="text-center space-y-6">
@@ -435,7 +481,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
         <div className="mt-auto">
           <div className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-center shadow-[0_10px_25px_rgba(12,8,32,0.25)] backdrop-blur">
             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.4em] text-muted-foreground mb-2">
-              Presale Progress
+              Get Early Access To The Presale
             </p>
             <div className="flex items-center justify-center space-x-2 mb-2">
               <span className="text-2xl font-bold text-foreground">
@@ -449,7 +495,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
             <div className="w-full bg-white/10 rounded-full h-2">
               <div 
                 className="bg-primary h-2 rounded-full transition-all duration-500"
-                style={{ width: `${(6320 / 10000) * 100}%` }}
+                style={{ width: `${(Number(MEMBERSHIP_PROGRESS[0].value) / Number(MEMBERSHIP_PROGRESS[1].value)) * 100}%` }}
               />
             </div>
             <p className="text-xs text-muted-foreground mt-2">
@@ -464,6 +510,39 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
         open={isReferralDialogOpen}
         onOpenChange={setIsReferralDialogOpen}
       />
+      
+      {/* Payment Dialog */}
+      {isWalletConnected && paymentConfig && (
+        <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
+          <DialogContent className="max-w-xl">
+            <DialogHeader>
+              <DialogTitle></DialogTitle>
+            </DialogHeader>
+            <div className="mt-2">
+              <PaymentWidget
+                paymentConfig={paymentConfig}
+                onPaymentComplete={(reference) => {
+                  logger.info("payment-widget:payment-complete", { reference })
+                  setIsPaymentDialogOpen(false)
+                  setRegistrationState({
+                    isSubmitting: false,
+                    isSubmitted: true,
+                    errors: {}
+                  })
+                }}
+                onPaymentFailed={(error) => {
+                  logger.error("payment-widget:payment-failed", { error })
+                  setIsPaymentDialogOpen(false)
+                  setRegistrationState(prev => ({
+                    ...prev,
+                    errors: { general: error }
+                  }))
+                }}
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </aside>
   )
 }

@@ -832,3 +832,82 @@ Impact:
 - Professional appearance without overwhelming the UI
 - Users still have easy access to referral link generation via button
 - Maintains all functionality while improving visual hierarchy
+
+## 2025-01-27 – Payment Widget Integration
+
+Context: The RegistrationSection needed to integrate a real payment processing system using the @matching-platform/payment-widget package to handle $100 Early Membership payments via cross-chain deposits.
+
+Changes:
+- **Created `src/components/providers/payment-widget-provider.tsx`**:
+  - Payment widget provider component with wagmi wallet client integration
+  - Configured supported chains: Ethereum Mainnet (chainId: 1) and Base Mainnet (chainId: 8453)
+  - Integrated useWalletClient and useAccount hooks from wagmi
+  - Provides payment widget context to all child components
+  - Comprehensive logging for debugging payment flows
+  - Configurable integrator ID from environment variables
+- **Updated `src/app/layout.tsx`**:
+  - Added PaymentWidgetProvider wrapper inside WagmiProvider
+  - Ensures payment widget has access to wallet client throughout the application
+  - Proper provider hierarchy: WagmiProvider → PaymentWidgetProvider → ThemeProvider → LazyMotionProvider
+- **Enhanced `src/components/pages/home/RegistrationSection.tsx`**:
+  - Imported PaymentWidget component from @matching-platform/payment-widget
+  - Added payment widget state management (showPaymentWidget)
+  - Configured payment for $100 USDC on Base Mainnet
+  - Payment config: 100 USDC (6 decimals) = 100 * 1_000_000 tokens
+  - Target token: USDC on Base (0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913)
+  - Target chain: Base Mainnet (8453)
+  - Added "Pay $100 for Early Membership" button to trigger payment widget
+  - Payment widget shown conditionally when button is clicked
+  - Handles payment completion: hides widget and shows success state
+  - Handles payment failure: displays error messages
+  - Back button to return to registration view
+  - Comprehensive logging for payment complete/failed events
+  - Updated component documentation to reflect payment integration
+
+Features:
+- **Cross-Chain Payments**: Accept any asset on supported chains (Ethereum, Base)
+- **Flexible Payment Options**: Users can pay with any token, swap, or bridge to USDC
+- **Real-Time Tracking**: Live payment status updates and transaction tracking
+- **Multiple Payment Modes**: Supports bridge, swap, and direct payment methods
+- **Automatic Completion**: Registration completion on successful payment
+- **Error Handling**: Comprehensive error messages and recovery options
+- **User-Friendly UI**: Clean payment flow with back button navigation
+- **Integration with Existing Flow**: Seamless integration with wallet connection and referral system
+
+Technical Details:
+- Payment Widget: @matching-platform/payment-widget from GitHub
+- Provider Pattern: Shared payment infrastructure via context
+- Wallet Integration: Uses wagmi's useWalletClient for wallet operations
+- Token Configuration: USDC on Base with proper decimal handling (6 decimals)
+- Amount Calculation: 100 USDC = 100 * 1_000_000 wei
+- Chain Support: Ethereum Mainnet (1) and Base Mainnet (8453)
+- Quote Refresh: 45 seconds refresh interval for live quotes
+- Configuration: Integrator ID from environment variable with fallback
+
+Payment Flow:
+1. User connects wallet using existing RainbowKit integration
+2. User clicks "Pay $100 for Early Membership" button
+3. Payment widget appears with available payment options
+4. User selects payment method (bridge/swap/direct)
+5. Widget handles transaction execution
+6. Real-time status updates during payment processing
+7. Success: Registration state updates to "isSubmitted"
+8. Failure: Error message displayed, user can retry
+
+Impact:
+- Real payment processing for Early Membership registration
+- Flexible payment options support any asset on supported chains
+- Professional payment experience with real-time tracking
+- Seamless integration with existing registration flow
+- Maintains all existing features (referral links, wallet connection, etc.)
+- Better user experience with clear payment flow
+- Production-ready payment processing system
+- Comprehensive logging for debugging and support
+
+Follow-up Notes:
+- Currently configured for Base Mainnet deployment
+- USDC address on Base: 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
+- Payment amount: 100 USDC (1,000,000 tokens with 6 decimals)
+- Can be extended to support additional chains or tokens
+- Payment widget supports Across Protocol for cross-chain bridging
+- Integrator ID should be configured in environment for production use

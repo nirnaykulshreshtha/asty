@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { WagmiProvider } from "@/components/providers/wagmi-provider";
+import { PaymentWidgetProvider } from "@/components/providers/payment-widget-provider";
 import { LazyMotionProvider } from "@/components/motion/LazyMotionProvider";
 import { astroz, plexMono, spaceGrotesk } from "@/styles/fonts";
 
@@ -70,16 +71,18 @@ export default function RootLayout({
         className={`${spaceGrotesk.variable} ${plexMono.variable} ${astroz.variable} min-h-screen bg-background text-foreground antialiased transition-colors duration-300`}
       >
         <WagmiProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem={false}
-            disableTransitionOnChange
-          >
-            <LazyMotionProvider>
-              {children}
-            </LazyMotionProvider>
-          </ThemeProvider>
+          <PaymentWidgetProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem={false}
+              disableTransitionOnChange
+            >
+              <LazyMotionProvider>
+                {children}
+              </LazyMotionProvider>
+            </ThemeProvider>
+          </PaymentWidgetProvider>
         </WagmiProvider>
       </body>
     </html>

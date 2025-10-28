@@ -98,29 +98,11 @@ function HeroSectionComponent({
                 astroz.className
               )}
             >
-              Your LifeTime Passive Income Engine
+              Asty Is Your Lifetime Passive Income Engine
             </h1>
             <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Every action adds value. Every member shares the upside. <AuroraText colors={["#f97316", "#FF0000", "#f6339a", "#f97316"]}>Asty lets people build, earn, and own together.</AuroraText>
+            <AuroraText colors={["#f97316", "#FF0000", "#f6339a", "#f97316"]}>Asty lets people build, earn, and own together.</AuroraText>
             </p>
-          </div>
-
-          <div className="space-y-4">
-            <div className="grid gap-4 sm:grid-cols-3">
-              {HERO_PILLARS.map((pillar) => (
-                <MagicCard key={pillar.title} className="rounded-2xl bg-background/80 p-5 shadow-lg transition hover:shadow-xl" >
-                  <div>
-                    <div className="flex items-center gap-3 text-sm font-semibold text-foreground">
-                      <pillar.icon className="size-4 text-primary" aria-hidden="true" />
-                      <span>{pillar.title}</span>
-                    </div>
-                    <p className="mt-2 text-xs text-muted-foreground">
-                      {pillar.description}
-                    </p>
-                </div>
-                </MagicCard>
-              ))}
-            </div>
           </div>
 
           <div className="flex flex-col gap-3">

@@ -32,12 +32,12 @@ export function MemesSectionHeader({ motionReduced }: MemesSectionHeaderProps) {
     <SectionHeader
       as="span"
       label="The Missing Layer"
-      title="Asty Turns Participation into Real Rewards with {domain}"
-      description=""
+      title="Be a Founder, Not a Follower"
+      description="Stage 1 positions are open. Your early spot isn’t just a seat in the network — it’s your lifetime income engine"
       tokens={{
         domain: ["DeFi", "PeopleFi"],
       }}
-      aurora={{ domainToken: true, colors: ["#f97316", "#FF0000", "#f6339a", "#f97316"] }}
+      aurora={{ enableTitle: true, colors: ["#f97316", "#FF0000", "#f6339a", "#f97316"] }}
     />
   )
 }

@@ -13,17 +13,22 @@
 
 "use client"
 
-import { memo } from "react"
+import { memo, type MouseEvent as ReactMouseEvent } from "react"
 import { logger } from "@/lib/logger"
-import { HOW_STEPS, POSITION_ADVANTAGES } from "./types"
+import { HOW_IT_WORKS_CTAS, HOW_STEPS } from "./types"
 import { SectionHeader } from "@/components/ui/SectionHeader"
-import { Pill } from "@/components/ui/Pill"
 import { ChevronFlowDiagram } from "@/components/ui/ChevronFlowDiagram"
+import { CTAButton } from "@/components/ui/CTAButton"
+import { cn } from "@/lib/utils"
+
+interface HowItWorksSectionProps {
+  onAnchorClick: (event: ReactMouseEvent<HTMLAnchorElement>) => void
+}
 
 /**
  * Renders the how it works section explaining the token mechanics.
  */
-function HowItWorksSectionComponent() {
+function HowItWorksSectionComponent({ onAnchorClick }: HowItWorksSectionProps) {
   logger.info("component:how-it-works:render")
 
   return (
@@ -34,8 +39,8 @@ function HowItWorksSectionComponent() {
     >
       <SectionHeader
         label="Early Positioning"
-        title="Early Position = Lifetime Advantage."
-        description="Asty's isn't just about joining a network — it's about locking your position in an ecosystem that pays forever."
+        title="How does it work for you?"
+        description="One early move secures your place in the network.Rewards automatically begin as the project moves through each stage. You work once.The system works for you forever."
       />
 
       <ChevronFlowDiagram
@@ -43,7 +48,26 @@ function HowItWorksSectionComponent() {
         className="mt-4"
       />
 
-      <div className="grid gap-8">
+<div className="flex flex-col gap-3">
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {HOW_IT_WORKS_CTAS.map((cta) => (
+                <CTAButton
+                key={cta.label}
+                href={cta.href}
+                label={cta.label}
+                onClick={onAnchorClick}
+                variant={cta.variant}
+                size="lg"
+                className={cn(
+                  "group transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl",
+                  cta.tone === "outline" ? "backdrop-blur" : ""
+                )}
+              />
+              ))}
+            </div>
+          </div>
+
+      {/* <div className="grid gap-8">
         <aside
           className="reveal-section flex flex-col gap-6 rounded-3xl border border-border/50 bg-background/80 p-8 shadow-xl"
           data-animate-on-scroll
@@ -74,7 +98,7 @@ function HowItWorksSectionComponent() {
             &ldquo;A single early position can create a lifetime income stream.&rdquo;
           </p>
         </aside>
-      </div>
+      </div> */}
     </section>
   )
 }

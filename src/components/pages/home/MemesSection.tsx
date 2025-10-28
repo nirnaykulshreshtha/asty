@@ -20,7 +20,7 @@
 import { memo } from "react"
 import { logger } from "@/lib/logger"
 import { MemesSectionHeader } from "./MemesSectionHeader"
-import { MembershipFoundationCard } from "./MembershipFoundationCard"
+// import { MembershipFoundationCard } from "./MembershipFoundationCard"
 import { RegistrationSection } from "./RegistrationSection"
 
 interface MemesSectionProps {
@@ -45,7 +45,7 @@ function MemesSectionComponent({ motionReduced }: MemesSectionProps) {
       <MemesSectionHeader motionReduced={motionReduced} />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-        <MembershipFoundationCard motionReduced={motionReduced} />
+        {/* <MembershipFoundationCard motionReduced={motionReduced} /> */}
         <RegistrationSection motionReduced={motionReduced} />
       </div>
     </section>

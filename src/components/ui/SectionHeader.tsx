@@ -255,7 +255,7 @@ export function SectionHeader({
   as,
   align = "start",
   showPill = true,
-  pillTone = "muted",
+  pillTone = "primary",
   aurora,
 }: SectionHeaderProps) {
     logger.info("component:section-header:render", { label, title, tokens })

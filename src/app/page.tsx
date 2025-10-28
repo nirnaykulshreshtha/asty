@@ -27,6 +27,7 @@ import { useScrollReveal, useParallax } from "@/hooks/useScrollMotion"
 import { PositionImportanceSection } from "@/components/pages/home/PositionImportanceSection"
 import { PeopleFiSection } from "@/components/pages/home/PeopleFiSection"
 import { VaultEcosystemSection } from "@/components/pages/home/VaultEcosystemSection"
+import { NetworkPotentialSection } from "@/components/pages/home/NetworkPotentialSection"
 import { FloatingMemberButton } from "@/components/pages/home/FloatingMemberButton"
 
 
@@ -170,6 +171,8 @@ export default function Home() {
         <PeopleFiSection />
 
         <VaultEcosystemSection />
+        
+        <NetworkPotentialSection />
 
         {/* <VaultFlowSection onAnchorClick={handleAnchorClick} /> */}
 

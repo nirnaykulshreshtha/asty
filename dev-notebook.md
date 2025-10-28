@@ -945,6 +945,24 @@ Follow-up Notes:
 - Payment widget supports Across Protocol for cross-chain bridging
 - Integrator ID should be configured in environment for production use
 
+## 2025-10-28 – Social URLs from Environment
+
+Context: Social links must be configurable without code changes and consumed client-side. Marketing provided canonical URLs for X/Twitter, Telegram Channel, and Telegram Group.
+
+Changes:
+- Added public env vars in `.env.local`:
+  - `NEXT_PUBLIC_ASTY_TWITTER_URL=https://x.com/Astyfinance`
+  - `NEXT_PUBLIC_ASTY_TELEGRAM_CHANNEL_URL=https://t.me/Asty_finance`
+  - `NEXT_PUBLIC_ASTY_TELEGRAM_GROUP_URL=https://t.me/Astyfinance`
+- Updated `src/components/pages/home/Footer.tsx` to read from env with safe fallbacks.
+- Added separate items for Telegram Channel and Telegram Group in the social list.
+- Added aggressive logging to trace resolved social URLs.
+
+Impact:
+- Social links are now managed via environment configuration.
+- Safer, no-code updates for future social handle changes.
+- Clearer UX with distinct Channel vs Group links.
+
 ## 2025-10-28 – Footer Branding and Copyright Update
 
 Context: Marketing requires a consistent branding line and explicit year in the site footer.

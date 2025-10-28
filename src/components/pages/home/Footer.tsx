@@ -8,7 +8,8 @@
  * - Asty branding with contract address
  * - Marketing line: "Asty — PeopleFi. Built for collective value creation."
  * - Quick Links section with secondary navigation items (FAQ, Community, Whitepaper)
- * - Social media links (X, Telegram, Discord)
+ * - Social media links (X, Telegram Channel, Telegram Group, Discord)
+ * - Social URLs read from env: NEXT_PUBLIC_ASTY_TWITTER_URL, NEXT_PUBLIC_ASTY_TELEGRAM_CHANNEL_URL, NEXT_PUBLIC_ASTY_TELEGRAM_GROUP_URL
  * - Copyright line: "© Asty 2025"
  * - Responsive three-column layout
  */
@@ -21,6 +22,11 @@ import { logger } from "@/lib/logger"
 import { astroz } from "@/styles/fonts"
 import { SECONDARY_NAV_ITEMS } from "./types"
 
+// Social URLs from environment with safe fallbacks
+const TWITTER_URL = process.env.NEXT_PUBLIC_ASTY_TWITTER_URL || "https://x.com/Astyfinance"
+const TELEGRAM_CHANNEL_URL = process.env.NEXT_PUBLIC_ASTY_TELEGRAM_CHANNEL_URL || "https://t.me/Asty_finance"
+const TELEGRAM_GROUP_URL = process.env.NEXT_PUBLIC_ASTY_TELEGRAM_GROUP_URL || "https://t.me/Astyfinance"
+
 /**
  * Renders the site footer with branding and social links.
  */
@@ -29,6 +35,11 @@ function FooterComponent() {
   logger.info("component:footer:branding", {
     tagline: "Asty — PeopleFi. Built for collective value creation.",
     copyright: "© Asty 2025",
+  })
+  logger.info("component:footer:social_links", {
+    twitter: TWITTER_URL,
+    telegramChannel: TELEGRAM_CHANNEL_URL,
+    telegramGroup: TELEGRAM_GROUP_URL,
   })
 
   return (
@@ -71,7 +82,7 @@ function FooterComponent() {
             <ul className="flex flex-wrap gap-4">
             <li>
               <a
-                href="https://x.com/asty"
+                href={TWITTER_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 rounded-md border border-border/60 px-3 py-2 text-sm text-muted-foreground transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
@@ -92,7 +103,7 @@ function FooterComponent() {
             </li>
             <li>
               <a
-                href="https://t.me/asty"
+                href={TELEGRAM_CHANNEL_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 rounded-md border border-border/60 px-3 py-2 text-sm text-muted-foreground transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
@@ -108,7 +119,28 @@ function FooterComponent() {
                     d="M21.5 4.5 3.2 11.1c-1.3.5-1.3 1.3-.2 1.6l4.6 1.4 1.8 5.8c.2.5.3.7.7.7.4 0 .5-.2.6-.6l.9-3.1 4.7 3.5c.9.5 1.5.2 1.7-.8l3-14.3c.3-1.2-.4-1.7-1.1-1.4Z"
                   />
                 </svg>
-                <span>Telegram</span>
+                <span>Telegram Channel</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href={TELEGRAM_GROUP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-md border border-border/60 px-3 py-2 text-sm text-muted-foreground transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  className="size-4"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M21.5 4.5 3.2 11.1c-1.3.5-1.3 1.3-.2 1.6l4.6 1.4 1.8 5.8c.2.5.3.7.7.7.4 0 .5-.2.6-.6l.9-3.1 4.7 3.5c.9.5 1.5.2 1.7-.8l3-14.3c.3-1.2-.4-1.7-1.1-1.4Z"
+                  />
+                </svg>
+                <span>Telegram Group</span>
               </a>
             </li>
             <li>

@@ -33,8 +33,8 @@
 import { useState, useCallback, useEffect, useMemo } from "react"
 import { useAccount } from "wagmi"
 import { CheckCircle, Loader2, AlertCircle, Check, Share2 } from "lucide-react"
-import type { Address } from "viem"
-import { PaymentWidget, type PaymentConfig } from "@matching-platform/payment-widget"
+import { zeroAddress, type Address } from "viem"
+import { buildCallForwarderExecuteCalldata, PaymentWidget, type PaymentConfig } from "@matching-platform/payment-widget"
 
 import { logger } from "@/lib/logger"
 import { isEthereumAddress, extractReferralFromURL } from "@/lib/referrals"
@@ -47,6 +47,8 @@ import { MEMBERSHIP_PROGRESS } from "./types"
 import { CustomConnectButton } from "@/components/ui/custom-connect-button"
 import { ConfettiStars } from "@/components/ui/confetti-stars"
 import { ReferralLinkDialog } from "./ReferralLinkDialog"
+import { referralContractAbi } from "@/abis/referral"
+import { erc20Abi } from "@/abis/erc20"
 
 interface RegistrationSectionProps {
   motionReduced: boolean
@@ -119,23 +121,51 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     }
 
     // Using the deposit token address from environment, fallback to USDC on Base
-    const depositTokenAddress = process.env.NEXT_PUBLIC_DEPOSIT_TOKEN_ADDRESS || "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
-    
-    // 100 USDC = 100 * 1e6 (USDC has 6 decimals)
-    const targetAmount = BigInt(100 * 1_000_000) // 100 USDC
+    const depositTokenAddress = process.env.NEXT_PUBLIC_DEPOSIT_TOKEN_ADDRESS as Address
+    const targetAmount = process.env.NEXT_PUBLIC_IS_TESTNET === 'true' ? BigInt(10 * 1_000_000) : BigInt(100 * 1_000_000)
+
+    const targetChainId = process.env.NEXT_PUBLIC_TARGET_CHAIN_ID ? parseInt(process.env.NEXT_PUBLIC_TARGET_CHAIN_ID) : 8453
+    const targetForwarderAddress = process.env.NEXT_PUBLIC_FORWARDER_ADDRESS as Address
+    const referralContractAddress = process.env.NEXT_PUBLIC_REFERRAL_CONTRACT as Address
     
     logger.info("payment-widget:config:creating", { 
-      targetTokenAddress: depositTokenAddress,
-      targetChainId: 8453,
+      targetTokenAddress: depositTokenAddress as Address,
+      targetChainId: targetChainId,
       targetAmount: targetAmount.toString(),
-      recipient: address 
+      recipient: targetForwarderAddress 
     })
+
+    const data = {
+      calls: [
+        {
+          target: depositTokenAddress,
+          functionName: "approve",
+          args: [referralContractAddress, targetAmount],
+          abi: erc20Abi.abi,
+        },
+        {
+          target: referralContractAddress,
+          functionName: "depositFor",
+          args: [address, formData.referralAddress ? formData.referralAddress as Address : zeroAddress as Address, targetForwarderAddress],
+          abi: referralContractAbi.abi,
+        }
+      ]
+    };
+
+    console.log('data', data)
+
+    const targetContractCalls = buildCallForwarderExecuteCalldata(data)
     
     return {
-      targetTokenAddress: depositTokenAddress as Address,
-      targetChainId: 8453, // Base Mainnet
+      targetTokenAddress: depositTokenAddress,
+      targetChainId: targetChainId,
       targetAmount,
-      targetRecipient: address as Address,
+      targetRecipient: targetForwarderAddress as Address,
+      targetContractCall: {
+        target: targetForwarderAddress,
+        callData: targetContractCalls.calldata,
+        fallbackRecipient: address
+      }
     } as PaymentConfig
   }, [address])
 

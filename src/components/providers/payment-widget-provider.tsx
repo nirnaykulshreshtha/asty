@@ -58,12 +58,34 @@ export function PaymentWidgetProvider({ children }: { children: React.ReactNode 
             decimals: 18,
           },
         },
+        {
+          chainId: 11155111, // Sepolia
+          name: "Sepolia",
+          rpcUrl: "https://eth-sepolia.g.alchemy.com/v2/X9QZka1fFrd_AJxkfqQpLgmBbDpCWLjx",
+          blockExplorerUrl: "https://sepolia.etherscan.io",
+          nativeCurrency: {
+            name: "Sepolia",
+            symbol: "ETH",
+            decimals: 18,
+          },  
+        },
+        {
+          chainId: 84532, // Base Sepolia
+          name: "Base Sepolia",
+          rpcUrl: "https://sepolia.base.org",
+          blockExplorerUrl: "https://sepolia.basescan.org",
+          nativeCurrency: {
+            name: "Base Sepolia",
+            symbol: "ETH",
+            decimals: 18,
+          },  
+        },
       ],
       walletClient: walletClient || undefined,
       integratorId: process.env.NEXT_PUBLIC_ACROSS_INTEGRATOR_ID as `0x${string}` || "0x0000000000000000000000000000000000000000",
-      useTestnet: false,
+      useTestnet: process.env.NEXT_PUBLIC_IS_TESTNET === "true",
       quoteRefreshMs: 45_000,
-      showUnavailableOptions: false,
+      showUnavailableOptions: true,
     }
 
     logger.info("payment-widget:provider:config", {

@@ -1,6 +1,6 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { http } from 'wagmi'
-import { baseSepolia, base, mainnet, polygon, optimism, arbitrum, bsc } from 'wagmi/chains'
+import { baseSepolia, base, mainnet, polygon, optimism, arbitrum, bsc, sepolia } from 'wagmi/chains'
 
 import {
   argentWallet,
@@ -77,8 +77,8 @@ export const config = getDefaultConfig({
     base,
     optimism,
     arbitrum,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true"
-      ? [baseSepolia]
+    ...(process.env.NEXT_PUBLIC_IS_TESTNET === "true"
+      ? [baseSepolia, sepolia]
       : []),
   ],
   ssr: true,
@@ -89,8 +89,8 @@ export const config = getDefaultConfig({
     [base.id]: http(),
     [optimism.id]: http(),
     [arbitrum.id]: http(),
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true"
-      ? { [baseSepolia.id]: http() }
+    ...(process.env.NEXT_PUBLIC_IS_TESTNET === "true"
+      ? { [baseSepolia.id]: http(), [sepolia.id]: http() }
       : []), 
   },
   wallets: [

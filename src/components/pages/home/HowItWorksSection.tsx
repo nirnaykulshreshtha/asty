@@ -35,7 +35,7 @@ function HowItWorksSectionComponent({ onAnchorClick }: HowItWorksSectionProps) {
     <section
       id="how"
       data-section-label="How It Works"
-      className="space-y-12 border-b border-border/40 py-20"
+      className="space-y-12 border-b border-border/40 py-12 sm:py-16 lg:py-20"
     >
       <SectionHeader
         label="How does it work for you?"

@@ -67,7 +67,7 @@ function HeaderComponent({
         id="site-header"
         className="sticky top-0 z-40 border-b border-border/50 bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 py-3 sm:py-4">
           <Link
             href="#hero"
             onClick={onAnchorClick}
@@ -134,7 +134,7 @@ function HeaderComponent({
             mobileOpen ? "block border-t border-border/50 bg-background/95 backdrop-blur" : "hidden"
           )}
         >
-          <nav aria-label="Mobile navigation" className="mx-auto max-w-7xl px-6 pb-6">
+          <nav aria-label="Mobile navigation" className="mx-auto max-w-7xl px-4 sm:px-6 pb-4 sm:pb-6">
             {/* Mobile Connect Button */}
             <div className="pt-4 pb-2">
               <CustomConnectButton size="sm" className="w-full" compact={true} />

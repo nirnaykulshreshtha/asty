@@ -52,11 +52,11 @@ function ChartContainer({
   const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`
   const overlayContent =
     centerOverlay === undefined ? (
-      <div className="pointer-events-none absolute left-1/2 top-1/2 flex w-44 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-border/40 bg-background/95 p-5 shadow-inner">
+      <div className="pointer-events-none absolute left-1/2 top-1/2 flex w-30 sm:w-40 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-border/40 bg-background/95 p-5 shadow-inner">
         <span className="text-[10px] font-semibold uppercase tracking-[0.35em] text-muted-foreground">
           Total Supply
         </span>
-        <span className="text-3xl font-bold text-foreground">21,000,000</span>
+        <span className="text-3xl font-bold text-foreground">21M</span>
         <span className="text-xs text-muted-foreground">ASTY Tokens</span>
       </div>
     ) : centerOverlay

@@ -1,5 +1,50 @@
 # Asty Development Notebook
 
+## 2025-01-27 – Mobile Spacing Optimization
+
+Context: The mobile version of the site had excessive padding and margins that made the content feel cramped and wasted valuable screen space. Desktop version was good, but mobile needed optimization for better user experience.
+
+Changes:
+- **Main Container Optimization** (`src/app/page.tsx`):
+  - Reduced mobile padding from `px-6` (24px) to `px-4` (16px) on mobile, `sm:px-6` on larger screens
+  - Reduced mobile section spacing from `space-y-16` (64px) to `space-y-12` (48px) on mobile, `sm:space-y-16` on larger screens
+- **Hero Section Optimization** (`src/components/pages/home/HeroSection.tsx`):
+  - Reduced mobile vertical padding from `py-24` (96px) to `py-16` (64px) on mobile, `sm:py-20` on medium screens, `lg:py-24` on large screens
+  - Reduced mobile content gap from `gap-16` (64px) to `gap-12` (48px) on mobile, `sm:gap-16` on larger screens
+  - Reduced mobile content padding from `px-6` (24px) to `px-4` (16px) on mobile, `sm:px-6` on larger screens
+- **Header Optimization** (`src/components/pages/home/Header.tsx`):
+  - Reduced mobile padding from `px-6 py-4` to `px-4 py-3` on mobile, `sm:px-6 sm:py-4` on larger screens
+  - Reduced mobile navigation padding from `px-6 pb-6` to `px-4 pb-4` on mobile, `sm:px-6 sm:pb-6` on larger screens
+- **Footer Optimization** (`src/components/pages/home/Footer.tsx`):
+  - Reduced mobile vertical padding from `py-12` (48px) to `py-8` (32px) on mobile, `sm:py-12` on larger screens
+  - Reduced mobile content padding from `px-6` (24px) to `px-4` (16px) on mobile, `sm:px-6` on larger screens
+- **Section Optimization** (Multiple components):
+  - Reduced mobile vertical padding from `py-20` (80px) to `py-12` (48px) on mobile, `sm:py-16` on medium screens, `lg:py-20` on large screens
+  - Applied to: `HowItWorksSection`, `NetworkPotentialSection`, `CommunitySection`, `TokenomicsSection`
+
+Features:
+- **Responsive Padding**: Mobile-first approach with progressive enhancement for larger screens
+- **Consistent Spacing**: Maintained proportional spacing relationships across all screen sizes
+- **Better Mobile UX**: More content visible on mobile screens without excessive white space
+- **Preserved Desktop Experience**: Desktop spacing remains optimal and unchanged
+- **Progressive Enhancement**: Uses Tailwind's responsive prefixes (sm:, lg:) for smooth scaling
+
+Impact:
+- Significantly improved mobile user experience with better content density
+- More efficient use of mobile screen real estate
+- Maintained visual hierarchy and design consistency across all screen sizes
+- Better content-to-screen ratio on mobile devices
+- Professional appearance with appropriate spacing for each device type
+- Enhanced readability and usability on mobile devices
+
+Technical Details:
+- Mobile breakpoint: < 640px (default Tailwind `sm` breakpoint)
+- Medium breakpoint: 640px+ (`sm:` prefix)
+- Large breakpoint: 1024px+ (`lg:` prefix)
+- All changes maintain existing design system and visual language
+- No breaking changes to component APIs or functionality
+- Comprehensive logging maintained for debugging
+
 ## 2025-01-27 – Tokenomics Chart Visualization
 
 Context: The tokenomics section needed a proper data visualization to show token distribution more clearly, particularly the presale rounds and remaining supply breakdown. The existing static donut visual was not providing enough detail about how the 21M tokens are distributed.

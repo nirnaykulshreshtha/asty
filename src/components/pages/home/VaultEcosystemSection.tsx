@@ -52,7 +52,7 @@ function VaultEcosystemSectionComponent() {
         />
 
         <div
-          className="reveal-section grid gap-8 rounded-[2.75rem] border border-border/50 bg-card/75 p-8 shadow-[0_32px_80px_rgba(12,10,28,0.55)] backdrop-blur-xl lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
+          className="reveal-section grid gap-8 rounded-[2.75rem] border border-border/50 bg-card/75 p-4 sm:p-8 shadow-[0_32px_80px_rgba(12,10,28,0.55)] backdrop-blur-xl lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]"
           data-animate-on-scroll
           data-visible="false"
         >

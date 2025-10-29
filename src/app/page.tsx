@@ -152,7 +152,7 @@ export default function Home() {
         onMobileNavClose={closeMobileNav}
       />
 
-      <main className="mx-auto max-w-7xl px-6 space-y-16 lg:space-y-20">
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 space-y-12 sm:space-y-16 lg:space-y-20">
         <HeroSection
           motionReduced={motionReduced}
           onAnchorClick={handleAnchorClick}

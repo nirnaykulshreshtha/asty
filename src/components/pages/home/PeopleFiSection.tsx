@@ -77,20 +77,12 @@ function PeopleFiSectionComponent() {
           showPill={true}
         />
 
-        <div className="reveal-section grid gap-6 rounded-[2.5rem] border border-border/50 bg-card/70 p-8 shadow-2xl backdrop-blur-xl sm:p-10 lg:grid-cols-2" data-animate-on-scroll data-visible="false">
+        <div className="reveal-section grid gap-6 rounded-[2.5rem] border border-border/50 bg-card/70 p-4 sm:p-8 shadow-2xl backdrop-blur-xl sm:p-10 lg:grid-cols-2" data-animate-on-scroll data-visible="false">
           {PEOPLEFI_CYLINDERS.map(({ id, title, description, icon: Icon }, index) => (
             <div
               key={id}
               className="group relative flex flex-col gap-4 rounded-3xl border border-border/40 bg-background/80 p-6 shadow-lg transition duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-2xl"
             >
-                  {/* position: absolute; */}
-    {/* right: 0; */}
-    {/* font-size: 120px; */}
-    {/* letter-spacing: 16px; */}
-    {/* line-height: 1; */}
-    {/* color: var(--primary); */}
-    {/* opacity: 0.5; */}
-    {/* z-index: -1; */}
               <p className="absolute top-0 right-0 text-[100px] -z-1 hover:-z-1 font-semibold uppercase tracking-[0.1em] text-primary opacity-20">{index + 1 < 10 ? `0${index + 1}` : index + 1}</p>
               <div className="pointer-events-none absolute -top-12 left-1/2 size-24 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,_rgba(249,115,22,0.18),_transparent_65%)] opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true" />
 

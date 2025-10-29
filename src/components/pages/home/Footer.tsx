@@ -43,8 +43,8 @@ function FooterComponent() {
   })
 
   return (
-    <footer className="border-t border-border/40 bg-background/90 py-12">
-      <div className="mx-auto max-w-7xl px-6">
+    <footer className="border-t border-border/40 bg-background/90 py-8 sm:py-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           {/* Branding Section */}
           <div className="space-y-3">

@@ -87,7 +87,7 @@ function TokenomicsSectionComponent() {
     <section
       id="tokenomics"
       data-section-label="Tokenomics"
-      className="relative overflow-hidden border-b border-border/40 bg-gradient-to-b from-background via-background/95 to-background/80 px-4 py-24 sm:px-6 lg:px-8"
+      className="relative overflow-hidden border-b border-border/40 bg-gradient-to-b from-background via-background/95 to-background/80 px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
     >
       <DecorativeBackground variant="tokenomics" className="-z-10 opacity-70" />
 
@@ -154,7 +154,7 @@ function TokenomicsSectionComponent() {
 
             <ChartContainer
               config={TOKENOMICS_CHART_CONFIG}
-              className="relative mx-auto aspect-square w-full max-w-[360px]"
+              className="relative mx-auto aspect-square w-full max-w-[360px] sm:max-w-[400px]"
             >
               <PieChart>
                 <ChartTooltip

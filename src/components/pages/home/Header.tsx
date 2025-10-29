@@ -108,11 +108,14 @@ function HeaderComponent({
               </a>
             </Button>
             <div className="hidden sm:block">
-              <CustomConnectButton size="sm" compact={true} variant={{
+              <CustomConnectButton size="sm" compact={false} variant={{
                 connected: 'outline',
                 connect: 'outline',
                 wrongNetwork: 'destructive',
-              }} />
+              }}
+              showChainName={true}
+              showBalance={false}
+               />
             </div>
             <button
               type="button"

@@ -145,7 +145,7 @@ function NetworkPotentialSectionComponent() {
     <section
       id="network-potential"
       data-section-label="Network Potential"
-      className="space-y-12 border-b border-border/40 py-12 sm:py-16 lg:py-20"
+      className="space-y-8 border-b border-border/40 py-8 sm:py-12 lg:py-16"
     >
       <SectionHeader
         label="Network Potential"

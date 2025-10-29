@@ -63,12 +63,12 @@ function PeopleFiSectionComponent() {
     <section
       id="peoplefi"
       data-section-label="What Is Asty — PeopleFi"
-      className="relative overflow-hidden border-b border-border/40 bg-gradient-to-br from-background via-background/90 to-background/70 py-20"
+      className="relative overflow-hidden border-b border-border/40 bg-gradient-to-br from-background via-background/90 to-background/70 py-12 sm:py-16 lg:py-20"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(249,115,22,0.12),transparent_65%)]" aria-hidden="true" />
       <div className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 bg-gradient-to-b from-white/10 via-white/5 to-transparent lg:block" aria-hidden="true" />
 
-      <div className="relative mx-auto flex max-w-6xl flex-col gap-12 px-4 sm:px-6 lg:px-0">
+      <div className="relative mx-auto flex max-w-6xl flex-col gap-8 sm:gap-10 lg:gap-12 px-4 sm:px-6 lg:px-0">
         <SectionHeader
           label="How Income Is Generating ? — Through PeopleFi"
           title="The engine is fueled by community."

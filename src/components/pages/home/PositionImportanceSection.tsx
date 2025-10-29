@@ -40,10 +40,10 @@ function PositionImportanceSectionComponent() {
     <section
       id="position"
       data-section-label="Why Your Position Matters"
-      className="border-b border-border/40 py-20"
+      className="border-b border-border/40 py-12 sm:py-16 lg:py-20"
     >
-      <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-center">
-        <div className="space-y-8">
+      <div className="mx-auto grid max-w-6xl gap-8 sm:gap-10 lg:gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-center">
+        <div className="space-y-6">
           <SectionHeader
             label="Why Your Position Matters?"
             title="Early Position. Lifetime Advantage."

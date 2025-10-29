@@ -6,21 +6,19 @@ Context: The mobile version of the site had excessive padding and margins that m
 
 Changes:
 - **Main Container Optimization** (`src/app/page.tsx`):
-  - Reduced mobile padding from `px-6` (24px) to `px-4` (16px) on mobile, `sm:px-6` on larger screens
-  - Reduced mobile section spacing from `space-y-16` (64px) to `space-y-12` (48px) on mobile, `sm:space-y-16` on larger screens
+  - Reduced mobile section spacing from `space-y-12 sm:space-y-16 lg:space-y-20` to `space-y-8 sm:space-y-12 lg:space-y-16`
+  - Maintained existing horizontal padding `px-4 sm:px-6` which was already appropriate
 - **Hero Section Optimization** (`src/components/pages/home/HeroSection.tsx`):
-  - Reduced mobile vertical padding from `py-24` (96px) to `py-16` (64px) on mobile, `sm:py-20` on medium screens, `lg:py-24` on large screens
-  - Reduced mobile content gap from `gap-16` (64px) to `gap-12` (48px) on mobile, `sm:gap-16` on larger screens
-  - Reduced mobile content padding from `px-6` (24px) to `px-4` (16px) on mobile, `sm:px-6` on larger screens
-- **Header Optimization** (`src/components/pages/home/Header.tsx`):
-  - Reduced mobile padding from `px-6 py-4` to `px-4 py-3` on mobile, `sm:px-6 sm:py-4` on larger screens
-  - Reduced mobile navigation padding from `px-6 pb-6` to `px-4 pb-4` on mobile, `sm:px-6 sm:pb-6` on larger screens
+  - Reduced mobile vertical padding from `py-16 sm:py-20 lg:py-24` to `py-8 sm:py-12 lg:py-16`
+  - Reduced mobile content gap from `gap-12 sm:gap-16` to `gap-8 sm:gap-12`
+  - Reduced mobile content spacing from `space-y-8` to `space-y-6`
+- **Section-Wide Optimization** (Multiple components):
+  - Reduced mobile vertical padding from `py-20` to `py-12 sm:py-16 lg:py-20` across all sections
+  - Reduced mobile internal spacing from `gap-12` to `gap-8 sm:gap-10 lg:gap-12` where applicable
+  - Applied to: `HowItWorksSection`, `TokenomicsSection`, `PeopleFiSection`, `VaultEcosystemSection`, `NetworkPotentialSection`, `PositionImportanceSection`, `RoadmapSection`, `FAQSection`, `CommunitySection`
 - **Footer Optimization** (`src/components/pages/home/Footer.tsx`):
-  - Reduced mobile vertical padding from `py-12` (48px) to `py-8` (32px) on mobile, `sm:py-12` on larger screens
-  - Reduced mobile content padding from `px-6` (24px) to `px-4` (16px) on mobile, `sm:px-6` on larger screens
-- **Section Optimization** (Multiple components):
-  - Reduced mobile vertical padding from `py-20` (80px) to `py-12` (48px) on mobile, `sm:py-16` on medium screens, `lg:py-20` on large screens
-  - Applied to: `HowItWorksSection`, `NetworkPotentialSection`, `CommunitySection`, `TokenomicsSection`
+  - Reduced mobile vertical padding from `py-8 sm:py-12` to `py-6 sm:py-8 lg:py-12`
+  - Reduced mobile content gap from `gap-8` to `gap-6`
 
 Features:
 - **Responsive Padding**: Mobile-first approach with progressive enhancement for larger screens

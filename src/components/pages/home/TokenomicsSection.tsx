@@ -87,11 +87,11 @@ function TokenomicsSectionComponent() {
     <section
       id="tokenomics"
       data-section-label="Tokenomics"
-      className="relative overflow-hidden border-b border-border/40 bg-gradient-to-b from-background via-background/95 to-background/80 px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
+      className="relative overflow-hidden border-b border-border/40 bg-gradient-to-b from-background via-background/95 to-background/80 px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20"
     >
       <DecorativeBackground variant="tokenomics" className="-z-10 opacity-70" />
 
-      <div className="mx-auto flex max-w-6xl flex-col gap-16">
+      <div className="mx-auto flex max-w-6xl flex-col gap-12">
         <SectionHeader
           label="Token Designed for Community Income"
           title="Fixed supply. Hyper-Deflationary. Yield bearing"

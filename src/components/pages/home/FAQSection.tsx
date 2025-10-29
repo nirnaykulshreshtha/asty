@@ -37,7 +37,7 @@ function FAQSectionComponent() {
     <section
       id="faq"
       data-section-label="FAQ"
-      className="space-y-12 border-b border-border/40 py-20"
+      className="space-y-8 border-b border-border/40 py-12 sm:py-16 lg:py-20"
     >
       <SectionHeader
         label="FAQ"

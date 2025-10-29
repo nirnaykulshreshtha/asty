@@ -31,7 +31,7 @@ function RoadmapSectionComponent() {
     <section
       id="roadmap"
       data-section-label="Roadmap"
-      className="space-y-12 border-b border-border/40 py-20"
+      className="space-y-8 border-b border-border/40 py-12 sm:py-16 lg:py-20"
     >
       <SectionHeader
         label="Roadmap"

@@ -38,7 +38,7 @@ function CommunitySectionComponent({ onAnchorClick }: CommunitySectionProps) {
     <section
       id="community"
       data-section-label="Community"
-      className="space-y-4 border-b border-border/40 py-12 sm:py-16 lg:py-20"
+      className="space-y-6 border-b border-border/40 py-8 sm:py-12 lg:py-16"
     >
       <SectionHeader
         label="Stay Connected"

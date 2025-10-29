@@ -35,14 +35,14 @@ function VaultEcosystemSectionComponent() {
     <section
       id="vault-ecosystem"
       data-section-label="Vault Ecosystem"
-      className="relative overflow-hidden border-b border-border/40 bg-gradient-to-b from-background via-background/92 to-background/80 py-20"
+      className="relative overflow-hidden border-b border-border/40 bg-gradient-to-b from-background via-background/92 to-background/80 py-12 sm:py-16 lg:py-20"
     >
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.12),transparent_68%)]"
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto flex max-w-6xl flex-col gap-12 px-4 sm:px-6 lg:px-0">
+      <div className="relative mx-auto flex max-w-6xl flex-col gap-8 sm:gap-10 lg:gap-12 px-4 sm:px-6 lg:px-0">
         <SectionHeader
           label="Vault Ecosystem"
           title="Where All Value Converges"

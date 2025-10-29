@@ -83,12 +83,12 @@ function HeroSectionComponent({
     <section
       id="hero"
       data-section-label="Hero"
-      className="relative overflow-hidden border-b border-border/40 bg-gradient-to-br from-background via-background/95 to-background/80 py-16 sm:py-20 lg:py-24"
+      className="relative overflow-hidden border-b border-border/40 bg-gradient-to-br from-background via-background/95 to-background/80 py-8 sm:py-12 lg:py-16"
     >
       <DecorativeBackground variant="hero" className="-z-10 opacity-70" />
 
-      <div className="mx-auto flex max-w-7xl flex-col gap-12 sm:gap-16 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
-        <div className="max-w-3xl space-y-8">
+      <div className="mx-auto flex max-w-7xl flex-col gap-8 sm:gap-12 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="max-w-3xl space-y-6">
           <div className="space-y-5">
             <h1
               data-animate-hero

@@ -18,7 +18,7 @@
 
 import { useMemo } from "react"
 import { useWalletClient, useAccount } from "wagmi"
-import { PaymentWidgetProvider as BasePaymentWidgetProvider, ZERO_INTEGRATOR_ID } from "@matching-platform/payment-widget"
+import { PaymentWidgetProvider as BasePaymentWidgetProvider } from "@matching-platform/payment-widget"
 import type { SetupConfig } from "@matching-platform/payment-widget"
 
 import { logger } from "@/lib/logger"
@@ -83,10 +83,10 @@ export function PaymentWidgetProvider({ children }: { children: React.ReactNode 
         },
       ],
       walletClient: walletClient || undefined,
-      integratorId: process.env.NEXT_PUBLIC_ACROSS_INTEGRATOR_ID as `0x${string}` || ZERO_INTEGRATOR_ID,
+      integratorId: process.env.NEXT_PUBLIC_ACROSS_INTEGRATOR_ID as `0x${string}` || `0x0001`,
       useTestnet: process.env.NEXT_PUBLIC_IS_TESTNET === "true",
       quoteRefreshMs: 45_000,
-      showUnavailableOptions: true,
+      showUnavailableOptions: false,
     }
 
     logger.info("payment-widget:provider:config", {

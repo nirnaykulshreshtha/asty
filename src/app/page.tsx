@@ -143,7 +143,7 @@ export default function Home() {
     <>
       <Toast toast={toast} />
       
-      <FloatingMemberButton onAnchorClick={handleAnchorClick} />
+      {/* <FloatingMemberButton onAnchorClick={handleAnchorClick} /> */}
       
       <Header 
         onAnchorClick={handleAnchorClick}

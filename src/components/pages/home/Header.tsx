@@ -104,7 +104,7 @@ function HeaderComponent({
               className="hidden md:flex"
             >
               <a href="#membership" onClick={onAnchorClick}>
-                Book Early Membership
+                Reserve My Position
               </a>
             </Button>
             <div className="hidden sm:block">
@@ -148,7 +148,7 @@ function HeaderComponent({
                 className="w-full"
               >
                 <a href="#membership" onClick={onAnchorClick}>
-                  Book Early Membership
+                Reserve My Position
                 </a>
               </Button>
             </div>

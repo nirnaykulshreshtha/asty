@@ -979,3 +979,23 @@ Impact:
 - Fixed year for 2025 per marketing directive.
 - Easier debugging with explicit branding log entry.
 
+## 2025-10-29 – SSR-safe Compact USD Formatting (Hydration Fix)
+
+Context: Next.js hydration error occurred in `NetworkPotentialSection` because server rendered `~$355.0K` while client rendered `~$355K`. Root cause was `Intl.NumberFormat` with `notation: "compact"` differing between Node and browser environments.
+
+Changes:
+- Replaced `Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', notation: 'compact' })` usage with a deterministic formatter inside `src/components/pages/home/NetworkPotentialSection.tsx`.
+- Implemented `formatCapitalApprox(value: number)` that:
+  - Uses manual thresholds for K, M, B, T.
+  - Rounds to at most one decimal and trims trailing `.0`.
+  - Always returns strings like `~$355K`, `~$1.2M`, or `~$980` for < 1k.
+  - Logs a warning via `logger.warn` when called with non-finite values.
+- Updated top-of-file comment to note the SSR/CSR-safe approach.
+
+Impact:
+- Eliminates hydration mismatch in `NetworkPotentialSection` stats and tooltips.
+- Ensures consistent formatting across server and client without relying on environment-specific `Intl` compact behavior.
+
+Notes:
+- Prefer deterministic numeric formatting for SSR-rendered UI (avoid locale-compacted `Intl` where behavior may vary by runtime/ICU data).
+

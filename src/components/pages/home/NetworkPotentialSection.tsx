@@ -36,12 +36,8 @@ type ForecastCard = {
   helper: string
 }
 
-const USD_COMPACT = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  notation: "compact",
-  maximumFractionDigits: 1,
-})
+// Deterministic currency compact formatter (SSR/CSR safe)
+// Avoids Intl.NumberFormat("compact") which can differ between Node and browsers
 
 const NETWORK_FORECASTS: readonly ForecastCard[] = [
   {
@@ -106,10 +102,40 @@ const NETWORK_FORECASTS: readonly ForecastCard[] = [
   },
 ] as const
 
+/**
+ * formatCapitalApprox
+ * Returns a deterministic, SSR/CSR-safe approximate USD string like "~$355K".
+ * - Uses manual thresholds (K, M, B, T)
+ * - Shows at most one decimal place, trims trailing .0
+ * - Avoids Intl "compact" to prevent hydration mismatches
+ */
 const formatCapitalApprox = (value: number) => {
+  if (!Number.isFinite(value)) {
+    logger.warn("formatCapitalApprox:non-finite", { value })
+  }
+
   const sanitized = Number.isFinite(value) ? value : 0
-  const formatted = USD_COMPACT.format(sanitized).replace(/\u00A0/g, " ")
-  return `~${formatted}`
+  const sign = sanitized < 0 ? "-" : ""
+  const abs = Math.abs(sanitized)
+
+  const units = [
+    { v: 1_000_000_000_000, s: "T" },
+    { v: 1_000_000_000, s: "B" },
+    { v: 1_000_000, s: "M" },
+    { v: 1_000, s: "K" },
+  ] as const
+
+  for (const u of units) {
+    if (abs >= u.v) {
+      const raw = abs / u.v
+      const rounded = raw >= 100 ? Math.round(raw) : Math.round(raw * 10) / 10
+      const numStr = Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1)
+      return `~$${sign}${numStr}${u.s}`
+    }
+  }
+
+  // < 1,000: show integer dollars with en-US grouping
+  return `~$${sign}${Math.round(abs).toLocaleString("en-US")}`
 }
 
 function NetworkPotentialSectionComponent() {

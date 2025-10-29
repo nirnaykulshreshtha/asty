@@ -18,7 +18,7 @@
 
 import { useMemo } from "react"
 import { useWalletClient, useAccount } from "wagmi"
-import { PaymentWidgetProvider as BasePaymentWidgetProvider } from "@matching-platform/payment-widget"
+import { PaymentWidgetProvider as BasePaymentWidgetProvider, ZERO_INTEGRATOR_ID } from "@matching-platform/payment-widget"
 import type { SetupConfig } from "@matching-platform/payment-widget"
 
 import { logger } from "@/lib/logger"
@@ -61,7 +61,8 @@ export function PaymentWidgetProvider({ children }: { children: React.ReactNode 
         {
           chainId: 11155111, // Sepolia
           name: "Sepolia",
-          rpcUrl: "https://eth-sepolia.g.alchemy.com/v2/X9QZka1fFrd_AJxkfqQpLgmBbDpCWLjx",
+          rpcUrl: "https://ethereum-sepolia.core.chainstack.com/0e277d48f1a45d9bff67c1dab4f51560",
+          rpcWsUrl: "wss://ethereum-sepolia.core.chainstack.com/0e277d48f1a45d9bff67c1dab4f51560",
           blockExplorerUrl: "https://sepolia.etherscan.io",
           nativeCurrency: {
             name: "Sepolia",
@@ -82,7 +83,7 @@ export function PaymentWidgetProvider({ children }: { children: React.ReactNode 
         },
       ],
       walletClient: walletClient || undefined,
-      integratorId: process.env.NEXT_PUBLIC_ACROSS_INTEGRATOR_ID as `0x${string}` || "0x0000000000000000000000000000000000000000",
+      integratorId: process.env.NEXT_PUBLIC_ACROSS_INTEGRATOR_ID as `0x${string}` || ZERO_INTEGRATOR_ID,
       useTestnet: process.env.NEXT_PUBLIC_IS_TESTNET === "true",
       quoteRefreshMs: 45_000,
       showUnavailableOptions: true,

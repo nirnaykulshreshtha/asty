@@ -9,7 +9,7 @@
  * components located in the same directory for easier maintenance.
  */
 
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useAccount, usePublicClient, useReadContract, useWriteContract } from "wagmi"
 import { BaseError, formatUnits, zeroAddress, type Address } from "viem"
 import { encodeCalls, type PaymentConfig } from "@matching-platform/payment-widget"
@@ -22,6 +22,7 @@ import { MEMBERSHIP_PROGRESS } from "../types"
 import { erc20Abi } from "@/abis/erc20"
 import { referralContractAbi } from "@/abis/referral"
 import { extractReferralFromURL, isEthereumAddress } from "@/lib/referrals"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import {
   RegistrationFormData,
@@ -120,6 +121,9 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     lastTransactionHash: null,
     wasSuccessful: false,
   })
+  const [hasShownConfetti, setHasShownConfetti] = useState(false)
+  const [shouldShowConfetti, setShouldShowConfetti] = useState(false)
+  const isInitialRender = useRef(true)
 
   useEffect(() => {
     if (!referralContractAddress) {
@@ -161,7 +165,21 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     },
   })
 
-  const userData = userDataRaw as RegistrationUserSnapshot | undefined
+  const forceWithdrawalPreview = process.env.NEXT_PUBLIC_FORCE_WITHDRAWAL_PREVIEW === "true"
+
+  const userData = useMemo<RegistrationUserSnapshot | undefined>(() => {
+    if (forceWithdrawalPreview) {
+      logger.warn("registration:preview:force-withdrawal-enabled")
+      return {
+        referrer: zeroAddress,
+        // Example: 250_000 with 6 decimals = 0.25 tokens (e.g., USDC)
+        accruedRewards: BigInt(250_000),
+        registered: true,
+        directReferralCount: BigInt(12),
+      }
+    }
+    return userDataRaw as RegistrationUserSnapshot | undefined
+  }, [forceWithdrawalPreview, userDataRaw])
   const totalRegisteredUsers = totalRegisteredUsersRaw ?? null
 
   const paymentConfig = useMemo(() => {
@@ -377,6 +395,30 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       localStorage.setItem("asty-registration-form", JSON.stringify(formData))
     }
   }, [formData])
+
+  useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false
+      if (registeredOnChain || registrationState.isSubmitted) {
+        setHasShownConfetti(true)
+        setShouldShowConfetti(false)
+      }
+      return
+    }
+
+    if (isRegistered && !hasShownConfetti) {
+      setHasShownConfetti(true)
+      setShouldShowConfetti(true)
+
+      const timeout = window.setTimeout(() => {
+        setShouldShowConfetti(false)
+      }, 800)
+
+      return () => {
+        window.clearTimeout(timeout)
+      }
+    }
+  }, [isRegistered, hasShownConfetti, registeredOnChain, registrationState.isSubmitted])
 
   const validateForm = useCallback((): RegistrationFormErrors => {
     const errors: RegistrationFormErrors = {}
@@ -620,15 +662,15 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       <div className="relative flex h-full flex-col">
         <RegistrationHeader currentMembershipCount={membershipCountDisplay} />
 
-        <Card className="mb-6 border-white/10 bg-white/5 backdrop-blur">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-lg text-foreground">Early Membership</CardTitle>
-            <CardDescription className="text-muted-foreground">
-              $100 lifetime position • 12-level referral network • Lifetime income engine
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {!isRegistered ? (
+        {!isRegistered ? (
+          <Card className="mb-6 border-white/10 bg-white/5 backdrop-blur">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg text-foreground">Early Membership</CardTitle>
+              <CardDescription className="text-muted-foreground">
+                $100 lifetime position • 12-level referral network • Lifetime income engine
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
               <RegistrationForm
                 registrationState={registrationState}
                 autoExtractedReferral={autoExtractedReferral}
@@ -639,28 +681,57 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
                 onOpenReferralDialog={handleOpenReferralDialog}
                 onOpenPaymentDialog={handleOpenPaymentDialog}
               />
-            ) : (
-              <RegistrationSuccess
-                referralAddress={formData.referralAddress}
-                directReferralCountDisplay={directReferralCountDisplay}
-                accruedRewardsDisplay={accruedRewardsDisplay}
+            </CardContent>
+          </Card>
+        ) : (
+          <Tabs defaultValue="status" className="mb-6">
+            <TabsList className="grid grid-cols-2 gap-2 rounded-2xl border border-white/10 bg-white/5">
+              <TabsTrigger
+                value="status"
+                className="rounded-2xl text-sm font-medium text-muted-foreground transition-colors data-[state=active]:border-primary/40 data-[state=active]:bg-background data-[state=active]:text-primary"
+              >
+                Membership
+              </TabsTrigger>
+              <TabsTrigger
+                value="rewards"
+                className="rounded-2xl text-sm font-medium text-muted-foreground transition-colors data-[state=active]:border-primary/40 data-[state=active]:bg-background data-[state=active]:text-primary"
+              >
+                Referral Rewards
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="status" className="mt-4">
+              <Card className="border-white/10 bg-white/5 backdrop-blur">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg text-foreground">Membership Status</CardTitle>
+                  <CardDescription className="text-muted-foreground">
+                    Snapshot of your Early Membership confirmation and referral metrics.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <RegistrationSuccess
+                    referralAddress={formData.referralAddress}
+                    directReferralCountDisplay={directReferralCountDisplay}
+                    accruedRewardsDisplay={accruedRewardsDisplay}
+                    depositTokenSymbol={depositTokenSymbol}
+                    showConfetti={shouldShowConfetti}
+                  />
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="rewards" className="mt-4">
+              <RegistrationWithdrawalSection
+                className="mb-0"
+                availableRewardsDisplay={accruedRewardsDisplay}
+                hasWithdrawableRewards={hasWithdrawableRewards}
                 depositTokenSymbol={depositTokenSymbol}
+                directReferralCountDisplay={directReferralCountDisplay}
+                isWithdrawing={withdrawalState.isProcessing}
+                withdrawalError={withdrawalState.error}
+                withdrawalSuccess={withdrawalState.wasSuccessful}
+                onWithdraw={handleWithdrawRewards}
               />
-            )}
-          </CardContent>
-        </Card>
-
-        {isRegistered && (
-          <RegistrationWithdrawalSection
-            availableRewardsDisplay={accruedRewardsDisplay}
-            hasWithdrawableRewards={hasWithdrawableRewards}
-            depositTokenSymbol={depositTokenSymbol}
-            directReferralCountDisplay={directReferralCountDisplay}
-            isWithdrawing={withdrawalState.isProcessing}
-            withdrawalError={withdrawalState.error}
-            withdrawalSuccess={withdrawalState.wasSuccessful}
-            onWithdraw={handleWithdrawRewards}
-          />
+            </TabsContent>
+          </Tabs>
         )}
 
         <div className="mt-auto">

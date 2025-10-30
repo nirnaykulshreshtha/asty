@@ -33,6 +33,8 @@ interface RegistrationWithdrawalSectionProps {
   withdrawalSuccess: boolean
   /** Callback invoked when the user presses the withdraw button. */
   onWithdraw: () => Promise<void> | void
+  /** Optional className override for the root Card. */
+  className?: string
 }
 
 /**
@@ -48,9 +50,12 @@ export function RegistrationWithdrawalSection({
   withdrawalError,
   withdrawalSuccess,
   onWithdraw,
+  className,
 }: RegistrationWithdrawalSectionProps) {
+  const cardClassName = ["border-white/10 bg-white/5 backdrop-blur", className ?? "mb-6"].join(" ")
+
   return (
-    <Card className="mb-6 border-white/10 bg-white/5 backdrop-blur">
+    <Card className={cardClassName}>
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-2 text-lg text-foreground">
           <PiggyBank className="h-4 w-4 text-primary" />

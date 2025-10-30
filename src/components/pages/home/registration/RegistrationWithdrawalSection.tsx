@@ -35,6 +35,10 @@ interface RegistrationWithdrawalSectionProps {
   onWithdraw: () => Promise<void> | void
   /** Optional className override for the root Card. */
   className?: string
+  /** Handler invoked when the network depth badge is activated. */
+  onOpenLevelDistribution: () => void
+  /** Indicates whether the referral depth computation is running. */
+  isLevelDistributionLoading: boolean
 }
 
 /**
@@ -51,6 +55,8 @@ export function RegistrationWithdrawalSection({
   withdrawalSuccess,
   onWithdraw,
   className,
+  onOpenLevelDistribution,
+  isLevelDistributionLoading,
 }: RegistrationWithdrawalSectionProps) {
   const cardClassName = ["border-white/10 bg-white/5 backdrop-blur", className ?? "mb-6"].join(" ")
 
@@ -71,9 +77,24 @@ export function RegistrationWithdrawalSection({
             <p className="text-xs uppercase tracking-widest text-muted-foreground">Available Rewards</p>
             <p className="text-2xl font-semibold text-foreground">{availableRewardsDisplay} {depositTokenSymbol}</p>
           </div>
-          <Badge variant={hasWithdrawableRewards ? "default" : "secondary"} className="flex items-center gap-1 text-foreground">
-            <Wallet className="h-3.5 w-3.5" />
-            {directReferralCountDisplay} direct
+          <Badge
+            asChild
+            variant={hasWithdrawableRewards ? "default" : "secondary"}
+            className="flex items-center gap-1 text-foreground"
+          >
+            <Button
+              type="button"
+              onClick={onOpenLevelDistribution}
+              className="inline-flex items-center gap-1 outline-none cursor-pointer"
+              aria-label="View detailed referral depth"
+            >
+              {isLevelDistributionLoading ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Wallet className="h-3.5 w-3.5" />
+              )}
+              {directReferralCountDisplay} direct
+            </Button>
           </Badge>
         </div>
 

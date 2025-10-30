@@ -6,7 +6,9 @@
  * Coordinates the Early Membership registration flow by managing form state,
  * referral extraction, payment widget integration, and success handling. The
  * component delegates presentation responsibilities to smaller, focused
- * components located in the same directory for easier maintenance.
+ * components located in the same directory for easier maintenance. Upon
+ * successful deposit completion it now triggers a celebratory welcome dialog
+ * with the Asty mascot while keeping confetti logic scoped locally.
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
@@ -39,8 +41,28 @@ import { RegistrationProgressIndicator } from "./RegistrationProgressIndicator"
 import { RegistrationPaymentDialog } from "./RegistrationPaymentDialog"
 import { RegistrationWithdrawalSection } from "./RegistrationWithdrawalSection"
 import { Button } from "@/components/ui/button"
+import { RegistrationWelcomeDialog } from "./RegistrationWelcomeDialog"
+import { RegistrationLevelDistributionDialog } from "./RegistrationLevelDistributionDialog"
 
 const ZERO_BIGINT = BigInt(0)
+const REFERRAL_LEVEL_DEPTH = 12
+const REFERRAL_FETCH_BATCH_SIZE = 5
+
+/**
+ * Utility helper to break an array into evenly sized batches so outbound RPC
+ * calls stay within a predictable concurrency window.
+ */
+function chunkArray<T>(input: readonly T[], size: number): T[][] {
+  if (size <= 0) {
+    return [Array.from(input)]
+  }
+
+  const chunks: T[][] = []
+  for (let index = 0; index < input.length; index += size) {
+    chunks.push(input.slice(index, index + size))
+  }
+  return chunks
+}
 
 /**
  * Helper to map the tuple returned by the referral smart contract's getUser()
@@ -138,6 +160,8 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
   const [referralExtractionError, setReferralExtractionError] = useState<string | null>(null)
   const [isReferralDialogOpen, setIsReferralDialogOpen] = useState(false)
   const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false)
+  const [isWelcomeDialogOpen, setIsWelcomeDialogOpen] = useState(false)
+  const [isLevelDistributionDialogOpen, setIsLevelDistributionDialogOpen] = useState(false)
   const [withdrawalState, setWithdrawalState] = useState<RegistrationWithdrawalState>({
     isProcessing: false,
     error: null,
@@ -145,6 +169,10 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     wasSuccessful: false,
   })
   const [shouldShowConfetti, setShouldShowConfetti] = useState(false)
+  const [referralLevelCounts, setReferralLevelCounts] = useState<number[] | null>(null)
+  const [referralLevelLoading, setReferralLevelLoading] = useState(false)
+  const [referralLevelError, setReferralLevelError] = useState<string | null>(null)
+  const referralLevelCacheRef = useRef<Map<string, Address[]>>(new Map())
 
   useEffect(() => {
     if (!referralContractAddress) {
@@ -564,14 +592,19 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
         isSubmitted: true,
         errors: {},
       })
-      setShouldShowConfetti(true)
-      setTimeout(() => {
-        setShouldShowConfetti(false)
-      }, 800)
+      const shouldCelebrate = !motionReduced
+      setShouldShowConfetti(shouldCelebrate)
+      setIsWelcomeDialogOpen(true)
+      logger.info("registration:welcome-dialog:open", { reference })
+      if (shouldCelebrate) {
+        setTimeout(() => {
+          setShouldShowConfetti(false)
+        }, 800)
+      }
       void refetchUserData()
       void refetchTotalRegisteredUsers()
     },
-    [refetchUserData, refetchTotalRegisteredUsers],
+    [motionReduced, refetchUserData, refetchTotalRegisteredUsers],
   )
 
   const handlePaymentFailed = useCallback(
@@ -585,6 +618,151 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     },
     [],
   )
+
+  const welcomeConfettiActive = shouldShowConfetti && !motionReduced
+
+  const fetchReferralLevelCounts = useCallback(async () => {
+    if (!publicClient || !referralContractAddress || !address) {
+      setReferralLevelCounts(null)
+      return
+    }
+
+    logger.info("registration:levels:fetch:start", {
+      address,
+      depth: REFERRAL_LEVEL_DEPTH,
+    })
+
+    setReferralLevelLoading(true)
+    setReferralLevelError(null)
+
+    const cache = referralLevelCacheRef.current
+    cache.clear()
+
+    const normalizedRoot = address.toLowerCase()
+    const visited = new Set<string>([normalizedRoot])
+    let frontier: Address[] = [address as Address]
+    const computedCounts: number[] = []
+
+    try {
+      for (let depth = 0; depth < REFERRAL_LEVEL_DEPTH; depth += 1) {
+        if (frontier.length === 0) {
+          const remaining = REFERRAL_LEVEL_DEPTH - depth
+          if (remaining > 0) {
+            computedCounts.push(...Array.from({ length: remaining }, () => 0))
+          }
+          break
+        }
+
+        const nextFrontier: Address[] = []
+        let levelTotal = 0
+
+        const batches = chunkArray(frontier, REFERRAL_FETCH_BATCH_SIZE)
+        for (const batch of batches) {
+          const batchResults = await Promise.all(
+            batch.map(async (account) => {
+              const normalizedAccount = account.toLowerCase()
+              const cached = cache.get(normalizedAccount)
+              if (cached) {
+                return cached
+              }
+
+              const response = (await publicClient.readContract({
+                address: referralContractAddress,
+                abi: referralContractAbi.abi,
+                functionName: "getDirectReferrals",
+                args: [account],
+              })) as readonly Address[]
+
+              const filtered = response
+                .filter((referral) => referral !== zeroAddress)
+                .map((ref) => ref as Address)
+
+              cache.set(normalizedAccount, filtered)
+              return filtered
+            }),
+          )
+
+          batchResults.forEach((referrals) => {
+            levelTotal += referrals.length
+            referrals.forEach((referralAddressCandidate) => {
+              const normalizedChild = referralAddressCandidate.toLowerCase()
+              if (!visited.has(normalizedChild)) {
+                visited.add(normalizedChild)
+                nextFrontier.push(referralAddressCandidate)
+              }
+            })
+          })
+        }
+
+        computedCounts.push(levelTotal)
+        frontier = nextFrontier
+      }
+
+      if (computedCounts.length < REFERRAL_LEVEL_DEPTH) {
+        computedCounts.push(...Array.from({ length: REFERRAL_LEVEL_DEPTH - computedCounts.length }, () => 0))
+      }
+
+      setReferralLevelCounts(computedCounts)
+      logger.info("registration:levels:fetch:success", { levels: computedCounts })
+    } catch (error) {
+      const errorMessage = error instanceof BaseError
+        ? error.shortMessage ?? error.message
+        : error instanceof Error
+          ? error.message
+          : String(error)
+      logger.error("registration:levels:fetch:error", { error: errorMessage })
+      setReferralLevelError("Unable to load your network depth right now. Try again shortly.")
+    } finally {
+      setReferralLevelLoading(false)
+    }
+  }, [address, publicClient, referralContractAddress])
+
+  useEffect(() => {
+    if (!address || !referralContractAddress || !publicClient) {
+      setReferralLevelCounts(null)
+      setReferralLevelError(null)
+      setReferralLevelLoading(false)
+      return
+    }
+
+    if (!isRegistered) {
+      setReferralLevelCounts(null)
+      setReferralLevelError(null)
+      setReferralLevelLoading(false)
+      return
+    }
+
+    void fetchReferralLevelCounts()
+  }, [address, fetchReferralLevelCounts, isRegistered, publicClient, referralContractAddress])
+
+  const handleRefreshLevelCounts = useCallback(() => {
+    void fetchReferralLevelCounts()
+  }, [fetchReferralLevelCounts])
+
+  const referralLevelEntries = useMemo(() => {
+    if (!referralLevelCounts) {
+      return []
+    }
+
+    return referralLevelCounts.map((count, index) => ({
+      level: index + 1,
+      count,
+    }))
+  }, [referralLevelCounts])
+
+  const handleOpenLevelDistributionDialog = useCallback(() => {
+    logger.info("registration:levels:dialog-open")
+    setIsLevelDistributionDialogOpen(true)
+    if (!referralLevelLoading) {
+      void fetchReferralLevelCounts()
+    }
+  }, [fetchReferralLevelCounts, referralLevelLoading])
+
+  useEffect(() => {
+    if (!isRegistered) {
+      setIsLevelDistributionDialogOpen(false)
+    }
+  }, [isRegistered])
 
   const handleWithdrawRewards = useCallback(async () => {
     logger.info("registration:withdraw:start", {
@@ -728,7 +906,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       <DecorativeBackground variant="sidebar" className="opacity-70" />
 
       <div className="relative flex h-full flex-col">
-        <RegistrationHeader currentMembershipCount={membershipCountDisplay} />
+        <RegistrationHeader />
 
         {!isRegistered ? (
           <Card className="mb-6 border-white/10 bg-white/5 backdrop-blur">
@@ -790,7 +968,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
                     directReferralCountDisplay={directReferralCountDisplay}
                     accruedRewardsDisplay={accruedRewardsDisplay}
                     depositTokenSymbol={depositTokenSymbol}
-                    showConfetti={shouldShowConfetti}
+                    showConfetti={welcomeConfettiActive}
                   />
                 </CardContent>
               </Card>
@@ -806,6 +984,8 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
                 withdrawalError={withdrawalState.error}
                 withdrawalSuccess={withdrawalState.wasSuccessful}
                 onWithdraw={handleWithdrawRewards}
+                onOpenLevelDistribution={handleOpenLevelDistributionDialog}
+                isLevelDistributionLoading={referralLevelLoading}
               />
             </TabsContent>
           </Tabs>
@@ -829,7 +1009,22 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
         onPaymentComplete={handlePaymentComplete}
         onPaymentFailed={handlePaymentFailed}
       />
+
+      <RegistrationWelcomeDialog
+        open={isWelcomeDialogOpen}
+        onOpenChange={setIsWelcomeDialogOpen}
+        onContinue={() => setIsWelcomeDialogOpen(false)}
+        motionReduced={motionReduced}
+      />
+
+      <RegistrationLevelDistributionDialog
+        open={isLevelDistributionDialogOpen}
+        onOpenChange={setIsLevelDistributionDialogOpen}
+        levels={referralLevelEntries}
+        isLoading={referralLevelLoading}
+        error={referralLevelError}
+        onRefresh={handleRefreshLevelCounts}
+      />
     </aside>
   )
 }
-

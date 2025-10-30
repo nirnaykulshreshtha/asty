@@ -18,6 +18,25 @@ Impact:
 - Provides a production-ready withdrawal experience with clear feedback loops and defensive logging for support investigations.
 - Maintains backward compatibility on import paths and keeps the payment widget integration untouched apart from stronger safety checks.
 
+## 2025-10-30 – Welcome Dialog & Privacy-Friendly Progress Indicator
+
+Context: Marketing requested a friendlier celebratory moment after successful deposits and the community team asked us to hide live membership totals from the sidebar while keeping urgency messaging.
+
+Changes:
+- Updated `registration/RegistrationHeader.tsx` copy to remove the live membership total while keeping urgency messaging intact.
+- Updated `registration/RegistrationProgressIndicator.tsx` to keep the Stage 1 progress bar while suppressing the numeric `current/target` counters; documentation now clarifies that incoming strings are sanitized solely for percentage math.
+- Enhanced `registration/RegistrationSection.tsx` with a post-deposit welcome dialog that spotlights the Asty mascot, reiterates membership activation, and offers a dismiss CTA; tied to the existing confetti trigger and backed by explicit logging.
+- Imported mascot art via `next/image` within the section to keep asset usage centralized and ensure proper optimization in the dialog.
+- Added client-side referral tree traversal in `registration/RegistrationSection.tsx` that batches `getDirectReferrals` reads with caching to surface per-level member counts up to 12 levels deep.
+- Created `registration/RegistrationLevelDistribution.tsx` to present the depth metrics with inline refresh controls and wrapped it inside `RegistrationLevelDistributionDialog.tsx` for contextual display.
+- Hooked the referral-depth dialog to the rewards badge in `RegistrationWithdrawalSection.tsx` so users can launch analytics without leaving the withdrawal context.
+
+Impact:
+- Preserves urgency through the animated progress bar without broadcasting precise totals.
+- Delivers an on-brand celebration moment immediately after payment confirmation.
+- Maintains aggressive logging around payment completion and dialog lifecycle for support investigations.
+- Provides realtime visibility into each referral tier without requiring new contract methods.
+
 ## 2025-10-30 – RegistrationSection Decomposed into Modular Components
 
 Context: `RegistrationSection.tsx` had grown beyond 550 lines combining state management, payment integration, referral handling, and UI markup. The monolithic structure made future changes risky and difficult to reason about.

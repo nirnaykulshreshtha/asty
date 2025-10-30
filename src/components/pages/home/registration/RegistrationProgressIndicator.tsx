@@ -2,17 +2,18 @@
  * Registration Progress Indicator
  * -------------------------------
  * Presents the Stage 1 progress meter shown at the bottom of the registration
- * sidebar. This component performs the simple percentage calculation and keeps
- * the layout isolated from the parent container.
+ * sidebar. The component now focuses exclusively on the visual progress bar to
+ * avoid broadcasting live membership totals while still computing the ratio in
+ * the background.
  */
 
 /**
  * Props supported by `RegistrationProgressIndicator`.
  */
 interface RegistrationProgressIndicatorProps {
-  /** Stringified representation of the current membership count. */
+  /** Stringified representation of the current membership count (used for ratio computation only). */
   currentValue: string
-  /** Stringified representation of the overall Stage 1 goal. */
+  /** Stringified representation of the overall Stage 1 goal (used for ratio computation only). */
   targetValue: string
 }
 
@@ -38,19 +39,14 @@ export function RegistrationProgressIndicator({
       <p className="text-[0.65rem] font-semibold uppercase tracking-[0.4em] text-muted-foreground mb-2">
         Stage 1 Progress
       </p>
-      <div className="flex items-center justify-center space-x-2 mb-2">
-        <span className="text-2xl font-bold text-foreground">{currentValue}</span>
-        <span className="text-muted-foreground">/</span>
-        <span className="text-2xl font-bold text-primary">{targetValue}</span>
-      </div>
       <div className="w-full bg-white/10 rounded-full h-2">
         <div
           className="bg-primary h-2 rounded-full transition-all duration-500"
           style={{ width: `${progress}%` }}
         />
       </div>
-      <p className="text-xs text-muted-foreground mt-2">
-        {targetValue} memberships unlock the presale
+      <p className="text-xs text-muted-foreground mt-3">
+        Keep the momentum going—Stage 1 completion unlocks the presale.
       </p>
     </div>
   )

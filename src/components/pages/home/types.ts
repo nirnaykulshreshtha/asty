@@ -221,7 +221,7 @@ export const PRIMARY_NAV_ITEMS: NavItem[] = [
 // Secondary navigation - Supporting links surfaced in the footer
 export const SECONDARY_NAV_ITEMS: NavItem[] = [
   { label: "FAQ", href: "#faq" },
-  { label: "Whitepaper", href: "#whitepaper" },
+  { label: "Whitepaper", href: "https://asty-finance.gitbook.io/docs/" },
 ]
 
 // Legacy export for backward compatibility

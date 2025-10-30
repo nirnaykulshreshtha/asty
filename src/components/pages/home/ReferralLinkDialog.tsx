@@ -196,7 +196,6 @@ export function ReferralLinkDialog({ open, onOpenChange }: ReferralLinkDialogPro
     <Dialog open={open} onOpenChange={onOpenChange} modal={true}>
       <DialogContent 
         className="sm:max-w-[500px] border-2 border-primary/20 shadow-[0_25px_50px_rgba(0,0,0,0.5)]"
-        showCloseButton={false}
       >
         <button
           type="button"

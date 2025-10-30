@@ -1044,6 +1044,21 @@ Impact:
 - Safer, no-code updates for future social handle changes.
 - Clearer UX with distinct Channel vs Group links.
 
+## 2025-10-30 – Footer Social Links Refactor & Hover Consistency
+
+Context: Social link buttons in `src/components/pages/home/Footer.tsx` were hardcoded and missing the global subtle hover animation used by buttons.
+
+Changes:
+- Refactored footer social links to render from a `SOCIAL_LINKS` config array (label, href, icon) for maintainability.
+- Added subtle hover animation to match `Button` component: `transition-all duration-200`, `hover:-translate-y-0.5`, `hover:shadow-xl`, plus `group`-based icon nudge.
+- Kept aggressive logging: logs render URLs and emits `component:footer:social_hover` on hover.
+- Updated component header docs to reflect config-driven social links and animation alignment.
+
+Impact:
+- Single source of truth for footer social items; easier to add/edit.
+- Consistent interaction affordance across buttons and social links.
+- Better debuggability via structured hover logs.
+
 ## 2025-10-28 – Footer Branding and Copyright Update
 
 Context: Marketing requires a consistent branding line and explicit year in the site footer.

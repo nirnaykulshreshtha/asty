@@ -52,18 +52,18 @@ function MemesSectionComponent({ motionReduced }: MemesSectionProps) {
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-3 sm:flex-row">
                 <CustomConnectButton
-                  size="lg"
+                  size="default"
                   connectLabel="Connect Wallet / Register"
                   variant={{
                     connect: "default",
-                    connected: "outline",
+                    connected: "default",
                     wrongNetwork: "destructive",
                   }}
                   className="w-full sm:w-auto"
                   showBalance={false}
                   showChainName={false}
                 />
-                <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
+                <Button asChild size="default" variant="outline" className="w-full sm:w-auto">
                   <Link href="#how">Learn More</Link>
                 </Button>
               </div>

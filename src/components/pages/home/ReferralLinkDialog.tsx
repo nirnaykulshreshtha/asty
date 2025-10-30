@@ -207,7 +207,7 @@ export function ReferralLinkDialog({ open, onOpenChange }: ReferralLinkDialogPro
         </button>
         <DialogHeader>
           <DialogTitle className="text-2xl">Generate Your Referral Link</DialogTitle>
-          <DialogDescription className="text-base">
+          <DialogDescription className="text-sm">
             Share your unique link and earn through the 12-level referral network. 
             Each successful referral contributes to your position and unlocks network rewards.
           </DialogDescription>

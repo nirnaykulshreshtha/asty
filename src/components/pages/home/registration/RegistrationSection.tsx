@@ -38,6 +38,7 @@ import { RegistrationSuccess } from "./RegistrationSuccess"
 import { RegistrationProgressIndicator } from "./RegistrationProgressIndicator"
 import { RegistrationPaymentDialog } from "./RegistrationPaymentDialog"
 import { RegistrationWithdrawalSection } from "./RegistrationWithdrawalSection"
+import { Button } from "@/components/ui/button"
 
 const ZERO_BIGINT = BigInt(0)
 
@@ -267,6 +268,28 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       wasSuccessful: false,
     })
   }, [address])
+
+  // Reset state when wallet is disconnected
+  useEffect(() => {
+    if (!address) {
+      setRegistrationState({
+        isSubmitting: false,
+        isSubmitted: false,
+        errors: {},
+      });
+      setFormData({ referralAddress: "" });
+      setWithdrawalState({
+        isProcessing: false,
+        error: null,
+        lastTransactionHash: null,
+        wasSuccessful: false,
+      });
+      setAutoExtractedReferral(null);
+      setReferralExtractionError(null);
+      setHasShownConfetti(false);
+      setShouldShowConfetti(false);
+    }
+  }, [address]);
 
   const formatBigIntWithGrouping = useCallback((value: bigint): string => {
     const stringValue = value.toString()
@@ -706,12 +729,21 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
               </TabsTrigger>
             </TabsList>
             <TabsContent value="status" className="mt-4">
-              <Card className="border-white/10 bg-white/5 backdrop-blur gap-0">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg text-foreground">Membership Status</CardTitle>
-                  {/* <CardDescription className="text-muted-foreground">
-                    Snapshot of your Early Membership confirmation and referral metrics.
-                  </CardDescription> */}
+              <Card className="border-white/10 bg-white/5 backdrop-blur gap-4">
+                <CardHeader className="pb-2 flex flex-row items-center justify-between">
+                  <div>
+                    <CardTitle className="text-lg text-foreground">Membership Status</CardTitle>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleOpenReferralDialog}
+                    className="ml-auto cursor-pointer flex items-center gap-1 rounded-md border border-primary/40 bg-background/60 px-3 py-1 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors duration-150"
+                  >
+                    {/* Icon: optional → import { Share2 } from 'lucide-react' above if not present */}
+                    <svg viewBox="0 0 24 24" fill="none" width="16" height="16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg>
+                    <span>Generate Referral Link</span>
+                  </Button>
                 </CardHeader>
                 <CardContent>
                   <RegistrationSuccess

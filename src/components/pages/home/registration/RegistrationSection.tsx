@@ -10,7 +10,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { useAccount, usePublicClient, useReadContract, useWriteContract } from "wagmi"
+import { useAccount, usePublicClient, useReadContract, useWriteContract, useChainId, useSwitchChain } from "wagmi"
 import { BaseError, formatUnits, zeroAddress, type Address } from "viem"
 import { encodeCalls, type PaymentConfig } from "@matching-platform/payment-widget"
 
@@ -127,6 +127,12 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
   const { address } = useAccount()
   const publicClient = usePublicClient({ chainId: targetChainId })
   const { writeContractAsync } = useWriteContract()
+  /**
+   * useChainId gets the current connected wallet's chainId.
+   * useSwitchChain provides a function to request the wallet to switch to a different network.
+   */
+  const chainIdCurrent = useChainId();
+  const { switchChainAsync, isPending: isSwitchNetworkLoading } = useSwitchChain();
 
   const [autoExtractedReferral, setAutoExtractedReferral] = useState<string | null>(null)
   const [referralExtractionError, setReferralExtractionError] = useState<string | null>(null)
@@ -616,12 +622,46 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       return
     }
 
+    // ==== AUTOSWITCH CHAIN LOGIC BELOW ====
+    if (chainIdCurrent !== targetChainId) {
+      if (switchChainAsync && !isSwitchNetworkLoading) {
+        logger.info("registration:withdraw:wrong-chain:attempt-switch", { from: chainIdCurrent, to: targetChainId })
+        try {
+          await switchChainAsync({ chainId: targetChainId })
+          logger.info("registration:withdraw:wrong-chain:switch-success", { targetChainId })
+        } catch (switchError) {
+          const switchMessage = switchError instanceof BaseError
+            ? switchError.shortMessage ?? switchError.message
+            : switchError instanceof Error
+              ? switchError.message
+              : String(switchError)
+
+          setWithdrawalState((previous) => ({
+            ...previous,
+            error: `Switch to the required network to continue. ${switchMessage}`,
+            wasSuccessful: false,
+          }))
+          logger.error("registration:withdraw:wrong-chain:switch-failed", { switchMessage })
+          return
+        }
+      } else {
+        setWithdrawalState((previous) => ({
+          ...previous,
+          error: `Wallet is on the wrong network and cannot trigger automatic switch. Manually switch to the correct chain (id: ${targetChainId}).`,
+          wasSuccessful: false,
+        }))
+        logger.error("registration:withdraw:autonetwork-failed", { chainIdCurrent, targetChainId })
+        return
+      }
+    }
+    // ====================================
+
     setWithdrawalState({
       isProcessing: true,
       error: null,
       lastTransactionHash: null,
       wasSuccessful: false,
-    })
+    });
 
     try {
       const hash = await writeContractAsync({
@@ -674,6 +714,9 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     targetChainId,
     publicClient,
     refetchUserData,
+    chainIdCurrent,
+    switchChainAsync,
+    isSwitchNetworkLoading,
   ])
 
   return (

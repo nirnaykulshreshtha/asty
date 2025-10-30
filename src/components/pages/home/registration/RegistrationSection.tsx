@@ -138,9 +138,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     lastTransactionHash: null,
     wasSuccessful: false,
   })
-  const [hasShownConfetti, setHasShownConfetti] = useState(false)
   const [shouldShowConfetti, setShouldShowConfetti] = useState(false)
-  const isInitialRender = useRef(true)
 
   useEffect(() => {
     if (!referralContractAddress) {
@@ -286,7 +284,6 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       });
       setAutoExtractedReferral(null);
       setReferralExtractionError(null);
-      setHasShownConfetti(false);
       setShouldShowConfetti(false);
     }
   }, [address]);
@@ -561,7 +558,6 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
         isSubmitted: true,
         errors: {},
       })
-      setHasShownConfetti(true)
       setShouldShowConfetti(true)
       setTimeout(() => {
         setShouldShowConfetti(false)

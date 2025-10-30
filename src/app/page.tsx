@@ -28,7 +28,7 @@ import { PositionImportanceSection } from "@/components/pages/home/PositionImpor
 import { PeopleFiSection } from "@/components/pages/home/PeopleFiSection"
 import { VaultEcosystemSection } from "@/components/pages/home/VaultEcosystemSection"
 import { NetworkPotentialSection } from "@/components/pages/home/NetworkPotentialSection"
-import { FloatingMemberButton } from "@/components/pages/home/FloatingMemberButton"
+// import { FloatingMemberButton } from "@/components/pages/home/FloatingMemberButton"
 
 
 /**

@@ -15,7 +15,7 @@ import { logger } from "@/lib/logger"
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { TrendingUp, Compass, Coins, Network, ArrowBigUp } from "lucide-react"
+import { TrendingUp, Compass, Coins, Network /*, ArrowBigUp */ } from "lucide-react"
 import mascotImage from "@/assets/images/asty character.png"
 
 const POSITION_POINTS = [

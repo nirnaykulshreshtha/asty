@@ -73,7 +73,8 @@ export function PaymentWidgetProvider({ children }: { children: React.ReactNode 
         {
           chainId: 84532, // Base Sepolia
           name: "Base Sepolia",
-          rpcUrl: "https://sepolia.base.org",
+          rpcUrl: "https://base-sepolia.core.chainstack.com/aacc294142486b77a001918cb5e6426e",
+          rpcWsUrl: "wss://base-sepolia.core.chainstack.com/aacc294142486b77a001918cb5e6426e",
           blockExplorerUrl: "https://sepolia.basescan.org",
           nativeCurrency: {
             name: "Base Sepolia",

@@ -25,13 +25,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { ContentCard } from "@/components/ui/ContentCard"
-import { Progress } from "@/components/ui/progress"
 import {
-  TOKENOMICS_CARDS,
   TOKENOMICS_HIGHLIGHTS,
-  TOKENOMICS_ROWS,
-  TOKENOMICS_SUMMARY,
+  TOKENOMICS_ROWS
 } from "./types"
 
 const TOKENOMICS_COLORS = [
@@ -80,8 +76,6 @@ const TOKENOMICS_CHART_CONFIG = TOKENOMICS_DISTRIBUTION.reduce(
  */
 function TokenomicsSectionComponent() {
   logger.info("component:tokenomics:render")
-
-  const totalSupplyLabel = TOTAL_SUPPLY_TOKENS.toLocaleString()
 
   return (
     <section

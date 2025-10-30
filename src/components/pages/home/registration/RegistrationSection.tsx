@@ -42,6 +42,22 @@ import { RegistrationWithdrawalSection } from "./RegistrationWithdrawalSection"
 const ZERO_BIGINT = BigInt(0)
 
 /**
+ * Helper to map the tuple returned by the referral smart contract's getUser()
+ * into our RegistrationUserSnapshot structure.
+ * @param raw userDataRaw value (tuple/array from contract, or undefined/null)
+ * @returns RegistrationUserSnapshot or undefined
+ */
+function mapUserDataRaw(raw: unknown): RegistrationUserSnapshot | undefined {
+  if (!raw || !Array.isArray(raw) || raw.length < 4) return undefined;
+  return {
+    referrer: raw[0],
+    accruedRewards: BigInt(raw[1]),
+    registered: Boolean(raw[2]),
+    directReferralCount: BigInt(raw[3]),
+  };
+}
+
+/**
  * Renders a comprehensive registration form for Early Membership signup.
  * Handles wallet connection, form validation, and platform registration with
  * optional referral address. Uses CustomConnectButton for reliable wallet
@@ -150,6 +166,8 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     },
   })
 
+  console.log('userDataRaw', userDataRaw)
+
   const {
     data: totalRegisteredUsersRaw,
     refetch: refetchTotalRegisteredUsers,
@@ -178,8 +196,12 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
         directReferralCount: BigInt(12),
       }
     }
-    return userDataRaw as RegistrationUserSnapshot | undefined
+    // Map the userDataRaw to a typed object
+    return mapUserDataRaw(userDataRaw)
   }, [forceWithdrawalPreview, userDataRaw])
+
+  console.log('userData', userData)
+
   const totalRegisteredUsers = totalRegisteredUsersRaw ?? null
 
   const paymentConfig = useMemo(() => {
@@ -396,29 +418,8 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     }
   }, [formData])
 
-  useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false
-      if (registeredOnChain || registrationState.isSubmitted) {
-        setHasShownConfetti(true)
-        setShouldShowConfetti(false)
-      }
-      return
-    }
-
-    if (isRegistered && !hasShownConfetti) {
-      setHasShownConfetti(true)
-      setShouldShowConfetti(true)
-
-      const timeout = window.setTimeout(() => {
-        setShouldShowConfetti(false)
-      }, 800)
-
-      return () => {
-        window.clearTimeout(timeout)
-      }
-    }
-  }, [isRegistered, hasShownConfetti, registeredOnChain, registrationState.isSubmitted])
+  // --- Remove previous confetti auto-trigger effect (lines 421–443)
+  // Instead, trigger confetti ONLY inside handlePaymentComplete below
 
   const validateForm = useCallback((): RegistrationFormErrors => {
     const errors: RegistrationFormErrors = {}
@@ -507,7 +508,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
         },
       }))
     }
-  }, [isWalletConnected, formData, validateForm, address])
+  }, [isWalletConnected, formData, validateForm, address, isRegistered]);
 
   const handleOpenReferralDialog = useCallback(() => setIsReferralDialogOpen(true), [])
 
@@ -526,7 +527,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       return
     }
     setIsPaymentDialogOpen(true)
-  }, [isWalletConnected, paymentConfig, isRegistered, address])
+  }, [isWalletConnected, paymentConfig, isRegistered, address]);
 
   const handlePaymentComplete = useCallback(
     (reference: string) => {
@@ -537,6 +538,11 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
         isSubmitted: true,
         errors: {},
       })
+      setHasShownConfetti(true)
+      setShouldShowConfetti(true)
+      setTimeout(() => {
+        setShouldShowConfetti(false)
+      }, 800)
       void refetchUserData()
       void refetchTotalRegisteredUsers()
     },
@@ -700,12 +706,12 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
               </TabsTrigger>
             </TabsList>
             <TabsContent value="status" className="mt-4">
-              <Card className="border-white/10 bg-white/5 backdrop-blur">
-                <CardHeader className="pb-4">
+              <Card className="border-white/10 bg-white/5 backdrop-blur gap-0">
+                <CardHeader className="pb-2">
                   <CardTitle className="text-lg text-foreground">Membership Status</CardTitle>
-                  <CardDescription className="text-muted-foreground">
+                  {/* <CardDescription className="text-muted-foreground">
                     Snapshot of your Early Membership confirmation and referral metrics.
-                  </CardDescription>
+                  </CardDescription> */}
                 </CardHeader>
                 <CardContent>
                   <RegistrationSuccess

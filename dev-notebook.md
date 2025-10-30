@@ -1,5 +1,43 @@
 # Asty Development Notebook
 
+## 2025-10-30 – Registration On-Chain Guardrails & Rewards Withdrawal
+
+Context: Registration needed to respect on-chain state so previously registered wallets could not trigger the payment flow again, and members needed a dedicated space to monitor and withdraw referral rewards.
+
+Changes:
+- Added on-chain reads via `useReadContract` to surface `getUser` and `totalRegisteredUsers` data in `registration/RegistrationSection.tsx` with comprehensive logging and resiliency around missing env configuration.
+- Disabled registration attempts for wallets already marked `registered` on-chain and auto-swapped the UI into the success state; the payment dialog now exits early when already registered.
+- Rendered dynamic membership counts using `totalRegisteredUsers()` while keeping the presale goal static; `RegistrationProgressIndicator` now sanitizes human-formatted strings before computing percentages.
+- Introduced `RegistrationWithdrawalSection` to display accrued rewards, direct referral count, and a withdraw CTA with status alerts.
+- Wired `useWriteContract` + `waitForTransactionReceipt` to invoke `withdrawRewards`, including optimistic state management, retry-safe error messaging, and post-transaction refetches.
+- Enhanced `RegistrationSuccess` to show direct referral and reward summaries, keeping aggressive logging intact throughout the container.
+
+Impact:
+- Prevents double-registration attempts by relying on the deployed contract’s source of truth instead of local state.
+- Surfaces live membership metrics and reward balances to users, improving transparency and urgency messaging.
+- Provides a production-ready withdrawal experience with clear feedback loops and defensive logging for support investigations.
+- Maintains backward compatibility on import paths and keeps the payment widget integration untouched apart from stronger safety checks.
+
+## 2025-10-30 – RegistrationSection Decomposed into Modular Components
+
+Context: `RegistrationSection.tsx` had grown beyond 550 lines combining state management, payment integration, referral handling, and UI markup. The monolithic structure made future changes risky and difficult to reason about.
+
+Changes:
+- Created `src/components/pages/home/registration/` with dedicated components:
+  - `RegistrationSection.tsx` (stateful container) now orchestrates referral extraction, payment configuration, logging, and child composition.
+  - `RegistrationForm.tsx`, `RegistrationSuccess.tsx`, `RegistrationHeader.tsx`, `RegistrationProgressIndicator.tsx`, and `RegistrationPaymentDialog.tsx` encapsulate focused UI responsibilities.
+  - Centralized shared interfaces in `registration/types.ts` to keep props consistent across components.
+- Updated original `RegistrationSection.tsx` to a thin documented re-export of the new container to preserve existing import paths.
+- Ensured aggressive logging remains in the container while presentation components stay stateless.
+- Added payment config memoization dependency on `formData.referralAddress` to prevent stale referral targets.
+- Documented the architectural change and component responsibilities within each new file header.
+
+Impact:
+- Registration flow is now easier to maintain, test, and extend (e.g., adding inputs or alternate payment flows).
+- UI components are reusable and their props are explicit, reducing the risk of regressions.
+- Maintains existing aggressive logging while significantly improving readability.
+- Preserves backward compatibility; all consuming modules keep importing from `pages/home/RegistrationSection`.
+
 ## 2025-01-27 – Mobile Spacing Optimization
 
 Context: The mobile version of the site had excessive padding and margins that made the content feel cramped and wasted valuable screen space. Desktop version was good, but mobile needed optimization for better user experience.

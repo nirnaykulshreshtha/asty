@@ -49,6 +49,7 @@ export function RegistrationSuccess({
       </div>
 
       <div className="grid gap-3 text-xs text-muted-foreground">
+        
         {referralAddress && (
           <div className="rounded-xl border border-primary/20 bg-primary/10 p-3">
             <p className="font-semibold text-foreground">Referral credit applied</p>

@@ -743,7 +743,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
                 </CardHeader>
                 <CardContent>
                   <RegistrationSuccess
-                    referralAddress={formData.referralAddress}
+                    referralAddress={!isRegistered ? formData.referralAddress : undefined} // Only show referral credit before registration
                     directReferralCountDisplay={directReferralCountDisplay}
                     accruedRewardsDisplay={accruedRewardsDisplay}
                     depositTokenSymbol={depositTokenSymbol}

@@ -7,10 +7,10 @@ echo "Removing @matching-platform/payment-widget from node_modules..."
 rm -rf node_modules/@matching-platform/payment-widget
 
 echo "Removing package from package-lock.json..."
-npm uninstall @matching-platform/payment-widget --legacy-peer-deps
+npm uninstall @matching-platform/payment-widget
 
 echo "Installing updated @matching-platform/payment-widget from GitHub..."
-npm install github:nirnaykulshreshtha/payment-widget --legacy-peer-deps
+npm install github:nirnaykulshreshtha/payment-widget
 
 echo "Payment widget package update completed!"
 

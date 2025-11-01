@@ -21,6 +21,8 @@ import { useWalletClient, useAccount } from "wagmi"
 import { PaymentWidgetProvider as BasePaymentWidgetProvider } from "@matching-platform/payment-widget"
 import type { SetupConfig } from "@matching-platform/payment-widget"
 
+import "@matching-platform/payment-widget/styles.css"
+
 import { logger } from "@/lib/logger"
 
 /**

@@ -610,7 +610,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
   const handlePaymentFailed = useCallback(
     (error: string) => {
       logger.error("payment-widget:payment-failed", { error })
-      setIsPaymentDialogOpen(false)
+      // setIsPaymentDialogOpen(false)
       setRegistrationState((previous) => ({
         ...previous,
         errors: { general: error },

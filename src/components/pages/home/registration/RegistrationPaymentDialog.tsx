@@ -6,7 +6,9 @@
  * parent container can inject logging behavior and manage registration state.
  */
 
+import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { PaymentWidget, type PaymentConfig } from "@matching-platform/payment-widget"
 
 /**
@@ -43,20 +45,24 @@ export function RegistrationPaymentDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-xl">
-        <DialogHeader>
-          <DialogTitle>{""}</DialogTitle>
-        </DialogHeader>
-        <div className="mt-2">
-          <PaymentWidget
-            paymentConfig={paymentConfig}
-            onPaymentComplete={onPaymentComplete}
-            onPaymentFailed={onPaymentFailed}
-          />
-        </div>
-      </DialogContent>
-    </Dialog>
+    <ResponsiveDialog 
+      isOpen={open} 
+      setIsOpen={(state: boolean) => onOpenChange(state)} 
+      title={"Register with us !!!"} 
+      description={""}
+      footerOptions={{
+        closeButton: <Button variant="destructive" onClick={() => onOpenChange(false)}>Close</Button>,
+      }}
+      desktopDialogClassContent="max-w-2xl"
+    >
+      <div className="mt-2">
+        <PaymentWidget
+          paymentConfig={paymentConfig}
+          onPaymentComplete={onPaymentComplete}
+          onPaymentFailed={onPaymentFailed}
+        />
+      </div>
+    </ResponsiveDialog>
   )
 }
 

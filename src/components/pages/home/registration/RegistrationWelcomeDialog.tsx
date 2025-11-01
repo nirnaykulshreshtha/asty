@@ -15,6 +15,7 @@ import {
 import AstyCharacter from "@/assets/images/asty character.png"
 import { MagicCard } from "@/components/ui/magic-card"
 import { Meteors } from "@/components/ui/meteors"
+import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 
 interface RegistrationWelcomeDialogProps {
   open: boolean
@@ -37,9 +38,10 @@ export function RegistrationWelcomeDialog({
   const shouldAnimateLoop = !motionReduced
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl overflow-hidden border-0 bg-transparent p-0 shadow-none">
-        <MagicCard>
+    <ResponsiveDialog isOpen={open} setIsOpen={(state: boolean) => onOpenChange(state)} title={""} description={""} footerOptions={{
+      closeButtonLabel: "Close",
+    }} showFooterOnDesktop={false} showFooterOnMobile={true} desktopDialogClassContent="p-0">
+      <MagicCard>
           <motion.div
             initial={motionReduced ? undefined : { opacity: 0, y: 32, scale: 0.97 }}
             animate={motionReduced ? undefined : { opacity: 1, y: 0, scale: 1 }}
@@ -49,17 +51,17 @@ export function RegistrationWelcomeDialog({
           >
             <Meteors number={30} />
             
-            <DialogHeader className="relative z-10 mx-auto max-w-xl space-y-5 text-center">
-              <DialogTitle className="text-pretty text-xs font-semibold leading-tight text-foreground">
+            <div className="relative z-10 mx-auto max-w-xl space-y-5 text-center">
+              <div className="text-pretty text-xs font-semibold leading-tight text-foreground">
               <div className="pointer-events-none bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-left text-6xl leading-none font-semibold whitespace-pre-wrap text-transparent dark:from-white dark:to-slate-900/10">
                 Welcome aboard.
               </div>
               <div className="pointer-events-none bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-left text-6xl leading-none font-semibold whitespace-pre-wrap text-transparent dark:from-white dark:to-slate-900/10">
                 You&apos;re officially in.
               </div>
-              </DialogTitle>
+              </div>
 
-            </DialogHeader>
+            </div>
 
             <motion.div
               className="relative z-10 mx-auto mt-8 flex w-full max-w-sm justify-center"
@@ -101,15 +103,8 @@ export function RegistrationWelcomeDialog({
                 />
               </motion.div>
             </motion.div>
-
-            <DialogFooter className="relative z-10 mt-6 flex justify-center sm:justify-center items-center">
-              <Button size="lg" onClick={onContinue} className="cursor-pointer">
-                Continue exploring
-              </Button>
-            </DialogFooter>
           </motion.div>
         </MagicCard>
-      </DialogContent>
-    </Dialog>
+    </ResponsiveDialog>
   )
 }

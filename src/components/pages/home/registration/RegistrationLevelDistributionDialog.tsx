@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/dialog"
 
 import { RegistrationLevelDistribution } from "./RegistrationLevelDistribution"
+import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
+import { Button } from "@/components/ui/button"
 
 interface RegistrationLevelDistributionDialogProps {
   /** Controls whether the dialog is currently visible. */
@@ -42,24 +44,23 @@ export function RegistrationLevelDistributionDialog({
   onRefresh,
 }: RegistrationLevelDistributionDialogProps) {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl border border-white/10 bg-background/95 p-8 text-left shadow-[0_25px_80px_rgba(16,12,48,0.55)] sm:p-10">
-        <DialogHeader className="space-y-2 text-left">
-          <DialogTitle className="text-2xl font-semibold text-foreground">
-            Referral depth breakdown
-          </DialogTitle>
-          <DialogDescription className="text-sm text-muted-foreground">
-            Review how many members your network has across each level. Refresh anytime to pull the latest on-chain snapshot.
-          </DialogDescription>
-        </DialogHeader>
-        <RegistrationLevelDistribution
-          levels={levels}
-          isLoading={isLoading}
-          error={error}
-          onRefresh={onRefresh}
-        />
-      </DialogContent>
-    </Dialog>
+    <ResponsiveDialog
+      isOpen={open}
+      setIsOpen={(state: boolean) => onOpenChange(state)}
+      title={"Referral depth breakdown"}
+      description={"Review how many members your network has across each level. Refresh anytime to pull the latest on-chain snapshot."}
+      footerOptions={{
+        closeButton: <Button variant="destructive" onClick={() => onOpenChange(false)}>Close</Button>,
+      }}
+      desktopDialogClassContent="max-w-2xl"
+    >
+      <RegistrationLevelDistribution
+        levels={levels}
+        isLoading={isLoading}
+        error={error}
+        onRefresh={onRefresh}
+      />
+    </ResponsiveDialog>
   )
 }
 

@@ -7,7 +7,6 @@
  */
 
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { PaymentWidget, type PaymentConfig } from "@matching-platform/payment-widget"
 

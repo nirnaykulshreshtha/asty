@@ -20,21 +20,13 @@
 import { useMemo, useState } from "react"
 import { useAccount } from "wagmi"
 import { toast } from "sonner"
-import { Check, Copy, Share2, ExternalLink, X } from "lucide-react"
+import { Check, Copy, Share2, ExternalLink } from "lucide-react"
 
 import { logger } from "@/lib/logger"
 import { buildReferralLink, isEthereumAddress } from "@/lib/referrals"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
 import { CustomConnectButton } from "@/components/ui/custom-connect-button"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 

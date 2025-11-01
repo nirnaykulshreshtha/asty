@@ -8,14 +8,6 @@
  * cluttering the primary success card.
  */
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
-
 import { RegistrationLevelDistribution } from "./RegistrationLevelDistribution"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { Button } from "@/components/ui/button"

@@ -3,19 +3,11 @@
 import Image from "next/image"
 import { motion } from "motion/react"
 
-import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
-
 import AstyCharacter from "@/assets/images/asty character.png"
 import { MagicCard } from "@/components/ui/magic-card"
 import { Meteors } from "@/components/ui/meteors"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
+import { Button } from "@/components/ui/button"
 
 interface RegistrationWelcomeDialogProps {
   open: boolean
@@ -32,14 +24,15 @@ interface RegistrationWelcomeDialogProps {
 export function RegistrationWelcomeDialog({
   open,
   onOpenChange,
-  onContinue,
   motionReduced,
+  onContinue,
 }: RegistrationWelcomeDialogProps) {
   const shouldAnimateLoop = !motionReduced
 
   return (
     <ResponsiveDialog isOpen={open} setIsOpen={(state: boolean) => onOpenChange(state)} title={""} description={""} footerOptions={{
       closeButtonLabel: "Close",
+      actionButton: <Button variant="default" onClick={() => onContinue()}>Continue</Button>,
     }} showFooterOnDesktop={false} showFooterOnMobile={true} desktopDialogClassContent="p-0">
       <MagicCard>
           <motion.div

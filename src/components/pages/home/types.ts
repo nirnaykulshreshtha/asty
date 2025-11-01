@@ -219,9 +219,12 @@ export const PRIMARY_NAV_ITEMS: NavItem[] = [
 ]
 
 // Secondary navigation - Supporting links surfaced in the footer
+// Whitepaper URL read from environment with fallback
+const WHITEPAPER_URL = process.env.NEXT_PUBLIC_WHITEPAPER_URL || "https://asty-finance.gitbook.io/docs/"
+
 export const SECONDARY_NAV_ITEMS: NavItem[] = [
   { label: "FAQ", href: "#faq" },
-  { label: "Whitepaper", href: "https://asty-finance.gitbook.io/docs/" },
+  { label: "Whitepaper", href: WHITEPAPER_URL },
 ]
 
 // Legacy export for backward compatibility

@@ -41,7 +41,8 @@ export function PaymentWidgetProvider({ children }: { children: React.ReactNode 
         {
           chainId: 1, // Ethereum Mainnet
           name: "Ethereum",
-          rpcUrl: "https://eth.llamarpc.com",
+          rpcUrl: process.env.NEXT_PUBLIC_ETHEREUM_RPC_URL || 'https://ethereum-mainnet.core.chainstack.com/974ecc7fcd719f2ee35a8e8731a166a4',
+          rpcWsUrl: process.env.NEXT_PUBLIC_ETHEREUM_WS_URL || 'wss://ethereum-mainnet.core.chainstack.com/974ecc7fcd719f2ee35a8e8731a166a4',
           blockExplorerUrl: "https://etherscan.io",
           nativeCurrency: {
             name: "Ethereum",
@@ -52,7 +53,8 @@ export function PaymentWidgetProvider({ children }: { children: React.ReactNode 
         {
           chainId: 8453, // Base Mainnet
           name: "Base",
-          rpcUrl: "https://mainnet.base.org",
+          rpcUrl: process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://base-mainnet.core.chainstack.com/d93c56071ff6e150acd85f444dcdf7f1',
+          rpcWsUrl: "wss://base-mainnet.core.chainstack.com/d93c56071ff6e150acd85f444dcdf7f1",
           blockExplorerUrl: "https://basescan.org",
           nativeCurrency: {
             name: "Base",
@@ -63,8 +65,8 @@ export function PaymentWidgetProvider({ children }: { children: React.ReactNode 
         {
           chainId: 11155111, // Sepolia
           name: "Sepolia",
-          rpcUrl: "https://ethereum-sepolia.core.chainstack.com/0e277d48f1a45d9bff67c1dab4f51560",
-          rpcWsUrl: "wss://ethereum-sepolia.core.chainstack.com/0e277d48f1a45d9bff67c1dab4f51560",
+          rpcUrl: process.env.NEXT_PUBLIC_ETHEREUM_SEPOLIA_RPC_URL || 'https://ethereum-sepolia.core.chainstack.com/0e277d48f1a45d9bff67c1dab4f51560',
+          rpcWsUrl: process.env.NEXT_PUBLIC_ETHEREUM_SEPOLIA_WS_URL || 'wss://ethereum-sepolia.core.chainstack.com/0e277d48f1a45d9bff67c1dab4f51560',
           blockExplorerUrl: "https://sepolia.etherscan.io",
           nativeCurrency: {
             name: "Sepolia",
@@ -75,8 +77,8 @@ export function PaymentWidgetProvider({ children }: { children: React.ReactNode 
         {
           chainId: 84532, // Base Sepolia
           name: "Base Sepolia",
-          rpcUrl: "https://base-sepolia.core.chainstack.com/aacc294142486b77a001918cb5e6426e",
-          rpcWsUrl: "wss://base-sepolia.core.chainstack.com/aacc294142486b77a001918cb5e6426e",
+          rpcUrl: process.env.NEXT_PUBLIC_BASE_SEPOLIA_RPC_URL || 'https://base-sepolia.core.chainstack.com/aacc294142486b77a001918cb5e6426e',
+          rpcWsUrl: process.env.NEXT_PUBLIC_BASE_SEPOLIA_WS_URL || 'wss://base-sepolia.core.chainstack.com/aacc294142486b77a001918cb5e6426e',
           blockExplorerUrl: "https://sepolia.basescan.org",
           nativeCurrency: {
             name: "Base Sepolia",

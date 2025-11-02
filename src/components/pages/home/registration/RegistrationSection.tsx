@@ -46,23 +46,6 @@ import { RegistrationLevelDistributionDialog } from "./RegistrationLevelDistribu
 
 const ZERO_BIGINT = BigInt(0)
 const REFERRAL_LEVEL_DEPTH = 12
-const REFERRAL_FETCH_BATCH_SIZE = 5
-
-/**
- * Utility helper to break an array into evenly sized batches so outbound RPC
- * calls stay within a predictable concurrency window.
- */
-function chunkArray<T>(input: readonly T[], size: number): T[][] {
-  if (size <= 0) {
-    return [Array.from(input)]
-  }
-
-  const chunks: T[][] = []
-  for (let index = 0; index < input.length; index += size) {
-    chunks.push(input.slice(index, index + size))
-  }
-  return chunks
-}
 
 /**
  * Helper to map the tuple returned by the referral smart contract's getUser()
@@ -172,7 +155,6 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
   const [referralLevelCounts, setReferralLevelCounts] = useState<number[] | null>(null)
   const [referralLevelLoading, setReferralLevelLoading] = useState(false)
   const [referralLevelError, setReferralLevelError] = useState<string | null>(null)
-  const referralLevelCacheRef = useRef<Map<string, Address[]>>(new Map())
 
   useEffect(() => {
     if (!referralContractAddress) {
@@ -216,6 +198,41 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     },
   })
 
+  /**
+   * Check if the referral address is registered in the contract.
+   * This hook queries the contract's getUser function to verify registration status.
+   */
+  const referralAddressToCheck = useMemo(() => {
+    const trimmed = formData.referralAddress?.trim()
+    if (!trimmed || !isEthereumAddress(trimmed)) {
+      return undefined
+    }
+    return trimmed as Address
+  }, [formData.referralAddress])
+
+  const {
+    data: referralUserDataRaw,
+    isLoading: isCheckingReferralRegistration,
+    refetch: refetchReferralRegistration,
+  } = useReadContract({
+    chainId: targetChainId,
+    address: (referralContractAddress ?? zeroAddress) as Address,
+    abi: referralContractAbi.abi,
+    functionName: "getUser",
+    args: referralAddressToCheck ? [referralAddressToCheck] : undefined,
+    query: {
+      enabled: Boolean(referralAddressToCheck && referralContractAddress),
+      staleTime: 30_000,
+      refetchOnWindowFocus: false,
+    },
+  })
+
+  const referralUserData = useMemo<RegistrationUserSnapshot | undefined>(() => {
+    return mapUserDataRaw(referralUserDataRaw)
+  }, [referralUserDataRaw])
+
+  const isReferralRegistered = referralUserData?.registered ?? false
+
   const forceWithdrawalPreview = process.env.NEXT_PUBLIC_FORCE_WITHDRAWAL_PREVIEW === "true"
 
   const userData = useMemo<RegistrationUserSnapshot | undefined>(() => {
@@ -237,6 +254,80 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
 
   const totalRegisteredUsers = totalRegisteredUsersRaw ?? null
 
+  /**
+   * Determines the effective referral address to use in the contract call.
+   * Returns zeroAddress if:
+   * - No referral address is provided
+   * - Referral address format is invalid
+   * - Referral address is not registered in the contract
+   * - Referral address is the user's own address (self-referral)
+   * 
+   * Only returns the actual referral address if it passes all validations.
+   */
+  const effectiveReferralAddress = useMemo(() => {
+    const referralAddr = formData.referralAddress?.trim()
+    
+    // No referral address provided
+    if (!referralAddr) {
+      logger.debug("payment-widget:effective-referral:no-referral")
+      return zeroAddress
+    }
+
+    // Check if format is valid
+    if (!isEthereumAddress(referralAddr)) {
+      logger.warn("payment-widget:effective-referral:invalid-format", {
+        referralAddress: referralAddr,
+      })
+      return zeroAddress
+    }
+
+    // Check for self-referral
+    if (address && referralAddr.toLowerCase() === address.toLowerCase()) {
+      logger.warn("payment-widget:effective-referral:self-referral", {
+        referralAddress: referralAddr,
+      })
+      return zeroAddress
+    }
+
+    // Check if referral is registered in contract
+    // Only use the referral if we've confirmed it's registered
+    if (referralAddressToCheck && referralAddressToCheck.toLowerCase() === referralAddr.toLowerCase()) {
+      if (referralUserDataRaw !== undefined) {
+        if (!isReferralRegistered) {
+          logger.warn("payment-widget:effective-referral:not-registered", {
+            referralAddress: referralAddr,
+          })
+          return zeroAddress
+        }
+        // Referral is valid and registered
+        logger.info("payment-widget:effective-referral:valid-registered", {
+          referralAddress: referralAddr,
+        })
+        return referralAddr as Address
+      } else {
+        // Still checking registration status - be conservative and use zeroAddress
+        // This prevents using an unregistered referral if check is pending
+        logger.debug("payment-widget:effective-referral:check-pending", {
+          referralAddress: referralAddr,
+        })
+        return zeroAddress
+      }
+    }
+
+    // If we don't have a matching referralAddressToCheck but the format is valid,
+    // it might be that the check hasn't started yet - use zeroAddress to be safe
+    logger.debug("payment-widget:effective-referral:not-verified", {
+      referralAddress: referralAddr,
+    })
+    return zeroAddress
+  }, [
+    formData.referralAddress,
+    address,
+    referralAddressToCheck,
+    referralUserDataRaw,
+    isReferralRegistered,
+  ])
+
   const paymentConfig = useMemo(() => {
     if (!depositTokenAddress || !referralContractAddress) {
       logger.error("payment-widget:config:missing-env", {
@@ -257,6 +348,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       targetChainId,
       targetAmount: targetAmount.toString(),
       recipient: referralContractAddress,
+      effectiveReferralAddress: effectiveReferralAddress === zeroAddress ? "zeroAddress (no referral)" : effectiveReferralAddress,
     })
 
     const calls = [
@@ -269,12 +361,15 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       {
         target: referralContractAddress,
         functionName: "depositFor",
-        args: [address, formData.referralAddress ? (formData.referralAddress as Address) : (zeroAddress as Address)],
+        args: [address, effectiveReferralAddress],
         abi: referralContractAbi.abi,
       },
     ]
 
-    logger.debug("payment-widget:config:calls-prepared", { callCount: calls.length })
+    logger.debug("payment-widget:config:calls-prepared", {
+      callCount: calls.length,
+      referralAddress: effectiveReferralAddress === zeroAddress ? "none" : effectiveReferralAddress,
+    })
 
     const targetContractCalls = encodeCalls(calls)
 
@@ -286,7 +381,7 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       targetContractCalls,
       fallbackRecipient: address,
     } as PaymentConfig
-  }, [address, depositTokenAddress, referralContractAddress, targetChainId, formData.referralAddress])
+  }, [address, depositTokenAddress, referralContractAddress, targetChainId, effectiveReferralAddress])
 
   useEffect(() => {
     setMounted(true)
@@ -351,6 +446,14 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     [depositTokenDecimals],
   )
 
+  /**
+   * Validates the referral address format and basic constraints.
+   * Note: Registration status check is handled separately via contract query
+   * to allow for async validation feedback.
+   * 
+   * @param inputAddress - The referral address to validate
+   * @returns Error message string if validation fails, undefined if valid
+   */
   const validateReferralAddress = useCallback(
     (inputAddress: string): string | undefined => {
       const trimmedAddress = inputAddress.trim()
@@ -377,6 +480,79 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     [address],
   )
 
+  /**
+   * Validates referral address registration status when a referral address is provided.
+   * This effect runs when the referral user data is fetched from the contract.
+   * 
+   * Flow:
+   * 1. When a valid referral address is detected (from URL or manual input), we query the contract
+   * 2. Once the query completes, we check the registered status
+   * 3. If not registered, we set an error and clear the auto-extracted referral
+   * 4. If registered, we clear registration errors and confirm the referral is valid
+   */
+  useEffect(() => {
+    if (!referralAddressToCheck) {
+      // No valid referral address to check
+      // Don't clear errors here - let format validation handle those
+      return
+    }
+
+    if (isCheckingReferralRegistration) {
+      logger.debug("registration:referral-registration:checking", {
+        referralAddress: referralAddressToCheck,
+      })
+      return
+    }
+
+    // Check if referral is registered in the contract
+    if (referralUserDataRaw !== undefined) {
+      if (!isReferralRegistered) {
+        logger.warn("registration:referral-registration:not-registered", {
+          referralAddress: referralAddressToCheck,
+        })
+        setReferralExtractionError(
+          "Referral address is not registered. Please use a registered referral address."
+        )
+        setAutoExtractedReferral(null)
+      } else {
+        logger.info("registration:referral-registration:confirmed", {
+          referralAddress: referralAddressToCheck,
+          registered: isReferralRegistered,
+        })
+        // Clear any previous registration errors
+        setReferralExtractionError((prev) => {
+          if (prev?.includes("not registered")) {
+            return null
+          }
+          return prev
+        })
+        // Ensure autoExtractedReferral is set if this came from URL extraction
+        // (it should already be set by the URL extraction effect, but ensure consistency)
+        if (formData.referralAddress?.toLowerCase() === referralAddressToCheck.toLowerCase()) {
+          setAutoExtractedReferral(referralAddressToCheck)
+        }
+      }
+    } else if (!isCheckingReferralRegistration) {
+      // Query completed but returned undefined (shouldn't happen normally)
+      // This could indicate the contract call failed or address doesn't exist
+      logger.warn("registration:referral-registration:query-returned-undefined", {
+        referralAddress: referralAddressToCheck,
+      })
+      // Don't set error here - undefined might mean address doesn't exist in contract
+      // which effectively means not registered, but we'll let the contract handle it
+    }
+  }, [
+    referralAddressToCheck,
+    referralUserDataRaw,
+    isReferralRegistered,
+    isCheckingReferralRegistration,
+    formData.referralAddress,
+  ])
+
+  /**
+   * Extracts referral address from URL and performs initial validation.
+   * Registration status check is handled separately in the effect above.
+   */
   useEffect(() => {
     if (!mounted) {
       return
@@ -412,9 +588,9 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       return
     }
 
-    logger.info("registration:auto-extract-referral:success", { referral: extractedRef })
+    logger.info("registration:auto-extract-referral:format-valid", { referral: extractedRef })
     setAutoExtractedReferral(extractedRef)
-    setReferralExtractionError(null)
+    // Don't clear extraction error here - let the registration check effect handle it
     setFormData((previous) => ({ ...previous, referralAddress: extractedRef }))
   }, [mounted, address, validateReferralAddress])
 
@@ -475,22 +651,53 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
   // --- Remove previous confetti auto-trigger effect (lines 421–443)
   // Instead, trigger confetti ONLY inside handlePaymentComplete below
 
+  /**
+   * Validates the registration form including format checks and contract registration status.
+   * This function performs synchronous validation. The registration status check
+   * is performed asynchronously via the contract query hook, but we also check
+   * the resolved state here for form submission validation.
+   * 
+   * @returns Object containing validation errors keyed by field name
+   */
   const validateForm = useCallback((): RegistrationFormErrors => {
     const errors: RegistrationFormErrors = {}
 
+    // Check format validation first
     const referralError = validateReferralAddress(formData.referralAddress)
     if (referralError) {
       errors.referralAddress = referralError
+    } else if (formData.referralAddress?.trim()) {
+      // If format is valid, check registration status
+      const trimmedAddress = formData.referralAddress.trim()
+      if (referralAddressToCheck && referralAddressToCheck.toLowerCase() === trimmedAddress.toLowerCase()) {
+        // We have a valid address format, now check if registration check has completed
+        if (!isCheckingReferralRegistration && referralUserDataRaw !== undefined) {
+          if (!isReferralRegistered) {
+            logger.warn("registration:form:validation:referral-not-registered", {
+              referralAddress: trimmedAddress,
+            })
+            errors.referralAddress = "Referral address is not registered in the contract. Please use a registered referral address."
+          }
+        } else if (!isCheckingReferralRegistration && referralUserDataRaw === undefined) {
+          // Check might have failed, but don't block form submission for this
+          // The error will be shown via referralExtractionError state
+          logger.debug("registration:form:validation:referral-check-pending", {
+            referralAddress: trimmedAddress,
+          })
+        }
+      }
     }
 
     logger.debug("registration:form:validation", {
       formData,
       errors,
       hasErrors: Object.keys(errors).length > 0,
+      isReferralRegistered,
+      isCheckingReferralRegistration,
     })
 
     return errors
-  }, [formData, validateReferralAddress])
+  }, [formData, validateReferralAddress, referralAddressToCheck, isReferralRegistered, isCheckingReferralRegistration, referralUserDataRaw])
 
   const handleSubmit = useCallback(async () => {
     logger.info("registration:form:submit:start", {
@@ -621,6 +828,14 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
 
   const welcomeConfettiActive = shouldShowConfetti && !motionReduced
 
+  /**
+   * Fetches referral level counts for the connected user's referral network.
+   * Uses the smart contract's getReferralCountsByLevel function which performs
+   * the computation on-chain, eliminating the need for client-side BFS traversal.
+   * This significantly improves performance, especially for large referral networks.
+   *
+   * @returns Promise that resolves when the counts are fetched and state is updated
+   */
   const fetchReferralLevelCounts = useCallback(async () => {
     if (!publicClient || !referralContractAddress || !address) {
       setReferralLevelCounts(null)
@@ -635,82 +850,36 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
     setReferralLevelLoading(true)
     setReferralLevelError(null)
 
-    const cache = referralLevelCacheRef.current
-    cache.clear()
-
-    const normalizedRoot = address.toLowerCase()
-    const visited = new Set<string>([normalizedRoot])
-    let frontier: Address[] = [address as Address]
-    const computedCounts: number[] = []
-
     try {
-      for (let depth = 0; depth < REFERRAL_LEVEL_DEPTH; depth += 1) {
-        if (frontier.length === 0) {
-          const remaining = REFERRAL_LEVEL_DEPTH - depth
-          if (remaining > 0) {
-            computedCounts.push(...Array.from({ length: remaining }, () => 0))
-          }
-          break
-        }
+      const response = (await publicClient.readContract({
+        address: referralContractAddress,
+        abi: referralContractAbi.abi,
+        functionName: "getReferralCountsByLevel",
+        args: [address],
+      })) as readonly bigint[]
 
-        const nextFrontier: Address[] = []
-        let levelTotal = 0
+      // Contract returns uint256[13] - convert BigInt values to numbers
+      // and take the first REFERRAL_LEVEL_DEPTH (12) levels
+      const levelCounts = response
+        .slice(0, REFERRAL_LEVEL_DEPTH)
+        .map((count) => Number(count))
 
-        const batches = chunkArray(frontier, REFERRAL_FETCH_BATCH_SIZE)
-        for (const batch of batches) {
-          const batchResults = await Promise.all(
-            batch.map(async (account) => {
-              const normalizedAccount = account.toLowerCase()
-              const cached = cache.get(normalizedAccount)
-              if (cached) {
-                return cached
-              }
-
-              const response = (await publicClient.readContract({
-                address: referralContractAddress,
-                abi: referralContractAbi.abi,
-                functionName: "getDirectReferrals",
-                args: [account],
-              })) as readonly Address[]
-
-              const filtered = response
-                .filter((referral) => referral !== zeroAddress)
-                .map((ref) => ref as Address)
-
-              cache.set(normalizedAccount, filtered)
-              return filtered
-            }),
-          )
-
-          batchResults.forEach((referrals) => {
-            levelTotal += referrals.length
-            referrals.forEach((referralAddressCandidate) => {
-              const normalizedChild = referralAddressCandidate.toLowerCase()
-              if (!visited.has(normalizedChild)) {
-                visited.add(normalizedChild)
-                nextFrontier.push(referralAddressCandidate)
-              }
-            })
-          })
-        }
-
-        computedCounts.push(levelTotal)
-        frontier = nextFrontier
-      }
-
-      if (computedCounts.length < REFERRAL_LEVEL_DEPTH) {
-        computedCounts.push(...Array.from({ length: REFERRAL_LEVEL_DEPTH - computedCounts.length }, () => 0))
-      }
-
-      setReferralLevelCounts(computedCounts)
-      logger.info("registration:levels:fetch:success", { levels: computedCounts })
+      setReferralLevelCounts(levelCounts)
+      logger.info("registration:levels:fetch:success", {
+        levels: levelCounts,
+        contractReturnedLevels: response.length,
+      })
     } catch (error) {
       const errorMessage = error instanceof BaseError
         ? error.shortMessage ?? error.message
         : error instanceof Error
           ? error.message
           : String(error)
-      logger.error("registration:levels:fetch:error", { error: errorMessage })
+      logger.error("registration:levels:fetch:error", {
+        error: errorMessage,
+        address,
+        referralContractAddress,
+      })
       setReferralLevelError("Unable to load your network depth right now. Try again shortly.")
     } finally {
       setReferralLevelLoading(false)

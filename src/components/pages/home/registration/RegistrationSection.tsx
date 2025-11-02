@@ -859,9 +859,9 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       })) as readonly bigint[]
 
       // Contract returns uint256[13] - convert BigInt values to numbers
-      // and take the first REFERRAL_LEVEL_DEPTH (12) levels
+      // and take the 1-13 levels (12 levels)
       const levelCounts = response
-        .slice(0, REFERRAL_LEVEL_DEPTH)
+        .slice(1, REFERRAL_LEVEL_DEPTH + 1)
         .map((count) => Number(count))
 
       setReferralLevelCounts(levelCounts)

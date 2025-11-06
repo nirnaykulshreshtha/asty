@@ -341,7 +341,9 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       return null
     }
 
-    const targetAmount = process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? BigInt(1 * 1_000_000) : BigInt(100 * 1_000_000)
+    const depositTokenDecimals = Number(process.env.NEXT_PUBLIC_DEPOSIT_TOKEN_DECIMALS ?? 18)
+
+    const targetAmount = process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? BigInt(1 * 10 ** depositTokenDecimals) : BigInt(100 * 10 ** depositTokenDecimals)
 
     logger.info("payment-widget:config:creating", {
       targetTokenAddress: depositTokenAddress,
@@ -373,6 +375,9 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
 
     const targetContractCalls = encodeCalls(calls)
 
+    const appFee = process.env.NEXT_PUBLIC_APP_FEE
+    const appFeeRecipient = process.env.NEXT_PUBLIC_APP_FEE_RECIPIENT as Address
+
     return {
       targetTokenAddress: depositTokenAddress,
       targetChainId,
@@ -380,6 +385,8 @@ export function RegistrationSection({ motionReduced }: RegistrationSectionProps)
       targetRecipient: referralContractAddress as Address,
       targetContractCalls,
       fallbackRecipient: address,
+      appFee: appFee ? Number(appFee) * 10 ** depositTokenDecimals : undefined,
+      appFeeRecipient: appFeeRecipient ?? undefined,
     } as PaymentConfig
   }, [address, depositTokenAddress, referralContractAddress, targetChainId, effectiveReferralAddress])
 

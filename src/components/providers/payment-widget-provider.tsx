@@ -104,18 +104,6 @@ export function PaymentWidgetProvider({ children }: { children: React.ReactNode 
           blockExplorerUrl: 'https://polygonscan.com',
           nativeCurrency: defaultNative('MATIC'),
       },
-        {
-          chainId: 8453, // Base Mainnet
-          name: "Base",
-          rpcUrl: process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://base-mainnet.core.chainstack.com/d93c56071ff6e150acd85f444dcdf7f1',
-          rpcWsUrl: "wss://base-mainnet.core.chainstack.com/d93c56071ff6e150acd85f444dcdf7f1",
-          blockExplorerUrl: "https://basescan.org",
-          nativeCurrency: {
-            name: "Base",
-            symbol: "ETH",
-            decimals: 18,
-          },
-        },
         ...(process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? 
           [{
             chainId: 11155111, // Sepolia

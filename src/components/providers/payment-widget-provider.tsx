@@ -16,10 +16,11 @@
 
 "use client"
 
-import { useMemo } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useWalletClient, useAccount } from "wagmi"
 import { PaymentWidgetProvider as BasePaymentWidgetProvider, } from "@matching-platform/payment-widget"
 import type { SetupConfig } from "@matching-platform/payment-widget"
+import { config as wagmiConfig } from "@/configs/wagmi"
 
 import "@matching-platform/payment-widget/styles.css"
 
@@ -38,8 +39,32 @@ const defaultNative = (symbol: string, decimals = 18) => ({
 export function PaymentWidgetProvider({ children }: { children: React.ReactNode }) {
   logger.info("payment-widget:provider:render")
 
-  const { data: walletClient } = useWalletClient()
-  const { address } = useAccount()
+  const { data: rawWalletClient } = useWalletClient({ config: wagmiConfig })
+  const { address, status } = useAccount({ config: wagmiConfig })
+  const stableWalletRef = useRef<SetupConfig["walletClient"]>(null)
+  const [walletEpoch, setWalletEpoch] = useState(0)
+
+  useEffect(() => {
+    const nextAddress = rawWalletClient?.account?.address
+    const currentAddress = stableWalletRef.current?.account?.address
+
+    if (!nextAddress) {
+      if (status === "disconnected" && currentAddress) {
+        stableWalletRef.current = null
+        setWalletEpoch((epoch) => epoch + 1)
+      }
+      return
+    }
+
+    if (!currentAddress || currentAddress !== nextAddress) {
+      stableWalletRef.current = rawWalletClient ?? null
+      setWalletEpoch((epoch) => epoch + 1)
+      return
+    }
+
+    // Same account (likely chain switch) – keep the previous stable reference.
+    stableWalletRef.current = stableWalletRef.current ?? rawWalletClient ?? null
+  }, [rawWalletClient, status])
 
   const setupConfig = useMemo<SetupConfig>(() => {
     const config: SetupConfig = {
@@ -130,21 +155,22 @@ export function PaymentWidgetProvider({ children }: { children: React.ReactNode 
             },  
           }]: []),
       ],
-      walletClient: walletClient || undefined,
+      walletClient: stableWalletRef.current || undefined,
       integratorId: process.env.NEXT_PUBLIC_ACROSS_INTEGRATOR_ID as `0x${string}` || `0x0001`,
       useTestnet: process.env.NEXT_PUBLIC_IS_TESTNET === "true",
       quoteRefreshMs: 45_000,
       showUnavailableOptions: false,
+      wagmiConfig
     }
 
     logger.info("payment-widget:provider:config", {
       supportedChains: config.supportedChains.map((c) => c.chainId),
-      hasWalletClient: Boolean(walletClient),
+      hasWalletClient: Boolean(stableWalletRef.current),
       walletAddress: address,
     })
 
     return config
-  }, [walletClient, address])
+  }, [walletEpoch, address])
 
   return (
     <BasePaymentWidgetProvider setupConfig={setupConfig}>

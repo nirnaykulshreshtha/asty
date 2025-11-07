@@ -10,7 +10,7 @@ echo "Removing package from package-lock.json..."
 npm uninstall @matching-platform/payment-widget
 
 echo "Installing updated @matching-platform/payment-widget from GitHub..."
-npm install github:nirnaykulshreshtha/payment-widget#v2
+npm install github:nirnaykulshreshtha/payment-widget#v1.8
 
 echo "Payment widget package update completed!"
 

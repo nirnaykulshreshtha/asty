@@ -15,8 +15,7 @@ import { logger } from "@/lib/logger"
 import { SectionHeader } from "@/components/ui/SectionHeader"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { TrendingUp, Compass, Coins, Network /*, ArrowBigUp */ } from "lucide-react"
-import mascotImage from "@/assets/images/asty character.png"
+import { TrendingUp, Compass, Coins, Network } from "lucide-react"
 
 const POSITION_POINTS = [
   { icon: TrendingUp, text: "Early = Higher lifetime share of Vault rewards" },
@@ -94,10 +93,11 @@ function PositionImportanceSectionComponent() {
               <div className="relative flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 via-orange-500 to-primary shadow-[0_0_45px_rgba(249,115,22,0.45)]">
                 <div className="absolute inset-1 rounded-full bg-gradient-to-br from-white/10 via-white/0 to-white/5 blur-sm" />
                 <Image
-                  src={mascotImage}
+                  src="/images/asty character.png"
                   alt="Asty mascot highlighting the top position"
+                  fill
                   priority
-                  className="relative z-10 h-20 w-20 object-contain drop-shadow-[0_12px_18px_rgba(9,6,28,0.45)]"
+                  className="relative z-10 object-contain drop-shadow-[0_12px_18px_rgba(9,6,28,0.45)]"
                 />
                 {/* <ArrowBigUp className="absolute bottom-4 size-8 text-white/90" aria-hidden="true" /> */}
               </div>

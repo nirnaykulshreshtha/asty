@@ -3,7 +3,6 @@
 import Image from "next/image"
 import { motion } from "motion/react"
 
-import AstyCharacter from "@/assets/images/asty character.png"
 import { MagicCard } from "@/components/ui/magic-card"
 import { Meteors } from "@/components/ui/meteors"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
@@ -87,7 +86,7 @@ export function RegistrationWelcomeDialog({
                 className="relative"
               >
                 <Image
-                  src={AstyCharacter}
+                  src="/images/asty character.png"
                   alt="Asty mascot celebrating your successful membership deposit"
                   width={400}
                   height={400}

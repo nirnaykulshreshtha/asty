@@ -21,7 +21,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import Image from "next/image"
-import AstyCharacter from "@/assets/images/asty character.png"
 
 import { logger } from "@/lib/logger"
 import { FAQ_ITEMS } from "./types"
@@ -67,9 +66,10 @@ function FAQSectionComponent() {
         <div className="hidden lg:flex lg:justify-center">
           <div className="group relative flex size-100 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-primary/20 via-background/80 to-accent/20 p-6 shadow-2xl transition-transform duration-500 hover:scale-105">
             <Image
-              src={AstyCharacter}
+              src="/images/asty character.png"
               alt="Asty mascot"
-              className="h-auto w-full object-contain animate-[bounce_2.5s_ease-in-out_infinite] group-hover:[animation-play-state:paused]"
+              fill
+              className="object-contain animate-[bounce_2.5s_ease-in-out_infinite] group-hover:[animation-play-state:paused]"
               priority
             />
           </div>

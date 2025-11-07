@@ -15,7 +15,7 @@ export const plexMono = IBM_Plex_Mono({
 })
 
 export const astroz = localFont({
-  src: "../assets/fonts/Astroz.ttf",
+  src: "../../public/fonts/Astroz.ttf",
   variable: "--font-astroz",
   display: "swap",
 })

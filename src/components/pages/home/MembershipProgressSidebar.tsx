@@ -18,7 +18,6 @@
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { logger } from "@/lib/logger"
-import AstyCharacter from "@/assets/images/asty character.png"
 import {
   MEMBERSHIP_PROGRESS,
   MEMBERSHIP_FACTS,
@@ -103,9 +102,10 @@ export function MembershipProgressSidebar({ motionReduced }: MembershipProgressS
             )}
           >
             <Image
-              src={AstyCharacter}
+              src="/images/asty character.png"
               alt="Asty mascot waving hello"
-              className="h-auto w-full object-contain"
+              fill
+              className="object-contain"
             />
           </div>
         </div>

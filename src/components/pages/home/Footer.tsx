@@ -106,7 +106,7 @@ function FooterComponent() {
             </p>
             <p className="max-w-sm text-sm text-muted-foreground">
               Vault contract address:{" "}
-              <span className="font-mono text-foreground">0xASTY000000000000000000000000</span>
+              <span className="font-mono text-foreground">{process.env.NEXT_PUBLIC_REFERRAL_CONTRACT}</span>
             </p>
             <p className="text-xs text-muted-foreground">© Asty {new Date().getFullYear()}. All rights reserved.</p>
           </div>

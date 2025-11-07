@@ -25,7 +25,6 @@ import { HERO_CTAS, HERO_VARIANTS, HERO_BURSTS } from "./types"
 import { CTAButton } from "@/components/ui/CTAButton"
 import { DecorativeBackground } from "@/components/ui/DecorativeBackground"
 import Image from "next/image"
-import AstyCharacter from "@/assets/images/asty character.png"
 import { AuroraText } from "@/components/ui/aurora-text"
 import { ReferralLinkDialog } from "./ReferralLinkDialog"
 import { Button } from "@/components/ui/button"
@@ -152,9 +151,10 @@ function HeroSectionComponent({
         <div className="hidden lg:flex lg:justify-center">
           <div className="group relative flex size-100 items-center justify-center rounded-full border border-white/10 bg-gradient-to-br from-primary/20 via-background/80 to-accent/20 shadow-2xl transition-transform duration-500 hover:scale-105 overflow-visible">
             <Image
-              src={AstyCharacter}
+              src="/images/asty character.png"
               alt="Asty mascot"
-              className="h-auto w-[160%] object-contain animate-[bounce_2.5s_ease-in-out_infinite] group-hover:[animation-play-state:paused]"
+              fill
+              className="object-contain animate-[bounce_2.5s_ease-in-out_infinite] group-hover:[animation-play-state:paused]"
               priority
             />
           </div>
